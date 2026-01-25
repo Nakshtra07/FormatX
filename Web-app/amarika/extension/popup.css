@@ -1,0 +1,13 @@
+body {
+    width: 250px;
+    font-family: Arial, sans-serif;
+    padding: 10px;
+}
+h3 {
+    text-align: center;
+}
+button {
+    width: 100%;
+    padding: 8px;
+    margin-top: 10px;
+}

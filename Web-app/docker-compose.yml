@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  # Gateway Service (Nginx) - Serves Marketing + Proxies Apps
+  gateway:
+    image: nginx:alpine
+    container_name: amarika-gateway
+    ports:
+      - "4765:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./marketing:/usr/share/nginx/html/marketing
+    depends_on:
+      - frontend
+      - backend
+
+  # Frontend Service (Vite React App)
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        # Pass these from .env or default here
+        VITE_API_URL: /api
+        VITE_GOOGLE_CLIENT_ID: "783162166038-ggk6liiq1ror3a87ndb1ml625fp3ujl6.apps.googleusercontent.com"
+    container_name: amarika-frontend
+    expose:
+      - "80"
+
+  # Backend Service (FastAPI)
+  backend:
+    build: ./backend
+    container_name: amarika-backend
+    expose:
+      - "8000"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8000
+      - FRONTEND_URL=http://amarika.v1ggs.lol:4765/app
+      # Ensure other secrets are passed, potentially via .env file or environment here
+      # For now using defaults or placeholders if not in .env
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - GOOGLE_REDIRECT_URI=${GOOGLE_REDIRECT_URI}
+    env_file:
+      - ./backend/.env
+
+  # Documentation Service (Docusaurus)
+  documentation:
+    build: ./documentation
+    container_name: amarika-docs
+    ports:
+      - "9827:80"

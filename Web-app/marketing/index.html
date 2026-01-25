@@ -1,0 +1,810 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amarika - Turn Messy AI Output into Publication-Ready Documents</title>
+  <meta name="description"
+    content="Amarika is an AI-powered web app that instantly formats your Google Docs into IEEE, corporate, or custom templates in one click." />
+  <meta name="keywords"
+    content="document formatting, AI formatting, Google Docs, IEEE, APA, academic templates, Chrome extension" />
+  <meta name="author" content="Amarika" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="images/logo.png" />
+
+  <!-- Open Graph / Social Media -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Amarika - AI Document Formatter" />
+  <meta property="og:description" content="Turn messy AI output into publication-ready documents with one click." />
+  <meta property="og:url" content="https://amarika.com" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Amarika - AI Document Formatter" />
+  <meta name="twitter:description" content="Turn messy AI output into publication-ready documents with one click." />
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js" defer></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js" defer></script>
+</head>
+
+<body class="aurora-top">
+  <!-- Skip to main content link for accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- 
+        ============================================
+        GLOBAL WRAPPER
+        ============================================
+        This wrapper controls the overall page background
+        and centers content with max-width constraints
+    -->
+  <div class="page-wrapper">
+    <section class="hero-nav-bg">
+      <nav class="navbar">
+        <div class="nav-container">
+          <div class="nav-logo">
+            <a href="index.html" class="logo-link">
+              <img src="images/logo.png" alt="Amarika Logo" class="logo-img" style="height: 50px; width: auto;">
+            </a>
+          </div>
+
+          <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle navigation menu">
+            <ion-icon name="menu-outline"></ion-icon>
+          </button>
+
+          <div class="nav-links" id="nav-links">
+            <a href="#features" class="nav-link">Features</a>
+            <a href="#pricing" class="nav-link">Pricing</a>
+            <a href="template.html" class="nav-link">Templates</a>
+            <a href="/app/" class="nav-link">Login</a>
+          </div>
+
+          <div class="nav-cta">
+            <a href="/app/" class="btn btn-primary">Launch App</a>
+          </div>
+        </div>
+      </nav>
+
+      <!-- 
+            ============================================
+            HERO SECTION
+            ============================================
+            Primary value proposition and CTA
+            
+            FUTURE ENHANCEMENT:
+            - Add animated 3D visualization in .hero-visual
+            - Consider Three.js document transformation animation
+            - Add subtle parallax scrolling effects
+            - Implement gradient animations
+        -->
+      <section id="main-content" class="hero-section">
+        <div class="content-container">
+          <div class="hero-content">
+            <h1 class="hero-headline">
+              Format AI Content Perfectly in Google Docs
+            </h1>
+
+            <p class="hero-subheading">
+              Amarika is an AI-powered web app that instantly transforms
+              your documents into IEEE, APA, corporate, or custom templates — in one click.
+            </p>
+
+            <div class="hero-cta-group">
+              <a href="/app/" class="btn btn-primary btn-large">
+                Launch App
+              </a>
+            </div>
+
+            <div class="trust-badges">
+              <div class="trust-badge">
+                <ion-icon name="flash-outline"></ion-icon>
+                <span>AI-Powered</span>
+              </div>
+              <div class="trust-badge">
+                <ion-icon name="globe-outline"></ion-icon>
+                <span>Web App</span>
+              </div>
+              <div class="trust-badge">
+                <ion-icon name="shield-checkmark-outline"></ion-icon>
+                <span>Privacy-first</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 
+                    ANIMATION PLACEHOLDER
+                    This div is reserved for future visual content:
+                    - Interactive demo
+                    - 3D scene showing document transformation
+                    - Video or animated screenshot
+                -->
+          <div class="hero-visual">
+            <div class="demo-mockup">
+              <div class="mockup-window">
+                <div class="mockup-titlebar">
+                  <span class="mockup-dot red"></span>
+                  <span class="mockup-dot yellow"></span>
+                  <span class="mockup-dot green"></span>
+                  <span class="mockup-title">Google Docs - Untitled Document</span>
+                </div>
+                <div class="mockup-content">
+                  <div class="mockup-before">
+                    <div class="mockup-label">Before</div>
+                    <div class="mockup-text messy">Raw AI output with no formatting, random spacing, inconsistent
+                      headings and broken structure...</div>
+                  </div>
+                  <div class="mockup-arrow">
+                    <ion-icon name="arrow-forward-outline"></ion-icon>
+                  </div>
+                  <div class="mockup-after">
+                    <div class="mockup-label">After</div>
+                    <div class="mockup-text formatted">
+                      <div class="mock-heading">I. Introduction</div>
+                      <div class="mock-paragraph">Properly formatted content with IEEE styling...</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- 
+            ============================================
+            ABOUT SECTION
+            ============================================
+            Problem statement and solution explanation
+            
+            FUTURE ENHANCEMENT:
+            - Add before/after comparison animation
+            - Implement scroll-triggered fade-ins
+            - Consider interactive comparison slider
+        -->
+    <section class="about-section">
+      <div class="content-container">
+        <div class="about-grid">
+          <div class="about-text">
+            <p class="section-eyebrow">Tired of messy AI outputs?</p>
+            <h2 class="section-heading">The Problem We Solve</h2>
+            <div class="about-description">
+              <p>
+                Every time you paste AI-generated content into Google
+                Docs or Word, formatting breaks. Headings disappear. Code
+                becomes unreadable.
+              </p>
+              <p>
+                Amarika fixes this instantly. Our AI understands document
+                structure and applies professional formatting in one click.
+              </p>
+            </div>
+          </div>
+
+          <!-- 
+                        VISUAL PLACEHOLDER
+                        Reserved for before/after comparison or illustration
+                    -->
+          <div class="about-visual">
+            <div class="demo-comparison">
+              <div class="comparison-side before">
+                <div class="comparison-header">
+                  <ion-icon name="close-circle" class="icon-bad"></ion-icon>
+                  <span>Without Amarika</span>
+                </div>
+                <div class="comparison-body">
+                  <div class="fake-line" style="width: 80%;"></div>
+                  <div class="fake-line" style="width: 95%;"></div>
+                  <div class="fake-line" style="width: 60%;"></div>
+                  <div class="fake-line" style="width: 100%;"></div>
+                  <div class="fake-line" style="width: 45%;"></div>
+                </div>
+              </div>
+              <div class="comparison-side after">
+                <div class="comparison-header">
+                  <ion-icon name="checkmark-circle" class="icon-good"></ion-icon>
+                  <span>With Amarika</span>
+                </div>
+                <div class="comparison-body">
+                  <div class="fake-heading"></div>
+                  <div class="fake-line" style="width: 100%;"></div>
+                  <div class="fake-line" style="width: 100%;"></div>
+                  <div class="fake-heading small"></div>
+                  <div class="fake-line" style="width: 100%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 
+            ============================================
+            FEATURES SECTION
+            ============================================
+            Core product capabilities
+            
+            FUTURE ENHANCEMENT:
+            - Add hover scale/lift effects on cards
+            - Implement staggered scroll animations
+            - Add icons or illustrations to each feature
+            - Consider animated micro-interactions
+        -->
+    <section id="features" class="features-section">
+      <div class="content-container">
+        <div class="section-header">
+          <h2 class="section-heading">
+            Powerful Features for Perfect Documents
+          </h2>
+          <p class="section-subheading">
+            Amarika combines AI intelligence with professional formatting
+            standards
+          </p>
+        </div>
+
+        <div class="carousel">
+          <div class="features-group">
+            <!-- Feature Card 1 -->
+            <!-- FUTURE: Add hover animations, icon animations -->
+            <div class="feature-card">
+              <ion-icon class="feature-icon" name="scan-circle-outline"></ion-icon>
+              <h3 class="feature-title">AI Structure Detection</h3>
+              <p class="feature-description">
+                Automatically identifies headings, sections, code blocks,
+                lists, and citations in pasted content using advanced AI
+                analysis.
+              </p>
+            </div>
+
+            <!-- Feature Card 2 -->
+            <div class="feature-card">
+              <ion-icon class="feature-icon" name="navigate-outline"></ion-icon>
+              <h3 class="feature-title">One-Click Formatting</h3>
+              <p class="feature-description">
+                Transform unstructured content into polished documents
+                instantly. No manual styling, no tedious adjustments — just
+                one click.
+              </p>
+            </div>
+
+            <!-- Feature Card 3 -->
+            <div class="feature-card">
+              <ion-icon class="feature-icon" name="school-outline"></ion-icon>
+              <h3 class="feature-title">Academic & Corporate Templates</h3>
+              <p class="feature-description">
+                Choose from IEEE, APA, corporate report formats, and more.
+                Each template follows professional standards and best
+                practices.
+              </p>
+            </div>
+
+            <!-- Feature Card 4 -->
+            <div class="feature-card">
+              <ion-icon class="feature-icon" name="code-slash-outline"></ion-icon>
+              <h3 class="feature-title">Code-Aware Styling</h3>
+              <p class="feature-description">
+                Preserves code formatting with proper syntax highlighting,
+                indentation, and monospace fonts. Perfect for technical
+                documentation.
+              </p>
+            </div>
+
+            <!-- Feature Card 5 -->
+            <div class="feature-card">
+              <ion-icon class="feature-icon" name="document-text-outline"></ion-icon>
+              <h3 class="feature-title">Custom Template Extraction</h3>
+              <p class="feature-description">
+                Create reusable templates from your existing documents.
+                Amarika learns your style and applies it to new content
+                automatically.
+              </p>
+            </div>
+          </div>
+          <div aria-hidden class="features-group">
+            <!-- Feature Card 1 -->
+            <!-- FUTURE: Add hover animations, icon animations -->
+            <div class="feature-card">
+              <ion-icon class="feature-icon" name="scan-circle-outline"></ion-icon>
+              <h3 class="feature-title">AI Structure Detection</h3>
+              <p class="feature-description">
+                Automatically identifies headings, sections, code blocks,
+                lists, and citations in pasted content using advanced AI
+                analysis.
+              </p>
+            </div>
+
+            <!-- Feature Card 2 -->
+            <div class="feature-card">
+              <ion-icon class="feature-icon" name="navigate-outline"></ion-icon>
+              <h3 class="feature-title">One-Click Formatting</h3>
+              <p class="feature-description">
+                Transform unstructured content into polished documents
+                instantly. No manual styling, no tedious adjustments — just
+                one click.
+              </p>
+            </div>
+
+            <!-- Feature Card 3 -->
+            <div class="feature-card">
+              <ion-icon class="feature-icon" name="school-outline"></ion-icon>
+              <h3 class="feature-title">Academic & Corporate Templates</h3>
+              <p class="feature-description">
+                Choose from IEEE, APA, corporate report formats, and more.
+                Each template follows professional standards and best
+                practices.
+              </p>
+            </div>
+
+            <!-- Feature Card 4 -->
+            <div class="feature-card">
+              <ion-icon class="feature-icon" name="code-slash-outline"></ion-icon>
+              <h3 class="feature-title">Code-Aware Styling</h3>
+              <p class="feature-description">
+                Preserves code formatting with proper syntax highlighting,
+                indentation, and monospace fonts. Perfect for technical
+                documentation.
+              </p>
+            </div>
+
+            <!-- Feature Card 5 -->
+            <div class="feature-card">
+              <ion-icon class="feature-icon" name="document-text-outline"></ion-icon>
+              <h3 class="feature-title">Custom Template Extraction</h3>
+              <p class="feature-description">
+                Create reusable templates from your existing documents.
+                Amarika learns your style and applies it to new content
+                automatically.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+  </section>
+
+  <!-- ============================================
+       HOW IT WORKS SECTION
+       3-step visual guide
+       ============================================ -->
+  <section class="how-it-works-section">
+    <div class="content-container">
+      <div class="section-header">
+        <h2 class="section-heading">How It Works</h2>
+        <p class="section-subheading">Get perfectly formatted documents in 3 simple steps</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">1</div>
+          <h3 class="step-title">Connect Google Docs</h3>
+          <p class="step-description">Sign in with Google and paste your document URL into Amarika.</p>
+        </div>
+
+        <div class="step-arrow">
+          <ion-icon name="arrow-forward-outline"></ion-icon>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">2</div>
+          <h3 class="step-title">Choose a Template</h3>
+          <p class="step-description">Select from IEEE, APA, corporate formats, or create your own custom template.</p>
+        </div>
+
+        <div class="step-arrow">
+          <ion-icon name="arrow-forward-outline"></ion-icon>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">3</div>
+          <h3 class="step-title">Done — Perfectly Formatted</h3>
+          <p class="step-description">Your document is instantly transformed with proper headings, structure, and
+            styling.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       USE CASES / WHO IT'S FOR
+       Target audience segments
+       ============================================ -->
+  <section class="use-cases-section">
+    <div class="content-container">
+      <div class="section-header">
+        <h2 class="section-heading">Who It's For</h2>
+        <p class="section-subheading">Amarika helps anyone who works with AI-generated content</p>
+      </div>
+
+      <div class="use-cases-grid">
+        <div class="use-case-card">
+          <div class="use-case-icon"><ion-icon name="school-outline"></ion-icon></div>
+          <h3 class="use-case-title">Students</h3>
+          <p class="use-case-description">Writing research papers and assignments with proper IEEE, APA, or MLA
+            formatting.</p>
+        </div>
+
+        <div class="use-case-card">
+          <div class="use-case-icon"><ion-icon name="create-outline"></ion-icon></div>
+          <h3 class="use-case-title">Content Creators</h3>
+          <p class="use-case-description">Repurposing AI drafts into polished blog posts, articles, and marketing copy.
+          </p>
+        </div>
+
+        <div class="use-case-card">
+          <div class="use-case-icon"><ion-icon name="briefcase-outline"></ion-icon></div>
+          <h3 class="use-case-title">Professionals</h3>
+          <p class="use-case-description">Formatting reports, proposals, and documentation for corporate standards.</p>
+        </div>
+
+        <div class="use-case-card">
+          <div class="use-case-icon"><ion-icon name="code-slash-outline"></ion-icon></div>
+          <h3 class="use-case-title">Developers</h3>
+          <p class="use-case-description">Documenting code with proper syntax highlighting and technical formatting.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       WHY WE BUILT THIS
+       Team motivation (hackathon appropriate)
+       ============================================ -->
+  <section class="testimonials-section">
+    <div class="content-container">
+      <div class="section-header">
+        <h2 class="section-heading">Why We Built Amarika</h2>
+        <p class="section-subheading">Our team's experience inspired this solution</p>
+      </div>
+
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <div class="testimonial-icon"><ion-icon name="bulb-outline"></ion-icon></div>
+          <p class="testimonial-quote">"Every time I pasted ChatGPT output into Google Docs for my assignments, I spent
+            20 minutes fixing formatting. There had to be a better way."</p>
+          <div class="testimonial-author">
+            <span class="author-name">The Problem</span>
+            <span class="author-role">What Started It All</span>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-icon"><ion-icon name="rocket-outline"></ion-icon></div>
+          <p class="testimonial-quote">"We combined AI structure detection with professional templates to create
+            instant, one-click document formatting."</p>
+          <div class="testimonial-author">
+            <span class="author-name">Our Solution</span>
+            <span class="author-role">Built in 48 Hours</span>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-icon"><ion-icon name="flag-outline"></ion-icon></div>
+          <p class="testimonial-quote">"Amarika saves time, reduces frustration, and helps everyone create professional
+            documents — regardless of their formatting skills."</p>
+          <div class="testimonial-author">
+            <span class="author-name">Our Vision</span>
+            <span class="author-role">The Future</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       FAQ SECTION
+       Accordion-style dropdown
+       ============================================ -->
+  <section class="faq-section">
+    <div class="content-container">
+      <div class="section-header">
+        <h2 class="section-heading">Frequently Asked Questions</h2>
+      </div>
+
+      <div class="faq-accordion">
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>Is Amarika really free?</span>
+            <ion-icon name="chevron-down-outline" class="faq-icon"></ion-icon>
+          </button>
+          <div class="faq-answer">
+            <p>Yes! The free plan includes 10 formats per month with basic templates. Upgrade to Pro for unlimited
+              formatting and advanced features.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>Does it work with other doc editors?</span>
+            <ion-icon name="chevron-down-outline" class="faq-icon"></ion-icon>
+          </button>
+          <div class="faq-answer">
+            <p>Currently, Amarika works with Google Docs. Microsoft Word support is available in the Pro plan. More
+              editors coming soon!</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>Is my data safe?</span>
+            <ion-icon name="chevron-down-outline" class="faq-icon"></ion-icon>
+          </button>
+          <div class="faq-answer">
+            <p>Absolutely. Your content is processed securely and never stored on our servers. We're fully GDPR
+              compliant and privacy-first.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>What AI models are supported?</span>
+            <ion-icon name="chevron-down-outline" class="faq-icon"></ion-icon>
+          </button>
+          <div class="faq-answer">
+            <p>Amarika works with content from any source — ChatGPT, Claude, Gemini, Copilot, or any other AI. Just
+              paste and format!</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>How do I get started?</span>
+            <ion-icon name="chevron-down-outline" class="faq-icon"></ion-icon>
+          </button>
+          <div class="faq-answer">
+            <p>Simply sign up for free, connect your Google account, and paste any Google Docs URL. Select a template
+              and click Format — it's that easy!</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>Can I create my own templates?</span>
+            <ion-icon name="chevron-down-outline" class="faq-icon"></ion-icon>
+          </button>
+          <div class="faq-answer">
+            <p>Yes! Pro users can create custom templates from any existing document. Amarika learns your formatting
+              preferences and applies them automatically.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!--
+            ============================================
+            PRICING SECTION
+            ============================================
+            Subscription tiers and plan comparison
+            
+            FUTURE ENHANCEMENT:
+            - Add toggle for monthly/annual pricing
+            - Implement hover effects on cards
+            - Add "Most Popular" badge to Pro tier
+            - Integrate payment processing
+        -->
+  <section id="pricing" class="pricing-section">
+    <div class="content-container">
+      <div class="section-header">
+        <h2 class="section-heading">Choose Your Plan</h2>
+        <p class="section-subheading">Start free, upgrade as you grow</p>
+      </div>
+
+      <div class="pricing-grid">
+        <!-- Pricing Card: Free -->
+        <div class="pricing-card">
+          <div class="pricing-header">
+            <h3 class="pricing-tier">Free</h3>
+            <div class="pricing-price">
+              <span class="price-amount">₹0</span>
+              <span class="price-period">forever</span>
+            </div>
+          </div>
+
+          <ul class="pricing-features">
+            <li>10 formats per month</li>
+            <li>Basic templates</li>
+            <li>Google Docs support</li>
+            <li>Community support</li>
+          </ul>
+
+          <a href="/app/" class="btn btn-secondary btn-full">
+            Get Started Free
+          </a>
+        </div>
+
+        <!-- Pricing Card: Pro (Most Popular) -->
+        <div class="pricing-card pricing-card-featured">
+          <div class="pricing-badge">Most Popular</div>
+          <div class="pricing-header">
+            <h3 class="pricing-tier">Pro</h3>
+            <div class="pricing-price">
+              <span class="price-amount">₹399</span>
+              <span class="price-period">/month</span>
+            </div>
+          </div>
+
+          <ul class="pricing-features">
+            <li>Unlimited formatting</li>
+            <li>IEEE & corporate templates</li>
+            <li>Code styling & syntax highlighting</li>
+            <li>Google Docs + Word support</li>
+            <li>Priority support</li>
+          </ul>
+
+          <a href="/app/" class="btn btn-primary btn-full">
+            Start Pro Trial
+          </a>
+        </div>
+
+        <!-- Pricing Card: Custom -->
+        <div class="pricing-card">
+          <div class="pricing-header">
+            <h3 class="pricing-tier">Custom</h3>
+            <div class="pricing-price">
+              <span class="price-amount-text">Let's Talk</span>
+            </div>
+          </div>
+
+          <ul class="pricing-features">
+            <li>Everything in Pro</li>
+            <li>Custom integrations</li>
+            <li>Dedicated support</li>
+            <li>On-premise deployment</li>
+            <li>SLA guarantees</li>
+          </ul>
+
+          <a href="mailto:hello@amarika.com" class="btn btn-secondary btn-full">
+            Contact Us
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 
+            ============================================
+            GET EXTENSION SECTION (STRONG CTA)
+            ============================================
+            Final conversion-focused section
+            
+            FUTURE ENHANCEMENT:
+            - Add animated gradient background
+            - Implement particle effects
+            - Add pulsing CTA button animation
+            - Consider video background or demo
+            
+            DESIGN NOTE:
+            This section should feel powerful and visually distinct
+            even without animations. The dark background and 
+            centered layout create natural emphasis.
+        -->
+  <section class="cta-section">
+    <div class="content-container">
+      <div class="cta-content">
+        <h2 class="cta-headline">Stop fixing formatting. Start writing.</h2>
+        <p class="cta-subtext">
+          Sign up for Amarika and turn raw AI output into clean, structured
+          documents instantly.
+        </p>
+        <a href="/app/" class="btn btn-primary btn-large btn-cta-emphasis">
+          <ion-icon name="rocket-outline"></ion-icon>
+          <span>Get Started Free</span>
+        </a>
+        <p class="cta-microcopy">No credit card required • Free to use • Works with Google Docs</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 
+            ============================================
+            FOOTER
+            ============================================
+            Site navigation, contact info, legal links
+            
+            FUTURE ENHANCEMENT:
+            - Add social media icons
+            - Implement newsletter signup
+            - Add additional footer columns as needed
+        -->
+  <footer class="footer aurora-footer">
+    <div class="footer-aurora-strip"></div>
+    <div class="content-container">
+      <div class="footer-main-grid">
+        <!-- Brand & Newsletter Section (Left) -->
+        <div class="footer-brand-section">
+          <div class="footer-logo">
+            <img src="images/logo.png" alt="Amarika" style="height: 60px; width: auto; margin-bottom: 1rem;">
+          </div>
+          <p class="footer-description">
+            AI-powered document formatting for Google Docs and Word.
+            Turn messy content into publication-ready documents in one click.
+          </p>
+
+          <form class="footer-newsletter">
+            <label for="email-newsletter" class="newsletter-label">Stay updated</label>
+            <div class="newsletter-input-wrapper">
+              <input type="email" id="email-newsletter" placeholder="Enter your email address" required />
+              <button type="submit" class="btn-newsletter">
+                <ion-icon name="arrow-forward-outline"></ion-icon>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Navigation Links (Right) -->
+        <div class="footer-nav-group">
+          <div class="footer-column">
+            <h5 class="footer-heading">Product</h5>
+            <ul class="footer-links">
+              <li><a href="#features">Features</a></li>
+              <li><a href="#templates">Templates</a></li>
+              <li><a href="#pricing">Pricing</a></li>
+              <li><a href="#docs">Documentation</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h5 class="footer-heading">Company</h5>
+            <ul class="footer-links">
+              <li><a href="#about">About</a></li>
+              <li><a href="#blog">Blog</a></li>
+              <li><a href="#careers">Careers</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p class="footer-copyright">
+          &copy; 2026 Amarika. All rights reserved.
+        </p>
+
+        <div class="footer-social">
+          <a href="#" class="social-link" aria-label="GitHub">
+            <ion-icon name="logo-github"></ion-icon>
+          </a>
+          <a href="#" class="social-link" aria-label="Twitter">
+            <ion-icon name="logo-twitter"></ion-icon>
+          </a>
+          <a href="#" class="social-link" aria-label="LinkedIn">
+            <ion-icon name="logo-linkedin"></ion-icon>
+          </a>
+          <a href="mailto:hello@amarika.com" class="social-link" aria-label="Email">
+            <ion-icon name="mail-outline"></ion-icon>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  </div>
+  <!-- End Page Wrapper -->
+
+  <!--
+        ============================================
+        COMPONENT ARCHITECTURE NOTES
+        ============================================
+        
+        This single-file structure can be split into:
+        - components/Navbar.html
+        - components/Hero.html
+        - components/About.html
+        - components/Features.html
+        - components/Pricing.html
+        - components/CTA.html
+        - components/Footer.html
+        
+        Each section is clearly marked and self-contained
+        for easy extraction into a component system.
+    -->
+  <script src="js/main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,261 @@
+{
+  "id": "custom_a2667cfa4df7",
+  "name": "Presentation Report Template",
+  "user_email": "v1ggs.tech@gmail.com",
+  "created_at": "2026-01-25T02:06:06.341225Z",
+  "source_filename": "ie_report_iiks.docx",
+  "font": "Times New Roman",
+  "margins": {
+    "top": 72,
+    "bottom": 72,
+    "left": 67,
+    "right": 58
+  },
+  "styles": {
+    "TITLE": {
+      "fontSize": 20,
+      "bold": true,
+      "italic": false,
+      "alignment": "CENTER",
+      "spaceBefore": null,
+      "spaceAfter": null
+    },
+    "HEADING_1": {
+      "fontSize": 16,
+      "bold": true,
+      "alignment": "CENTER",
+      "spaceBefore": null,
+      "spaceAfter": null
+    },
+    "HEADING_2": {
+      "fontSize": 14,
+      "bold": true,
+      "alignment": "CENTER",
+      "spaceBefore": null,
+      "spaceAfter": null
+    },
+    "NORMAL_TEXT": {
+      "fontSize": 12,
+      "bold": true,
+      "alignment": "JUSTIFIED",
+      "lineSpacing": 1.5,
+      "spaceAfter": null
+    },
+    "SUBTITLE": {
+      "fontSize": 12,
+      "bold": false,
+      "italic": true,
+      "alignment": "JUSTIFIED"
+    }
+  },
+  "structure": {
+    "has_cover_page": true,
+    "cover_elements": [
+      {
+        "id": "cover_1",
+        "type": "MAIN_TITLE",
+        "order": 1,
+        "sample_text": "A COMPARATIVE STUDY OF THE PURPOSE OF KNOWLEDGE IN TRADITIONAL INDIAN AND CONTEMPORARY EDUCATIONAL S",
+        "style": {
+          "fontSize": 20,
+          "bold": true,
+          "italic": false,
+          "alignment": "CENTER"
+        }
+      },
+      {
+        "id": "cover_2",
+        "type": "AUTHOR_INFO",
+        "order": 2,
+        "sample_text": "By Group no. 1 (E & CS - A)",
+        "style": {
+          "fontSize": 16,
+          "bold": true,
+          "italic": false,
+          "alignment": "CENTER"
+        }
+      },
+      {
+        "id": "cover_3",
+        "type": "REPORT_TYPE",
+        "order": 3,
+        "sample_text": "An Innovative Examination (IE) Report",
+        "style": {
+          "fontSize": 18,
+          "bold": true,
+          "italic": false,
+          "alignment": "CENTER"
+        }
+      },
+      {
+        "id": "cover_4",
+        "type": "SUBJECT_INFO",
+        "order": 4,
+        "sample_text": "Submitted for the Subject of",
+        "style": {
+          "fontSize": 18,
+          "bold": true,
+          "italic": false,
+          "alignment": "CENTER"
+        }
+      },
+      {
+        "id": "cover_5",
+        "type": "SUBTITLE",
+        "order": 5,
+        "sample_text": "IIKS",
+        "style": {
+          "fontSize": 18,
+          "bold": true,
+          "italic": false,
+          "alignment": "CENTER"
+        }
+      },
+      {
+        "id": "cover_6",
+        "type": "GUIDE_INFO",
+        "order": 6,
+        "sample_text": "Under the Guidance of",
+        "style": {
+          "fontSize": 18,
+          "bold": true,
+          "italic": false,
+          "alignment": "CENTER"
+        }
+      },
+      {
+        "id": "cover_7",
+        "type": "SUBTITLE",
+        "order": 7,
+        "sample_text": "Mr. Balasaheb Khairnar\nAssistant Professor",
+        "style": {
+          "fontSize": 18,
+          "bold": true,
+          "italic": false,
+          "alignment": "CENTER"
+        }
+      },
+      {
+        "id": "cover_8",
+        "type": "ACADEMIC_YEAR",
+        "order": 8,
+        "sample_text": "A.Y. 2025-26",
+        "style": {
+          "fontSize": 14,
+          "bold": true,
+          "italic": false,
+          "alignment": "CENTER"
+        }
+      },
+      {
+        "id": "cover_9",
+        "type": "REPORT_TYPE",
+        "order": 9,
+        "sample_text": "TITLE OF PROJECT",
+        "style": {
+          "fontSize": 12,
+          "bold": true,
+          "italic": false,
+          "alignment": "JUSTIFIED"
+        }
+      }
+    ],
+    "body_sections": [],
+    "all_sections": [
+      {
+        "name": "MAIN_TITLE",
+        "style": "TITLE",
+        "required": false
+      },
+      {
+        "name": "AUTHOR_INFO",
+        "style": "NORMAL_TEXT",
+        "required": false
+      },
+      {
+        "name": "REPORT_TYPE",
+        "style": "NORMAL_TEXT",
+        "required": false
+      },
+      {
+        "name": "SUBJECT_INFO",
+        "style": "NORMAL_TEXT",
+        "required": false
+      },
+      {
+        "name": "SUBTITLE",
+        "style": "NORMAL_TEXT",
+        "required": false
+      },
+      {
+        "name": "GUIDE_INFO",
+        "style": "NORMAL_TEXT",
+        "required": false
+      },
+      {
+        "name": "SUBTITLE",
+        "style": "NORMAL_TEXT",
+        "required": false
+      },
+      {
+        "name": "ACADEMIC_YEAR",
+        "style": "NORMAL_TEXT",
+        "required": false
+      },
+      {
+        "name": "REPORT_TYPE",
+        "style": "NORMAL_TEXT",
+        "required": false
+      }
+    ],
+    "detected_type": "ACADEMIC_REPORT"
+  },
+  "sections": [
+    {
+      "name": "MAIN_TITLE",
+      "style": "TITLE",
+      "required": false
+    },
+    {
+      "name": "AUTHOR_INFO",
+      "style": "NORMAL_TEXT",
+      "required": false
+    },
+    {
+      "name": "REPORT_TYPE",
+      "style": "NORMAL_TEXT",
+      "required": false
+    },
+    {
+      "name": "SUBJECT_INFO",
+      "style": "NORMAL_TEXT",
+      "required": false
+    },
+    {
+      "name": "SUBTITLE",
+      "style": "NORMAL_TEXT",
+      "required": false
+    },
+    {
+      "name": "GUIDE_INFO",
+      "style": "NORMAL_TEXT",
+      "required": false
+    },
+    {
+      "name": "SUBTITLE",
+      "style": "NORMAL_TEXT",
+      "required": false
+    },
+    {
+      "name": "ACADEMIC_YEAR",
+      "style": "NORMAL_TEXT",
+      "required": false
+    },
+    {
+      "name": "REPORT_TYPE",
+      "style": "NORMAL_TEXT",
+      "required": false
+    }
+  ],
+  "source_type": "docx"
+}
