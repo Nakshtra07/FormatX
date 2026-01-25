@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="ai-assistant.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <button id="backBtn" class="btn-back">← Back</button>
+            <div class="header-title">
+                <span class="ai-icon">🤖</span>
+                <h1>AI Assistant</h1>
+            </div>
+        </header>
+
+        <!-- API Key Warning (shown if not configured) -->
+        <div id="apiKeyWarning" class="warning-card hidden">
+            <span class="warning-icon">⚠️</span>
+            <div class="warning-text">
+                <strong>Gemini API Key Required</strong>
+                <p>Enter your API key to enable AI features</p>
+            </div>
+            <button id="configureKeyBtn" class="btn-configure">Configure</button>
+        </div>
+
+        <!-- Document Status -->
+        <div id="docStatus" class="doc-status">
+            <span id="docStatusIcon">📄</span>
+            <span id="docStatusText">Detecting document...</span>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="section">
+            <h2>Quick Actions</h2>
+            <div class="quick-actions">
+                <button class="quick-action" id="analyzeBtn">
+                    <span class="action-icon">🔍</span>
+                    <span class="action-text">
+                        <strong>Analyze Document</strong>
+                        <small>Detect type & suggest format</small>
+                    </span>
+                </button>
+                <button class="quick-action" id="fixBtn">
+                    <span class="action-icon">🔧</span>
+                    <span class="action-text">
+                        <strong>Fix Inconsistencies</strong>
+                        <small>Find & fix formatting issues</small>
+                    </span>
+                </button>
+                <button class="quick-action" id="suggestBtn">
+                    <span class="action-icon">💡</span>
+                    <span class="action-text">
+                        <strong>Get Suggestions</strong>
+                        <small>AI-powered improvements</small>
+                    </span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Natural Language Command -->
+        <div class="section">
+            <h2>Natural Language Command</h2>
+            <div class="command-input-wrapper">
+                <input type="text" id="commandInput" placeholder="e.g., Make it double spaced with Arial font..." />
+                <button id="sendCommandBtn" class="btn-send">
+                    <span>↑</span>
+                </button>
+            </div>
+            <div class="command-suggestions">
+                <button class="suggestion-chip" data-command="Make it double spaced">Double space</button>
+                <button class="suggestion-chip" data-command="Change font to Arial">Use Arial</button>
+                <button class="suggestion-chip" data-command="Make headings bold and larger">Fix headings</button>
+            </div>
+        </div>
+
+        <!-- Results Panel -->
+        <div id="resultsPanel" class="results-panel hidden">
+            <div class="results-header">
+                <h2 id="resultsTitle">Results</h2>
+                <button id="closeResultsBtn" class="btn-close">✕</button>
+            </div>
+            <div id="resultsContent" class="results-content">
+                <!-- Dynamic content -->
+            </div>
+            <div id="resultsActions" class="results-actions hidden">
+                <button id="applyResultBtn" class="btn-primary">Apply Changes</button>
+            </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div id="loadingOverlay" class="loading-overlay hidden">
+            <div class="loading-content">
+                <div class="loading-spinner"></div>
+                <p id="loadingText">Analyzing with AI...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- API Key Modal -->
+    <div id="apiKeyModal" class="modal hidden">
+        <div class="modal-content">
+            <h2>Configure Gemini API</h2>
+            <p>Get your free API key from <a href="https://makersuite.google.com/app/apikey" target="_blank">Google AI
+                    Studio</a></p>
+            <input type="password" id="apiKeyInput" placeholder="Enter your Gemini API key" />
+            <div class="modal-actions">
+                <button id="cancelKeyBtn" class="btn-secondary">Cancel</button>
+                <button id="saveKeyBtn" class="btn-primary">Save Key</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="ai-assistant.js"></script>
+</body>
+
+</html>
