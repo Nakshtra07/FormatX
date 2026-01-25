@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="sidepanel.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-title">
+                <span class="logo-icon">A</span>
+                <h1>Template Manager</h1>
+            </div>
+        </header>
+
+        <!-- Actions -->
+        <div class="actions">
+            <button id="createBtn" class="btn-action">
+                <span class="btn-icon">✏️</span>
+                <span>Create Template</span>
+            </button>
+            <button id="importBtn" class="btn-action btn-primary">
+                <span class="btn-icon">📥</span>
+                <span>Import from Doc</span>
+            </button>
+        </div>
+
+        <!-- Import Section (shown when importing) -->
+        <div id="importSection" class="section hidden">
+            <div class="section-header">
+                <h2>Import Template</h2>
+                <button id="cancelImportBtn" class="btn-close">✕</button>
+            </div>
+            <p class="section-desc">Open the Google Doc you want to import styles from, then click the button below.</p>
+            <div id="importStatus" class="import-status">
+                <span id="importStatusIcon">📄</span>
+                <span id="importStatusText">Waiting for Google Doc...</span>
+            </div>
+            <button id="extractBtn" class="btn-primary" disabled>
+                <span>Extract Styles</span>
+            </button>
+        </div>
+
+        <!-- Create Section (shown when creating) -->
+        <div id="createSection" class="section hidden">
+            <div class="section-header">
+                <h2>Create Template</h2>
+                <button id="cancelCreateBtn" class="btn-close">✕</button>
+            </div>
+
+            <div class="form-group">
+                <label for="templateName">Template Name</label>
+                <input type="text" id="templateName" placeholder="My Custom Template" />
+            </div>
+
+            <div class="form-group">
+                <label>Body Text</label>
+                <div class="style-row">
+                    <select id="bodyFont">
+                        <option value="Times New Roman">Times New Roman</option>
+                        <option value="Arial">Arial</option>
+                        <option value="Georgia">Georgia</option>
+                        <option value="Calibri">Calibri</option>
+                        <option value="Roboto">Roboto</option>
+                        <option value="Open Sans">Open Sans</option>
+                    </select>
+                    <input type="number" id="bodySize" value="12" min="8" max="72" />
+                    <span class="unit">pt</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Line Spacing</label>
+                <select id="lineSpacing">
+                    <option value="100">Single (1.0)</option>
+                    <option value="115">1.15</option>
+                    <option value="150">1.5</option>
+                    <option value="200" selected>Double (2.0)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Heading 1</label>
+                <div class="style-row">
+                    <select id="h1Font">
+                        <option value="Times New Roman">Times New Roman</option>
+                        <option value="Arial" selected>Arial</option>
+                        <option value="Georgia">Georgia</option>
+                    </select>
+                    <input type="number" id="h1Size" value="24" min="8" max="72" />
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="h1Bold" checked /> Bold
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Heading 2</label>
+                <div class="style-row">
+                    <select id="h2Font">
+                        <option value="Times New Roman">Times New Roman</option>
+                        <option value="Arial" selected>Arial</option>
+                        <option value="Georgia">Georgia</option>
+                    </select>
+                    <input type="number" id="h2Size" value="18" min="8" max="72" />
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="h2Bold" checked /> Bold
+                    </label>
+                </div>
+            </div>
+
+            <!-- Preview -->
+            <div class="preview-section">
+                <label>Preview</label>
+                <div id="preview" class="preview-box">
+                    <div class="preview-h1">Heading 1</div>
+                    <div class="preview-h2">Heading 2</div>
+                    <div class="preview-body">This is body text. The quick brown fox jumps over the lazy dog.</div>
+                </div>
+            </div>
+
+            <button id="saveTemplateBtn" class="btn-primary">
+                <span>💾 Save Template</span>
+            </button>
+        </div>
+
+        <!-- Imported Preview Section -->
+        <div id="importedPreviewSection" class="section hidden">
+            <div class="section-header">
+                <h2>Extracted Styles</h2>
+                <button id="cancelImportedBtn" class="btn-close">✕</button>
+            </div>
+
+            <div class="form-group">
+                <label for="importedName">Template Name</label>
+                <input type="text" id="importedName" placeholder="Imported Template" />
+            </div>
+
+            <div class="extracted-info" id="extractedInfo">
+                <!-- Filled by JS -->
+            </div>
+
+            <button id="saveImportedBtn" class="btn-primary">
+                <span>💾 Save Template</span>
+            </button>
+        </div>
+
+        <!-- Templates List -->
+        <div id="templatesSection" class="section">
+            <h2>My Templates</h2>
+            <div id="templatesList" class="templates-list">
+                <div class="empty-state">
+                    <span class="empty-icon">📁</span>
+                    <p>No custom templates yet</p>
+                    <p class="empty-hint">Create or import a template to get started</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Preset Templates -->
+        <div class="section">
+            <h2>Preset Templates</h2>
+            <div id="presetsList" class="templates-list">
+                <!-- Filled by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast">
+        <span id="toastIcon" class="toast-icon"></span>
+        <span id="toastMessage" class="toast-message"></span>
+    </div>
+
+    <script src="sidepanel.js"></script>
+</body>
+
+</html>

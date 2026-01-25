@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="pricing.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <button id="backBtn" class="btn-back">← Back</button>
+            <h1>Choose Your Plan</h1>
+        </header>
+
+        <!-- Billing Toggle -->
+        <div class="billing-toggle">
+            <button id="monthlyBtn" class="toggle-btn active">Monthly</button>
+            <button id="annualBtn" class="toggle-btn">
+                Annual
+                <span class="badge-save">Save 30%</span>
+            </button>
+        </div>
+
+        <!-- Plans -->
+        <div class="plans">
+            <!-- Free Plan -->
+            <div class="plan-card" data-tier="free">
+                <div class="plan-header">
+                    <span class="plan-icon">🆓</span>
+                    <h2 class="plan-name">Free</h2>
+                    <div class="plan-price">
+                        <span class="price">₹0</span>
+                        <span class="period">forever</span>
+                    </div>
+                </div>
+                <ul class="plan-features">
+                    <li><span class="check">✓</span> All preset templates</li>
+                    <li><span class="check">✓</span> 1 custom template</li>
+                    <li><span class="cross">✕</span> Import from Doc</li>
+                    <li><span class="cross">✕</span> AI formatting</li>
+                </ul>
+                <button class="btn-plan current" disabled>Current Plan</button>
+            </div>
+
+            <!-- Pro Plan -->
+            <div class="plan-card popular" data-tier="pro">
+                <div class="popular-badge">Most Popular</div>
+                <div class="plan-header">
+                    <span class="plan-icon">⚡</span>
+                    <h2 class="plan-name">Pro</h2>
+                    <div class="plan-price">
+                        <span class="price" id="proPrice">₹299</span>
+                        <span class="period" id="proPeriod">/month</span>
+                    </div>
+                    <div class="savings hidden" id="proSavings">Save ₹1,089/year</div>
+                </div>
+                <ul class="plan-features">
+                    <li><span class="check">✓</span> All preset templates</li>
+                    <li><span class="check">✓</span> 10 custom templates</li>
+                    <li><span class="check">✓</span> Import from Doc</li>
+                    <li><span class="check">✓</span> AI formatting</li>
+                </ul>
+                <button class="btn-plan btn-primary" id="proBtn">Upgrade to Pro</button>
+            </div>
+
+            <!-- Business Plan -->
+            <div class="plan-card" data-tier="business">
+                <div class="plan-header">
+                    <span class="plan-icon">🏢</span>
+                    <h2 class="plan-name">Business</h2>
+                    <div class="plan-price">
+                        <span class="price" id="businessPrice">₹799</span>
+                        <span class="period" id="businessPeriod">/month</span>
+                    </div>
+                    <div class="savings hidden" id="businessSavings">Save ₹2,589/year</div>
+                </div>
+                <ul class="plan-features">
+                    <li><span class="check">✓</span> Everything in Pro</li>
+                    <li><span class="check">✓</span> Unlimited templates</li>
+                    <li><span class="check">✓</span> Priority support</li>
+                    <li><span class="check">✓</span> Team features (soon)</li>
+                </ul>
+                <button class="btn-plan btn-secondary" id="businessBtn">Upgrade to Business</button>
+            </div>
+        </div>
+
+        <!-- Secure Payment Note -->
+        <div class="secure-note">
+            <span>🔒</span>
+            <span>Secure payment via Stripe • Cancel anytime</span>
+        </div>
+
+        <!-- Payment Methods -->
+        <div class="payment-methods">
+            <span>We accept:</span>
+            <div class="methods">
+                <span>💳 Cards</span>
+                <span>📱 UPI</span>
+                <span>🏦 NetBanking</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="pricing.js"></script>
+</body>
+
+</html>
