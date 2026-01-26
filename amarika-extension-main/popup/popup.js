@@ -196,7 +196,7 @@ async function checkAuth() {
             const profileResponse = await chrome.runtime.sendMessage({ action: 'GET_PROFILE' });
             if (profileResponse.success && profileResponse.data) {
                 currentProfile = profileResponse.data;
-                elements.userAvatar.src = currentProfile.photoURL || '../icons/icon48.png';
+                elements.userAvatar.src = currentProfile.photoURL || '../icons/logo.png';
                 elements.userName.textContent = currentProfile.displayName || currentProfile.email;
             }
 

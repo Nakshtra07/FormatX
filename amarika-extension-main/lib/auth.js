@@ -81,7 +81,7 @@ async function createOrUpdateUserProfile(user) {
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             subscription: {
                 tier: 'free',
-                stripeCustomerId: null,
+                razorpayCustomerId: null,
                 validUntil: null
             },
             usage: {

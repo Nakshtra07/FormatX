@@ -1,5 +1,176 @@
 {
-  "font": "Times New Roman",
-  "fontSize": 12,
-  "lineSpacing": 200
+  "id": "ieee",
+  "name": "IEEE Academic",
+  "icon": "📄",
+  "isPreset": true,
+  "document": {
+    "standard": "IEEE",
+    "paper_size": "A4",
+    "orientation": "portrait",
+    "layout": "two-column",
+    "columns": {
+      "count": 2,
+      "gap": "0.25in"
+    },
+    "margins": {
+      "top": "0.75in",
+      "bottom": "1.0in",
+      "left": "0.625in",
+      "right": "0.625in"
+    }
+  },
+  "fonts": {
+    "default_family": "Times New Roman",
+    "default_size": "10pt",
+    "embedding": true,
+    "color": "#000000"
+  },
+  "title": {
+    "font_family": "Times New Roman",
+    "font_size": "24pt",
+    "font_weight": "bold",
+    "alignment": "center",
+    "case": "title-case",
+    "spacing_after": "12pt"
+  },
+  "authors": {
+    "font_size": "10pt",
+    "alignment": "center",
+    "affiliation": {
+      "font_size": "9pt",
+      "italic": false
+    },
+    "email": {
+      "font_size": "9pt",
+      "format": "monospace"
+    },
+    "spacing_after": "12pt"
+  },
+  "abstract": {
+    "label": "Abstract",
+    "font_size": "9pt",
+    "italic": true,
+    "alignment": "justified",
+    "indent_first_line": false,
+    "spacing_before": "6pt",
+    "spacing_after": "6pt"
+  },
+  "keywords": {
+    "label": "Keywords",
+    "font_size": "9pt",
+    "italic": true,
+    "alignment": "justified",
+    "separator": ", "
+  },
+  "headings": {
+    "level_1": {
+      "font_size": "10pt",
+      "font_weight": "bold",
+      "case": "uppercase",
+      "numbering": "roman",
+      "alignment": "left",
+      "spacing_before": "12pt",
+      "spacing_after": "6pt"
+    },
+    "level_2": {
+      "font_size": "10pt",
+      "font_weight": "bold",
+      "case": "title-case",
+      "numbering": "alphabetic",
+      "alignment": "left",
+      "spacing_before": "10pt",
+      "spacing_after": "5pt"
+    },
+    "level_3": {
+      "font_size": "10pt",
+      "font_weight": "italic",
+      "numbering": "numeric",
+      "alignment": "left",
+      "spacing_before": "8pt",
+      "spacing_after": "4pt"
+    }
+  },
+  "paragraphs": {
+    "font_size": "10pt",
+    "alignment": "justified",
+    "first_line_indent": "0.125in",
+    "line_spacing": "single",
+    "spacing_before": "0pt",
+    "spacing_after": "0pt",
+    "hyphenation": true
+  },
+  "figures": {
+    "position": "top-or-bottom",
+    "alignment": "center",
+    "caption": {
+      "label_format": "Fig. X.",
+      "font_size": "9pt",
+      "alignment": "center",
+      "spacing_before": "4pt",
+      "spacing_after": "6pt"
+    },
+    "reference_style": "numeric"
+  },
+  "tables": {
+    "position": "top-or-bottom",
+    "alignment": "center",
+    "caption": {
+      "label_format": "TABLE X",
+      "font_size": "9pt",
+      "font_weight": "bold",
+      "alignment": "center",
+      "spacing_before": "6pt",
+      "spacing_after": "4pt"
+    },
+    "cell": {
+      "font_size": "9pt",
+      "alignment": "center",
+      "padding": "2pt"
+    }
+  },
+  "equations": {
+    "alignment": "center",
+    "numbering": "right",
+    "number_format": "(X)",
+    "font_size": "10pt",
+    "spacing_before": "6pt",
+    "spacing_after": "6pt"
+  },
+  "citations": {
+    "style": "numeric",
+    "brackets": "square",
+    "format": "[X]",
+    "inline": true
+  },
+  "references": {
+    "title": "REFERENCES",
+    "font_size": "9pt",
+    "alignment": "left",
+    "spacing_before": "12pt",
+    "entry_spacing": "3pt",
+    "numbering": "numeric",
+    "hanging_indent": "0.25in"
+  },
+  "footnotes": {
+    "font_size": "8pt",
+    "alignment": "left",
+    "separator": "line"
+  },
+  "headers_footers": {
+    "page_numbers": false,
+    "header": null,
+    "footer": null
+  },
+  "compliance": {
+    "pdf_standard": "PDF/A-1b",
+    "fonts_embedded": true,
+    "color_profile": "sRGB",
+    "print_safe": true
+  },
+  "metadata": {
+    "template_type": "IEEE Conference/Journal",
+    "version": "1.0",
+    "generated_by": "AI-Formatting-Engine",
+    "schema_type": "document-format-spec"
+  }
 }

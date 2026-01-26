@@ -64,9 +64,13 @@ Examples:
 - "Set body to Times New Roman 12pt" → font: Times New Roman, fontSize: 12, target: body
 `,
 
-    // Generate style suggestions based on content
-    suggestStyles: (content, currentStyles) => `
+    // Generate style suggestions based on content and optional template rules
+    suggestStyles: (content, currentStyles, templateRules = null) => `
 Analyze this document and suggest formatting improvements.
+${templateRules ? `
+STRICT TEMPLATE RULES (Must Follow):
+"${templateRules}"
+` : ''}
 
 DOCUMENT CONTENT (first 2000 chars):
 """
@@ -82,7 +86,7 @@ Provide specific, actionable formatting suggestions in JSON:
   "suggestions": [
     {
       "priority": "high|medium|low",
-      "category": "readability|consistency|professionalism|accessibility",
+      "category": "readability|consistency|professionalism|accessibility${templateRules ? '|compliance' : ''}",
       "issue": "what the problem is",
       "recommendation": "what to do",
       "action": {
@@ -102,8 +106,13 @@ Provide specific, actionable formatting suggestions in JSON:
 `,
 
     // Check for consistency issues
-    checkConsistency: (documentStructure) => `
-Analyze this document structure for formatting inconsistencies.
+    checkConsistency: (documentStructure, templateRules = null) => `
+Analyze this document structure for formatting inconsistencies${templateRules ? ' and template compliance' : ''}.
+
+${templateRules ? `
+TEMPLATE RULES TO ENFORCE:
+"${templateRules}"
+` : ''}
 
 DOCUMENT STRUCTURE:
 ${JSON.stringify(documentStructure, null, 2)}
@@ -114,10 +123,17 @@ Find inconsistencies and respond in JSON:
   "issueCount": number,
   "issues": [
     {
-      "type": "mixed_fonts|inconsistent_sizes|irregular_spacing|heading_hierarchy",
+      "type": "mixed_fonts|inconsistent_sizes|irregular_spacing|heading_hierarchy${templateRules ? '|template_violation' : ''}",
       "description": "Description of the issue",
       "location": "where in document",
-      "fix": "how to fix it"
+      "fix": "how to fix it",
+      "actions": [
+        {
+          "type": "font|fontSize|lineSpacing|bold|italic|alignment",
+          "target": "all|headings|body|selection",
+          "value": "the value to apply"
+        }
+      ]
     }
   ],
   "overallScore": 0-100,
@@ -188,8 +204,8 @@ async function parseCommand(command) {
 /**
  * Get AI-powered style suggestions
  */
-async function getSuggestions(docContent, currentStyles) {
-    const prompt = PROMPTS.suggestStyles(docContent, currentStyles);
+async function getSuggestions(docContent, currentStyles, templateRules = null) {
+    const prompt = PROMPTS.suggestStyles(docContent, currentStyles, templateRules);
     const result = await callGemini(prompt);
     return result;
 }
@@ -197,8 +213,8 @@ async function getSuggestions(docContent, currentStyles) {
 /**
  * Check document for consistency issues
  */
-async function checkConsistency(documentStructure) {
-    const prompt = PROMPTS.checkConsistency(documentStructure);
+async function checkConsistency(documentStructure, templateRules = null) {
+    const prompt = PROMPTS.checkConsistency(documentStructure, templateRules);
     const result = await callGemini(prompt);
     return result;
 }

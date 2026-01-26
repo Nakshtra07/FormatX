@@ -3,176 +3,412 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amarika</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="sidepanel.css">
 </head>
 
 <body>
-    <div class="container">
-        <!-- Header -->
-        <header class="header">
-            <div class="header-title">
-                <span class="logo-icon">A</span>
-                <h1>Template Manager</h1>
+    <div class="app-container">
+        <!-- Header / User Info -->
+        <header class="app-header">
+            <div class="user-profile hidden" id="userProfile">
+                <img id="userAvatar" src="" class="avatar" alt="User">
+                <div class="user-details">
+                    <span id="userName" class="name"></span>
+                    <span id="userTier" class="tier-badge">Free</span>
+                </div>
             </div>
+            <div class="auth-buttons" id="authButtons">
+                <button id="signInBtn" class="btn-signin">
+                    Sign in with Google
+                </button>
+            </div>
+            <button id="signOutBtn" class="btn-icon hidden" title="Sign Out">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+            </button>
         </header>
 
-        <!-- Actions -->
-        <div class="actions">
-            <button id="createBtn" class="btn-action">
-                <span class="btn-icon">✏️</span>
-                <span>Create Template</span>
+        <!-- Navigation Tabs -->
+        <nav class="tabs">
+            <button class="tab-btn active" data-tab="home">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                <span>Home</span>
             </button>
-            <button id="importBtn" class="btn-action btn-primary">
-                <span class="btn-icon">📥</span>
-                <span>Import from Doc</span>
+            <button class="tab-btn" data-tab="templates">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                    <polyline points="21 15 16 10 5 21"></polyline>
+                </svg>
+                <span>Templates</span>
             </button>
-        </div>
-
-        <!-- Import Section (shown when importing) -->
-        <div id="importSection" class="section hidden">
-            <div class="section-header">
-                <h2>Import Template</h2>
-                <button id="cancelImportBtn" class="btn-close">✕</button>
-            </div>
-            <p class="section-desc">Open the Google Doc you want to import styles from, then click the button below.</p>
-            <div id="importStatus" class="import-status">
-                <span id="importStatusIcon">📄</span>
-                <span id="importStatusText">Waiting for Google Doc...</span>
-            </div>
-            <button id="extractBtn" class="btn-primary" disabled>
-                <span>Extract Styles</span>
+            <button class="tab-btn" data-tab="ai">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z">
+                    </path>
+                </svg>
+                <span>AI</span>
             </button>
-        </div>
+        </nav>
 
-        <!-- Create Section (shown when creating) -->
-        <div id="createSection" class="section hidden">
-            <div class="section-header">
-                <h2>Create Template</h2>
-                <button id="cancelCreateBtn" class="btn-close">✕</button>
-            </div>
+        <!-- Main Content Area -->
+        <main class="content">
 
-            <div class="form-group">
-                <label for="templateName">Template Name</label>
-                <input type="text" id="templateName" placeholder="My Custom Template" />
-            </div>
+            <!-- HOME VIEW -->
+            <div id="view-home" class="view active">
+                <div class="status-card" id="docStatus">
+                    <div class="status-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                    </div>
+                    <div class="status-info">
+                        <h3 id="docStatusTitle">No Document Found</h3>
+                        <p id="docStatusUrl">Open a Google Doc to start</p>
+                    </div>
+                </div>
 
-            <div class="form-group">
-                <label>Body Text</label>
-                <div class="style-row">
-                    <select id="bodyFont">
-                        <option value="Times New Roman">Times New Roman</option>
-                        <option value="Arial">Arial</option>
-                        <option value="Georgia">Georgia</option>
-                        <option value="Calibri">Calibri</option>
-                        <option value="Roboto">Roboto</option>
-                        <option value="Open Sans">Open Sans</option>
-                    </select>
-                    <input type="number" id="bodySize" value="12" min="8" max="72" />
-                    <span class="unit">pt</span>
+                <div class="section-title">Quick Format</div>
+                <div class="card">
+                    <div class="input-group">
+                        <label>Select Template</label>
+                        <div class="custom-select-wrapper">
+                            <select id="templateSelect" class="custom-select">
+                                <option>Loading...</option>
+                            </select>
+                            <svg class="select-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <path d="M6 9l6 6 6-6" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div id="templateInfo" class="template-tags"></div>
+                    <button id="formatBtn" class="btn-primary" disabled>
+                        Format Document
+                    </button>
+                </div>
+
+                <div class="upgrade-card hidden" id="upgradeBanner">
+                    <div class="upgrade-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                        </svg>
+                    </div>
+                    <div class="upgrade-content">
+                        <h4>Upgrade to Pro</h4>
+                        <p>Unlock Unlimited Templates & AI</p>
+                    </div>
+                    <button id="upgradeBtn" class="btn-sm">Upgrade</button>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label>Line Spacing</label>
-                <select id="lineSpacing">
-                    <option value="100">Single (1.0)</option>
-                    <option value="115">1.15</option>
-                    <option value="150">1.5</option>
-                    <option value="200" selected>Double (2.0)</option>
-                </select>
-            </div>
+            <!-- TEMPLATES VIEW -->
+            <div id="view-templates" class="view">
+                <div class="actions-header">
+                    <h2>My Templates</h2>
+                    <div class="action-buttons-row">
+                        <button id="createBtn" class="btn-secondary-sm">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                            </svg>
+                            Create
+                        </button>
+                        <button id="importBtn" class="btn-secondary-sm">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Import
+                        </button>
+                    </div>
+                </div>
 
-            <div class="form-group">
-                <label>Heading 1</label>
-                <div class="style-row">
-                    <select id="h1Font">
-                        <option value="Times New Roman">Times New Roman</option>
-                        <option value="Arial" selected>Arial</option>
-                        <option value="Georgia">Georgia</option>
-                    </select>
-                    <input type="number" id="h1Size" value="24" min="8" max="72" />
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="h1Bold" checked /> Bold
-                    </label>
+                <div id="templatesList" class="templates-list">
+                    <!-- Templates rendered here -->
+                </div>
+
+                <!-- Template Editors (Modals inside sidepanel) -->
+                <div id="createSection" class="editor-overlay hidden">
+                    <div class="editor-header">
+                        <h3>New Template</h3>
+                        <button class="btn-close" id="cancelCreateBtn">✕</button>
+                    </div>
+                    <div class="editor-body">
+                        <div class="input-group">
+                            <label>Name</label>
+                            <input type="text" id="templateName" class="input-text" placeholder="Template Name">
+                        </div>
+
+                        <div class="style-group">
+                            <label>Body Text</label>
+                            <div class="row">
+                                <select id="bodyFont" class="input-select"></select>
+                                <input type="number" id="bodySize" class="input-number" value="12">
+                            </div>
+                        </div>
+
+                        <div class="style-group">
+                            <label>Headings</label>
+                            <div class="row">
+                                <select id="h1Font" class="input-select"></select>
+                                <input type="number" id="h1Size" class="input-number" value="24">
+                            </div>
+                        </div>
+
+                        <div class="preview-box" id="preview">
+                            <h1 class="preview-h1">Heading 1</h1>
+                            <p class="preview-body">Body text preview.</p>
+                        </div>
+                    </div>
+                    <div class="editor-footer">
+                        <button id="saveTemplateBtn" class="btn-primary">Save Template</button>
+                    </div>
+                </div>
+
+                <div id="importSection" class="editor-overlay hidden">
+                    <div class="editor-header">
+                        <h3>Import Styles</h3>
+                        <button class="btn-close" id="cancelImportBtn">✕</button>
+                    </div>
+                    <div class="editor-body centered">
+                        <p>Open the Google Doc you want to copy styles from.</p>
+                        <button id="extractBtn" class="btn-primary">Extract from Active Doc</button>
+                        <div id="extractedInfo" class="extracted-data hidden"></div>
+                        <input type="text" id="importedName" class="input-text hidden" placeholder="Name this template">
+                    </div>
+                    <div class="editor-footer hidden" id="saveImportedFooter">
+                        <button id="saveImportedBtn" class="btn-primary">Save Imported</button>
+                    </div>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label>Heading 2</label>
-                <div class="style-row">
-                    <select id="h2Font">
-                        <option value="Times New Roman">Times New Roman</option>
-                        <option value="Arial" selected>Arial</option>
-                        <option value="Georgia">Georgia</option>
-                    </select>
-                    <input type="number" id="h2Size" value="18" min="8" max="72" />
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="h2Bold" checked /> Bold
-                    </label>
+            <!-- PRICING VIEW -->
+            <div id="view-pricing" class="view">
+                <div class="actions-header">
+                    <h2>Choose Your Plan</h2>
+                    <button id="backToHomeBtn" class="btn-text">← Back to Home</button>
+                </div>
+
+                <div class="billing-toggle">
+                    <button id="monthlyBtn" class="toggle-btn active">Monthly</button>
+                    <button id="annualBtn" class="toggle-btn">
+                        Annual <span class="badge-save">Save 30%</span>
+                    </button>
+                </div>
+
+                <div class="plans-container">
+                    <!-- FREE -->
+                    <div class="plan-card" data-tier="free">
+                        <div class="plan-header">
+                            <span class="plan-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <path d="M12 16v-4"></path>
+                                    <path d="M12 8h.01"></path>
+                                </svg></span>
+                            <div>
+                                <h3 class="plan-title">Free</h3>
+                                <div class="plan-pricing">
+                                    <span class="price">₹0</span>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="plan-features">
+                            <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg> All preset templates</li>
+                            <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg> 1 custom template</li>
+                        </ul>
+                        <button class="btn-secondary" disabled>Current Plan</button>
+                    </div>
+
+                    <!-- PRO -->
+                    <div class="plan-card popular" data-tier="pro">
+                        <div class="popular-tag">Most Popular</div>
+                        <div class="plan-header">
+                            <span class="plan-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                                </svg></span>
+                            <div>
+                                <h3 class="plan-title">Pro</h3>
+                                <div class="plan-pricing">
+                                    <span class="price" id="proPrice">₹299</span>
+                                    <span class="period" id="proPeriod">/mo</span>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="plan-features">
+                            <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg> 10 custom templates</li>
+                            <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg> Import from Doc</li>
+                            <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg> AI Formatting</li>
+                        </ul>
+                        <button class="btn-primary" id="proBtn">Upgrade to Pro</button>
+                    </div>
+
+                    <!-- BUSINESS -->
+                    <div class="plan-card" data-tier="business">
+                        <div class="plan-header">
+                            <span class="plan-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+                                    <path d="M9 22v-4h6v4"></path>
+                                    <path d="M8 6h.01"></path>
+                                    <path d="M16 6h.01"></path>
+                                    <path d="M12 6h.01"></path>
+                                    <path d="M12 10h.01"></path>
+                                    <path d="M12 14h.01"></path>
+                                    <path d="M16 10h.01"></path>
+                                    <path d="M16 14h.01"></path>
+                                    <path d="M8 10h.01"></path>
+                                    <path d="M8 14h.01"></path>
+                                </svg></span>
+                            <div>
+                                <h3 class="plan-title">Business</h3>
+                                <div class="plan-pricing">
+                                    <span class="price" id="businessPrice">₹799</span>
+                                    <span class="period" id="businessPeriod">/mo</span>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="plan-features">
+                            <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg> Unlimited Templates</li>
+                            <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg> Priority Support</li>
+                        </ul>
+                        <button class="btn-secondary" id="businessBtn">Upgrade to Business</button>
+                    </div>
+                </div>
+
+                <div class="secure-footer">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                    Secure payment via Razorpay
                 </div>
             </div>
 
-            <!-- Preview -->
-            <div class="preview-section">
-                <label>Preview</label>
-                <div id="preview" class="preview-box">
-                    <div class="preview-h1">Heading 1</div>
-                    <div class="preview-h2">Heading 2</div>
-                    <div class="preview-body">This is body text. The quick brown fox jumps over the lazy dog.</div>
+            <!-- AI VIEW -->
+            <div id="view-ai" class="view">
+                <div id="apiKeyWarning" class="warning-banner hidden">
+                    <p>API Key required for AI features</p>
+                    <button id="configureKeyBtn" class="btn-xs">Configure</button>
+                </div>
+
+                <div class="section-title">Assist</div>
+                <div class="ai-actions-grid">
+                    <button class="ai-card" id="analyzeBtn">
+                        <div class="ai-icon-bg"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg></div>
+                        <span>Analyze</span>
+                    </button>
+                    <button class="ai-card" id="fixBtn">
+                        <div class="ai-icon-bg"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <path
+                                    d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z">
+                                </path>
+                            </svg></div>
+                        <span>Fix</span>
+                    </button>
+                    <button class="ai-card" id="suggestBtn">
+                        <div class="ai-icon-bg"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <line x1="9" y1="18" x2="15" y2="18"></line>
+                                <line x1="10" y1="22" x2="14" y2="22"></line>
+                                <path
+                                    d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14">
+                                </path>
+                            </svg></div>
+                        <span>Suggest</span>
+                    </button>
+                </div>
+
+                <div class="section-title">Command</div>
+                <div class="command-box">
+                    <input type="text" id="commandInput" placeholder="e.g. 'Make headings blue'">
+                    <button id="sendCommandBtn" class="btn-send">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </button>
+                </div>
+
+                <div id="resultsPanel" class="results-container hidden">
+                    <div class="results-header">
+                        <h3>Results</h3>
+                        <button id="closeResultsBtn" class="btn-text">Clear</button>
+                    </div>
+                    <div id="resultsContent" class="results-body"></div>
+                    <button id="applyResultBtn" class="btn-primary hidden">Apply Changes</button>
                 </div>
             </div>
 
-            <button id="saveTemplateBtn" class="btn-primary">
-                <span>💾 Save Template</span>
-            </button>
-        </div>
+        </main>
 
-        <!-- Imported Preview Section -->
-        <div id="importedPreviewSection" class="section hidden">
-            <div class="section-header">
-                <h2>Extracted Styles</h2>
-                <button id="cancelImportedBtn" class="btn-close">✕</button>
-            </div>
-
-            <div class="form-group">
-                <label for="importedName">Template Name</label>
-                <input type="text" id="importedName" placeholder="Imported Template" />
-            </div>
-
-            <div class="extracted-info" id="extractedInfo">
-                <!-- Filled by JS -->
-            </div>
-
-            <button id="saveImportedBtn" class="btn-primary">
-                <span>💾 Save Template</span>
-            </button>
-        </div>
-
-        <!-- Templates List -->
-        <div id="templatesSection" class="section">
-            <h2>My Templates</h2>
-            <div id="templatesList" class="templates-list">
-                <div class="empty-state">
-                    <span class="empty-icon">📁</span>
-                    <p>No custom templates yet</p>
-                    <p class="empty-hint">Create or import a template to get started</p>
+        <!-- Modals -->
+        <div id="apiKeyModal" class="modal-backdrop hidden">
+            <div class="modal">
+                <h3>Gemini API Key</h3>
+                <p>Enter your key from Google AI Studio</p>
+                <input type="password" id="apiKeyInput" class="input-text" placeholder="API Key">
+                <div class="modal-actions">
+                    <button id="cancelKeyBtn" class="btn-secondary">Cancel</button>
+                    <button id="saveKeyBtn" class="btn-primary">Save</button>
                 </div>
             </div>
         </div>
 
-        <!-- Preset Templates -->
-        <div class="section">
-            <h2>Preset Templates</h2>
-            <div id="presetsList" class="templates-list">
-                <!-- Filled by JS -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Toast -->
-    <div id="toast" class="toast">
-        <span id="toastIcon" class="toast-icon"></span>
-        <span id="toastMessage" class="toast-message"></span>
+        <!-- Toast -->
+        <div id="toast" class="toast"></div>
     </div>
 
     <script src="sidepanel.js"></script>

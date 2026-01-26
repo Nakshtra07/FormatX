@@ -8,7 +8,45 @@ const PRESET_TEMPLATES = [
         icon: '📄',
         isPreset: true,
         styles: {
-            body: { fontFamily: 'Times New Roman', fontSize: 12, lineSpacing: 200 }
+            body: {
+                fontFamily: 'Times New Roman',
+                fontSize: 10,           // IEEE uses 10pt
+                lineSpacing: 100,       // Single spacing
+                alignment: 'JUSTIFIED',
+                firstLineIndent: 9      // 0.125in ≈ 9pt
+            },
+            title: {
+                fontFamily: 'Times New Roman',
+                fontSize: 24,
+                bold: true,
+                alignment: 'CENTER',
+                spaceBelow: 12
+            },
+            heading1: {
+                fontFamily: 'Times New Roman',
+                fontSize: 10,
+                bold: false,
+                smallCaps: true,
+                alignment: 'START',
+                spaceAbove: 12,
+                spaceBelow: 6
+            },
+            heading2: {
+                fontFamily: 'Times New Roman',
+                fontSize: 10,
+                italic: true,
+                alignment: 'START',
+                spaceAbove: 10,
+                spaceBelow: 5
+            }
+        },
+        layout: {
+            margins: {
+                top: 54,    // 0.75in × 72
+                bottom: 72, // 1.0in × 72
+                left: 45,   // 0.625in × 72
+                right: 45   // 0.625in × 72
+            }
         }
     },
     {

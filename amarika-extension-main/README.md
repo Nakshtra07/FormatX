@@ -2,7 +2,7 @@
 
 A Chrome extension that formats Google Docs with professional templates (IEEE, Corporate, Custom).
 
-![Amarika Icon](icons/icon128.png)
+![Amarika Icon](icons/logo.png)
 
 ## Features
 
