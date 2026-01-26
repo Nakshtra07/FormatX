@@ -1,17 +1,18 @@
 {
     "name": "amarika-functions",
-    "description": "Firebase Cloud Functions for Amarika Stripe Integration",
-    "scripts": {
-        "serve": "firebase emulators:start --only functions",
-        "deploy": "firebase deploy --only functions"
-    },
+    "description": "Firebase Cloud Functions for Amarika - Razorpay Integration",
+    "version": "2.0.0",
     "engines": {
-        "node": "18"
+        "node": "22"
     },
     "main": "index.js",
     "dependencies": {
-        "firebase-admin": "^11.10.0",
-        "firebase-functions": "^4.4.0",
-        "stripe": "^14.0.0"
-    }
+        "firebase-admin": "^11.11.0",
+        "firebase-functions": "^7.0.3",
+        "razorpay": "^2.9.2"
+    },
+    "devDependencies": {
+        "firebase-functions-test": "^3.1.0"
+    },
+    "private": true
 }

@@ -1,394 +1,650 @@
-// Amarika Side Panel - Template Manager
+// Amarika Unified Side Panel Logic
+// Handles tabs, auth, template management, formatting, and AI
 
-// ============ DOM ELEMENTS ============
-const elements = {
-    // Actions
+/* ============ STATE & CONFIG ============ */
+const STATE = {
+    currentUser: null,
+    currentProfile: null,
+    currentDocId: null,
+    currentTier: 'free',
+    templates: [],
+    extractedStyles: null,
+    activeTab: 'home'
+};
+
+const PRESET_TEMPLATES = [
+    { id: 'ieee', name: 'IEEE Academic', icon: 'IEEE', styles: { body: { fontFamily: 'Times New Roman', fontSize: 12 } } },
+    { id: 'corporate', name: 'Corporate Pro', icon: 'PRO', styles: { body: { fontFamily: 'Arial', fontSize: 11 } } },
+    { id: 'creative', name: 'Creative', icon: 'ART', styles: { body: { fontFamily: 'Georgia', fontSize: 12 } } }
+];
+
+/* ============ DOM ELEMENTS ============ */
+const DOM = {
+    // Layout
+    tabs: document.querySelectorAll('.tab-btn'),
+    views: document.querySelectorAll('.view'),
+
+    // Auth & Header
+    userProfile: document.getElementById('userProfile'),
+    authButtons: document.getElementById('authButtons'),
+    signInBtn: document.getElementById('signInBtn'),
+    signOutBtn: document.getElementById('signOutBtn'),
+    userAvatar: document.getElementById('userAvatar'),
+    userName: document.getElementById('userName'),
+    userTier: document.getElementById('userTier'),
+
+    // Home View
+    docStatus: document.getElementById('docStatus'),
+    docStatusTitle: document.getElementById('docStatusTitle'),
+    docStatusUrl: document.getElementById('docStatusUrl'),
+    templateSelect: document.getElementById('templateSelect'),
+    formatBtn: document.getElementById('formatBtn'),
+    templateInfo: document.getElementById('templateInfo'),
+    upgradeBanner: document.getElementById('upgradeBanner'),
+    upgradeBtn: document.getElementById('upgradeBtn'),
+
+    // Templates View
+    templatesList: document.getElementById('templatesList'),
     createBtn: document.getElementById('createBtn'),
     importBtn: document.getElementById('importBtn'),
 
-    // Sections
-    importSection: document.getElementById('importSection'),
+    // Create Modal
     createSection: document.getElementById('createSection'),
-    importedPreviewSection: document.getElementById('importedPreviewSection'),
-    templatesSection: document.getElementById('templatesSection'),
-
-    // Import
-    cancelImportBtn: document.getElementById('cancelImportBtn'),
-    importStatus: document.getElementById('importStatus'),
-    importStatusIcon: document.getElementById('importStatusIcon'),
-    importStatusText: document.getElementById('importStatusText'),
-    extractBtn: document.getElementById('extractBtn'),
-
-    // Create
     cancelCreateBtn: document.getElementById('cancelCreateBtn'),
+    saveTemplateBtn: document.getElementById('saveTemplateBtn'),
+    // Inputs
     templateName: document.getElementById('templateName'),
     bodyFont: document.getElementById('bodyFont'),
     bodySize: document.getElementById('bodySize'),
-    lineSpacing: document.getElementById('lineSpacing'),
     h1Font: document.getElementById('h1Font'),
     h1Size: document.getElementById('h1Size'),
-    h1Bold: document.getElementById('h1Bold'),
-    h2Font: document.getElementById('h2Font'),
-    h2Size: document.getElementById('h2Size'),
-    h2Bold: document.getElementById('h2Bold'),
     preview: document.getElementById('preview'),
-    saveTemplateBtn: document.getElementById('saveTemplateBtn'),
 
-    // Imported Preview
-    cancelImportedBtn: document.getElementById('cancelImportedBtn'),
-    importedName: document.getElementById('importedName'),
+    // Import Modal
+    importSection: document.getElementById('importSection'),
+    cancelImportBtn: document.getElementById('cancelImportBtn'),
+    extractBtn: document.getElementById('extractBtn'),
     extractedInfo: document.getElementById('extractedInfo'),
+    importedName: document.getElementById('importedName'),
     saveImportedBtn: document.getElementById('saveImportedBtn'),
+    saveImportedFooter: document.getElementById('saveImportedFooter'),
 
-    // Lists
-    templatesList: document.getElementById('templatesList'),
-    presetsList: document.getElementById('presetsList'),
+    // AI View
+    apiKeyWarning: document.getElementById('apiKeyWarning'),
+    configureKeyBtn: document.getElementById('configureKeyBtn'),
+    analyzeBtn: document.getElementById('analyzeBtn'),
+    fixBtn: document.getElementById('fixBtn'),
+    suggestBtn: document.getElementById('suggestBtn'),
+    commandInput: document.getElementById('commandInput'),
+    sendCommandBtn: document.getElementById('sendCommandBtn'),
+    resultsPanel: document.getElementById('resultsPanel'),
+    resultsContent: document.getElementById('resultsContent'),
+    closeResultsBtn: document.getElementById('closeResultsBtn'),
+    applyResultBtn: document.getElementById('applyResultBtn'),
 
-    // Toast
-    toast: document.getElementById('toast'),
-    toastIcon: document.getElementById('toastIcon'),
-    toastMessage: document.getElementById('toastMessage')
+    // Modals & Toast
+    apiKeyModal: document.getElementById('apiKeyModal'),
+    apiKeyInput: document.getElementById('apiKeyInput'),
+    saveKeyBtn: document.getElementById('saveKeyBtn'),
+    cancelKeyBtn: document.getElementById('cancelKeyBtn'),
+    toast: document.getElementById('toast')
 };
 
-// ============ STATE ============
-let currentDocId = null;
-let currentDocTitle = null;
-let extractedStyles = null;
-let userTemplates = [];
+/* ============ INITIALIZATION ============ */
+async function init() {
+    setupTabs();
+    setupEventListeners();
+    populateFontSelects();
+    setupStorageListener(); // Listen for subscription updates from checkout
 
-// ============ PRESETS ============
-const PRESET_TEMPLATES = [
-    { id: 'ieee', name: 'IEEE Academic', icon: '📄', meta: 'Times New Roman, 12pt, Double' },
-    { id: 'corporate', name: 'Corporate Professional', icon: '💼', meta: 'Times New Roman, 11pt, 1.15' },
-    { id: 'apa', name: 'APA Style', icon: '📚', meta: 'Times New Roman, 12pt, Double' },
-    { id: 'mla', name: 'MLA Format', icon: '📝', meta: 'Times New Roman, 12pt, Double' },
-    { id: 'modern', name: 'Modern Clean', icon: '✨', meta: 'Arial, 11pt, 1.15' }
-];
+    // Auth & Data Load
+    await checkAuth();
 
-// ============ UTILITIES ============
-
-function showToast(message, type = 'success') {
-    elements.toastIcon.textContent = type === 'success' ? '✓' : '✕';
-    elements.toastMessage.textContent = message;
-    elements.toast.className = `toast ${type}`;
-    setTimeout(() => elements.toast.classList.add('show'), 10);
-    setTimeout(() => elements.toast.classList.remove('show'), 3000);
+    // Start polling for document context
+    setInterval(detectDocument, 2000);
+    detectDocument();
 }
 
-function hideAllSections() {
-    elements.importSection.classList.add('hidden');
-    elements.createSection.classList.add('hidden');
-    elements.importedPreviewSection.classList.add('hidden');
+/* ============ STORAGE LISTENER (for payment sync) ============ */
+function setupStorageListener() {
+    chrome.storage.onChanged.addListener((changes, area) => {
+        if (area === 'local' && changes.subscription) {
+            console.log('Subscription changed, refreshing UI...');
+            refreshSubscriptionUI();
+        }
+    });
 }
 
-function showSection(section) {
-    hideAllSections();
-    section.classList.remove('hidden');
+async function refreshSubscriptionUI() {
+    try {
+        const response = await chrome.runtime.sendMessage({ action: 'GET_SUBSCRIPTION' });
+        if (response.success && response.data) {
+            STATE.currentTier = response.data.tier || 'free';
+
+            // Update Tier Badge
+            DOM.userTier.textContent = STATE.currentTier === 'pro' || STATE.currentTier === 'business' ? 'PRO' : 'FREE';
+            DOM.userTier.className = `tier-badge ${STATE.currentTier}`;
+
+            // Hide/Show Upgrade Banner
+            if (STATE.currentTier !== 'free') {
+                DOM.upgradeBanner.classList.add('hidden');
+            } else {
+                DOM.upgradeBanner.classList.remove('hidden');
+            }
+
+            showToast('Subscription updated!');
+        }
+    } catch (e) {
+        console.error('Failed to refresh subscription:', e);
+    }
 }
 
-// ============ DOCUMENT DETECTION ============
+/* ============ TABS & NAVIGATION ============ */
+function setupTabs() {
+    DOM.tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            // Update Tab UI
+            DOM.tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
 
-async function checkCurrentTab() {
+            // Switch View
+            const target = tab.dataset.tab;
+            DOM.views.forEach(view => {
+                view.classList.remove('active');
+                if (view.id === `view-${target}`) view.classList.add('active');
+            });
+
+            STATE.activeTab = target;
+        });
+    });
+}
+
+function showModal(modal) {
+    modal.classList.remove('hidden');
+}
+
+function hideModal(modal) {
+    modal.classList.add('hidden');
+}
+
+function showToast(msg) {
+    DOM.toast.textContent = msg;
+    DOM.toast.classList.add('show');
+    setTimeout(() => DOM.toast.classList.remove('show'), 3000);
+}
+
+/* ============ AUTHENTICATION ============ */
+async function checkAuth() {
+    try {
+        const response = await chrome.runtime.sendMessage({ action: 'GET_USER' });
+        if (response.success && response.data) {
+            STATE.currentUser = response.data;
+
+            // Get profile and subscription
+            const profileRes = await chrome.runtime.sendMessage({ action: 'GET_PROFILE' });
+            if (profileRes.success) {
+                STATE.currentProfile = profileRes.data;
+                STATE.currentTier = STATE.currentProfile.subscription?.tier || 'free';
+                updateUserUI();
+            }
+
+            // Load templates
+            await loadTemplates();
+            await checkApiKey();
+        } else {
+            // Show login UI
+            DOM.userProfile.classList.add('hidden');
+            DOM.signOutBtn.classList.add('hidden');
+            DOM.authButtons.classList.remove('hidden');
+        }
+    } catch (e) {
+        console.error('Auth error:', e);
+    }
+}
+
+function updateUserUI() {
+    DOM.authButtons.classList.add('hidden');
+    DOM.userProfile.classList.remove('hidden');
+    DOM.signOutBtn.classList.remove('hidden');
+
+    // Avatar & Name
+    DOM.userAvatar.src = STATE.currentProfile.photoURL || '../icons/logo.png';
+    DOM.userName.textContent = STATE.currentProfile.displayName || 'User';
+
+    // Tier Badge
+    DOM.userTier.textContent = STATE.currentTier === 'pro' ? 'PRO' : 'FREE';
+    DOM.userTier.className = `tier-badge ${STATE.currentTier}`;
+
+    // Upgrade Banner
+    if (STATE.currentTier === 'free') {
+        DOM.upgradeBanner.classList.remove('hidden');
+    } else {
+        DOM.upgradeBanner.classList.add('hidden');
+    }
+}
+
+async function signIn() {
+    DOM.signInBtn.textContent = 'Signing in...';
+    try {
+        const res = await chrome.runtime.sendMessage({ action: 'SIGN_IN' });
+        if (res.success) {
+            await checkAuth();
+            showToast('Signed in successfully');
+        }
+    } catch (e) {
+        showToast('Sign in failed');
+    } finally {
+        DOM.signInBtn.textContent = 'Sign in with Google';
+    }
+}
+
+async function signOut() {
+    await chrome.runtime.sendMessage({ action: 'SIGN_OUT' });
+    window.location.reload();
+}
+
+/* ============ DOCUMENT DETECTION ============ */
+async function detectDocument() {
     try {
         const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
         if (tab && tab.url && tab.url.includes('docs.google.com/document/d/')) {
             const match = tab.url.match(/\/d\/([a-zA-Z0-9-_]+)/);
-            currentDocId = match ? match[1] : null;
-            currentDocTitle = tab.title?.replace(' - Google Docs', '') || 'Untitled';
+            STATE.currentDocId = match ? match[1] : null;
 
-            if (currentDocId) {
-                elements.importStatus.className = 'import-status valid';
-                elements.importStatusIcon.textContent = '✅';
-                elements.importStatusText.textContent = currentDocTitle;
-                elements.extractBtn.disabled = false;
+            if (STATE.currentDocId) {
+                DOM.docStatus.classList.add('active');
+                DOM.docStatusTitle.textContent = tab.title.split(' - ')[0] || 'Untitled Document';
+                DOM.docStatusUrl.textContent = 'Ready to format';
+                DOM.formatBtn.disabled = false;
                 return;
             }
         }
 
-        currentDocId = null;
-        elements.importStatus.className = 'import-status invalid';
-        elements.importStatusIcon.textContent = '❌';
-        elements.importStatusText.textContent = 'Open a Google Doc first';
-        elements.extractBtn.disabled = true;
-    } catch (error) {
-        console.error('Tab check error:', error);
+        // No doc
+        DOM.docStatus.classList.remove('active');
+        DOM.docStatusTitle.textContent = 'No Document Found';
+        DOM.docStatusUrl.textContent = 'Open a Google Doc to start';
+        DOM.formatBtn.disabled = true;
+    } catch (e) {
+        console.error(e);
     }
 }
 
-// ============ IMPORT TEMPLATE ============
+/* ============ TEMPLATES & FORMATTING ============ */
+async function loadTemplates() {
+    // Load user templates
+    const res = await chrome.runtime.sendMessage({ action: 'GET_USER_TEMPLATES' });
+    const userTemplates = res.success ? res.data : [];
 
-async function extractStylesFromDocument() {
-    if (!currentDocId) {
-        showToast('No document detected', 'error');
-        return;
-    }
+    STATE.templates = [...userTemplates, ...PRESET_TEMPLATES];
 
-    elements.extractBtn.disabled = true;
-    elements.extractBtn.textContent = 'Extracting...';
+    // Render Dropdown (Home)
+    DOM.templateSelect.innerHTML = STATE.templates.map(t =>
+        `<option value="${t.id}">${t.name}</option>`
+    ).join('');
 
-    try {
-        const response = await chrome.runtime.sendMessage({
-            action: 'EXTRACT_STYLES',
-            docId: currentDocId
-        });
+    // Render Grid (Templates Tab)
+    DOM.templatesList.innerHTML = STATE.templates.map(t => `
+        <div class="template-item" data-id="${t.id}">
+            <div class="template-icon">${t.icon || 'DOC'}</div>
+            <div class="template-name">${t.name}</div>
+            ${t.id.length > 10 ? `<button class="delete-btn" data-id="${t.id}">×</button>` : ''}
+        </div>
+    `).join('');
 
-        if (response.success && response.data) {
-            extractedStyles = response.data;
-            elements.importedName.value = `${currentDocTitle} Style`;
-            displayExtractedStyles(extractedStyles);
-            showSection(elements.importedPreviewSection);
-            showToast('Styles extracted successfully!');
-        } else {
-            throw new Error(response.error || 'Failed to extract styles');
-        }
-    } catch (error) {
-        showToast(error.message, 'error');
-    } finally {
-        elements.extractBtn.disabled = false;
-        elements.extractBtn.textContent = 'Extract Styles';
-    }
-}
-
-function displayExtractedStyles(styles) {
-    const rows = [
-        { label: 'Body Font', value: styles.body?.fontFamily || 'Times New Roman' },
-        { label: 'Body Size', value: `${styles.body?.fontSize || 12}pt` },
-        { label: 'Line Spacing', value: `${(styles.body?.lineSpacing || 100) / 100}` },
-        { label: 'Heading 1', value: `${styles.heading1?.fontFamily || 'Arial'}, ${styles.heading1?.fontSize || 24}pt` },
-        { label: 'Heading 2', value: `${styles.heading2?.fontFamily || 'Arial'}, ${styles.heading2?.fontSize || 18}pt` }
-    ];
-
-    elements.extractedInfo.innerHTML = rows.map(r => `
-    <div class="extracted-row">
-      <span class="extracted-label">${r.label}</span>
-      <span class="extracted-value">${r.value}</span>
-    </div>
-  `).join('');
-}
-
-// ============ CREATE TEMPLATE ============
-
-function updatePreview() {
-    const bodyFont = elements.bodyFont.value;
-    const bodySize = elements.bodySize.value;
-    const lineSpacing = parseInt(elements.lineSpacing.value) / 100;
-    const h1Font = elements.h1Font.value;
-    const h1Size = elements.h1Size.value;
-    const h1Bold = elements.h1Bold.checked;
-    const h2Font = elements.h2Font.value;
-    const h2Size = elements.h2Size.value;
-    const h2Bold = elements.h2Bold.checked;
-
-    elements.preview.querySelector('.preview-h1').style.cssText = `
-    font-family: ${h1Font}, sans-serif;
-    font-size: ${h1Size}px;
-    font-weight: ${h1Bold ? 'bold' : 'normal'};
-    margin-bottom: 8px;
-  `;
-
-    elements.preview.querySelector('.preview-h2').style.cssText = `
-    font-family: ${h2Font}, sans-serif;
-    font-size: ${h2Size}px;
-    font-weight: ${h2Bold ? 'bold' : 'normal'};
-    margin-bottom: 8px;
-  `;
-
-    elements.preview.querySelector('.preview-body').style.cssText = `
-    font-family: "${bodyFont}", serif;
-    font-size: ${bodySize}px;
-    line-height: ${lineSpacing};
-  `;
-}
-
-function getTemplateFromForm() {
-    return {
-        name: elements.templateName.value || 'Untitled Template',
-        icon: '🎨',
-        isPreset: false,
-        styles: {
-            body: {
-                fontFamily: elements.bodyFont.value,
-                fontSize: parseInt(elements.bodySize.value),
-                lineSpacing: parseInt(elements.lineSpacing.value)
-            },
-            heading1: {
-                fontFamily: elements.h1Font.value,
-                fontSize: parseInt(elements.h1Size.value),
-                bold: elements.h1Bold.checked
-            },
-            heading2: {
-                fontFamily: elements.h2Font.value,
-                fontSize: parseInt(elements.h2Size.value),
-                bold: elements.h2Bold.checked
-            }
-        }
-    };
-}
-
-// ============ SAVE TEMPLATE ============
-
-async function saveTemplate(templateData) {
-    try {
-        const response = await chrome.runtime.sendMessage({
-            action: 'SAVE_TEMPLATE',
-            template: templateData
-        });
-
-        if (response.success) {
-            showToast('Template saved!');
-            hideAllSections();
-            loadUserTemplates();
-        } else {
-            throw new Error(response.error || 'Failed to save');
-        }
-    } catch (error) {
-        showToast(error.message, 'error');
-    }
-}
-
-async function saveCreatedTemplate() {
-    const template = getTemplateFromForm();
-    await saveTemplate(template);
-}
-
-async function saveImportedTemplate() {
-    if (!extractedStyles) return;
-
-    const template = {
-        name: elements.importedName.value || 'Imported Template',
-        icon: '📥',
-        isPreset: false,
-        importedFrom: currentDocTitle,
-        styles: extractedStyles
-    };
-
-    await saveTemplate(template);
-}
-
-// ============ LOAD TEMPLATES ============
-
-async function loadUserTemplates() {
-    try {
-        const response = await chrome.runtime.sendMessage({ action: 'GET_USER_TEMPLATES' });
-
-        if (response.success && response.data) {
-            userTemplates = response.data;
-            renderUserTemplates();
-        }
-    } catch (error) {
-        console.error('Failed to load templates:', error);
-    }
-}
-
-function renderUserTemplates() {
-    if (userTemplates.length === 0) {
-        elements.templatesList.innerHTML = `
-      <div class="empty-state">
-        <span class="empty-icon">📁</span>
-        <p>No custom templates yet</p>
-        <p class="empty-hint">Create or import a template to get started</p>
-      </div>
-    `;
-        return;
-    }
-
-    elements.templatesList.innerHTML = userTemplates.map(t => `
-    <div class="template-item" data-id="${t.id}">
-      <span class="template-icon">${t.icon || '🎨'}</span>
-      <div class="template-info">
-        <div class="template-name">${t.name}</div>
-        <div class="template-meta">${t.styles?.body?.fontFamily || 'Custom'}, ${t.styles?.body?.fontSize || 12}pt</div>
-      </div>
-      <div class="template-actions">
-        <button class="btn-template-action delete" data-id="${t.id}" title="Delete">🗑</button>
-      </div>
-    </div>
-  `).join('');
-
-    // Add delete handlers
-    elements.templatesList.querySelectorAll('.delete').forEach(btn => {
+    // Bind Delete Buttons
+    document.querySelectorAll('.delete-btn').forEach(btn => {
         btn.addEventListener('click', async (e) => {
             e.stopPropagation();
-            const id = btn.dataset.id;
-            if (confirm('Delete this template?')) {
-                await deleteTemplate(id);
+            if (confirm('Delete template?')) {
+                await chrome.runtime.sendMessage({ action: 'DELETE_TEMPLATE', templateId: btn.dataset.id });
+                loadTemplates(); // Reload
             }
         });
     });
 }
 
-function renderPresetTemplates() {
-    elements.presetsList.innerHTML = PRESET_TEMPLATES.map(t => `
-    <div class="template-item" data-id="${t.id}">
-      <span class="template-icon">${t.icon}</span>
-      <div class="template-info">
-        <div class="template-name">${t.name}</div>
-        <div class="template-meta">${t.meta}</div>
-      </div>
-    </div>
-  `).join('');
-}
+async function formatDocument() {
+    if (!STATE.currentDocId) return;
 
-async function deleteTemplate(templateId) {
+    DOM.formatBtn.textContent = 'Formatting...';
+    DOM.formatBtn.disabled = true;
+
+    const templateId = DOM.templateSelect.value;
+
     try {
-        const response = await chrome.runtime.sendMessage({
-            action: 'DELETE_TEMPLATE',
-            templateId
+        const res = await chrome.runtime.sendMessage({
+            action: 'FORMAT_DOC',
+            docId: STATE.currentDocId,
+            templateId: templateId
         });
 
-        if (response.success) {
-            showToast('Template deleted');
-            loadUserTemplates();
-        } else {
-            throw new Error(response.error);
-        }
-    } catch (error) {
-        showToast(error.message, 'error');
+        if (res.success) showToast('Document Formatted!');
+        else showToast(res.error || 'Formatting failed');
+
+    } catch (e) {
+        showToast('Error formatting document');
+    } finally {
+        DOM.formatBtn.textContent = 'Format Document';
+        DOM.formatBtn.disabled = false;
     }
 }
 
-// ============ EVENT LISTENERS ============
+/* ============ TEMPLATE CREATION ============ */
+function populateFontSelects() {
+    const fonts = ['Arial', 'Times New Roman', 'Georgia', 'Roboto', 'Verdana'];
+    const options = fonts.map(f => `<option value="${f}">${f}</option>`).join('');
 
-// Action buttons
-elements.createBtn.addEventListener('click', () => {
-    showSection(elements.createSection);
-    elements.templateName.focus();
-});
+    DOM.bodyFont.innerHTML = options;
+    DOM.h1Font.innerHTML = options;
+}
 
-elements.importBtn.addEventListener('click', () => {
-    showSection(elements.importSection);
-    checkCurrentTab();
-});
+function updatePreview() {
+    const h1 = DOM.preview.querySelector('.preview-h1');
+    const body = DOM.preview.querySelector('.preview-body');
 
-// Cancel buttons
-elements.cancelImportBtn.addEventListener('click', hideAllSections);
-elements.cancelCreateBtn.addEventListener('click', hideAllSections);
-elements.cancelImportedBtn.addEventListener('click', hideAllSections);
+    h1.style.fontFamily = DOM.h1Font.value;
+    h1.style.fontSize = DOM.h1Size.value + 'px';
 
-// Extract and save
-elements.extractBtn.addEventListener('click', extractStylesFromDocument);
-elements.saveTemplateBtn.addEventListener('click', saveCreatedTemplate);
-elements.saveImportedBtn.addEventListener('click', saveImportedTemplate);
+    body.style.fontFamily = DOM.bodyFont.value;
+    body.style.fontSize = DOM.bodySize.value + 'px';
+}
 
-// Preview updates
-const previewInputs = [
-    elements.bodyFont, elements.bodySize, elements.lineSpacing,
-    elements.h1Font, elements.h1Size, elements.h1Bold,
-    elements.h2Font, elements.h2Size, elements.h2Bold
-];
-previewInputs.forEach(input => {
-    input.addEventListener('change', updatePreview);
-    input.addEventListener('input', updatePreview);
-});
+async function saveCreatedTemplate() {
+    const name = DOM.templateName.value.trim() || 'Untitled';
+    const template = {
+        name,
+        icon: 'NEW',
+        isPreset: false,
+        styles: {
+            body: { fontFamily: DOM.bodyFont.value, fontSize: parseInt(DOM.bodySize.value) },
+            heading1: { fontFamily: DOM.h1Font.value, fontSize: parseInt(DOM.h1Size.value) }
+        }
+    };
 
-// ============ INITIALIZE ============
+    await chrome.runtime.sendMessage({ action: 'SAVE_TEMPLATE', template });
+    hideModal(DOM.createSection);
+    loadTemplates();
+    showToast('Template Saved');
+}
 
-renderPresetTemplates();
-loadUserTemplates();
-updatePreview();
+/* ============ IMPORT TEMPLATE ============ */
+async function extractStyles() {
+    if (!STATE.currentDocId) return showToast('No document detected');
 
-// Refresh document check periodically
-setInterval(checkCurrentTab, 2000);
+    DOM.extractBtn.textContent = 'Extracting...';
+    DOM.extractBtn.disabled = true;
 
-console.log('📋 Side Panel initialized');
+    try {
+        const res = await chrome.runtime.sendMessage({ action: 'EXTRACT_STYLES', docId: STATE.currentDocId });
+
+        if (!res.success) {
+            // Show specific error to user
+            showToast(res.error || 'Extraction failed');
+            return;
+        }
+
+        STATE.extractedStyles = res.data;
+        DOM.extractedInfo.innerHTML = `
+            <div class="row"><span class="badge">Body: ${res.data.body?.fontFamily || 'Unknown'} ${res.data.body?.fontSize || ''}pt</span></div>
+            ${res.data.heading1 ? `<div class="row"><span class="badge">H1: ${res.data.heading1.fontFamily} ${res.data.heading1.fontSize}pt</span></div>` : ''}
+        `;
+        DOM.extractedInfo.classList.remove('hidden');
+        DOM.importedName.classList.remove('hidden');
+        DOM.saveImportedFooter.classList.remove('hidden');
+        DOM.importedName.value = 'Imported Style';
+        showToast('Styles extracted successfully!');
+
+    } catch (e) {
+        console.error('Extract styles error:', e);
+        showToast(e.message || 'Extraction failed');
+    } finally {
+        DOM.extractBtn.textContent = 'Extract from Active Doc';
+        DOM.extractBtn.disabled = false;
+    }
+}
+
+/* ============ AI FEATURES ============ */
+async function checkApiKey() {
+    const stored = await chrome.storage.local.get('geminiApiKey');
+    if (!stored.geminiApiKey) {
+        DOM.apiKeyWarning.classList.remove('hidden');
+        return false;
+    }
+    DOM.apiKeyWarning.classList.add('hidden');
+    return true;
+}
+
+async function runAIAction(actionType) {
+    if (!STATE.currentDocId) return showToast('No document detected');
+    if (!await checkApiKey()) return showModal(DOM.apiKeyModal);
+
+    DOM.resultsPanel.classList.remove('hidden');
+    DOM.resultsContent.innerHTML = '<div class="loading-spinner"></div> Analyzing...';
+
+    let action = 'AI_ANALYZE';
+    if (actionType === 'fix') action = 'AI_CHECK_CONSISTENCY';
+    if (actionType === 'suggest') action = 'AI_SUGGEST';
+
+    // Get current template rules
+    const selectedTemplateId = DOM.templateSelect.value;
+    const selectedTemplate = STATE.templates.find(t => t.id === selectedTemplateId);
+    let templateRules = null;
+
+    if (selectedTemplate) {
+        if (selectedTemplate.aiInstructions) {
+            templateRules = selectedTemplate.aiInstructions;
+        } else if (selectedTemplate.styles) {
+            // Fallback: construct rules from styles
+            templateRules = `Font: ${selectedTemplate.styles.body?.fontFamily || 'Standard'}, Size: ${selectedTemplate.styles.body?.fontSize || '11'}pt`;
+        }
+    }
+
+    try {
+        const res = await chrome.runtime.sendMessage({
+            action,
+            docId: STATE.currentDocId,
+            templateRules: templateRules
+        });
+
+        if (res.success) {
+            // Simple rendering for now
+            const data = res.data;
+            let html = '';
+
+            if (data.suggestions) {
+                html = `<ul>${data.suggestions.map(s => `<li><b>${s.issue}</b>: ${s.recommendation}</li>`).join('')}</ul>`;
+            } else if (data.issues) {
+                html = `<div class="issues-list">
+                    <ul>${data.issues.map(i => `<li><b>${i.type}</b>: ${i.description}</li>`).join('')}</ul>
+                    ${data.issues.some(i => i.actions) ? `<button id="applyFixesBtn" class="btn-primary" style="margin-top:12px; width:100%">Apply All Fixes ✨</button>` : ''}
+                </div>`;
+
+                // Store actions for the button handler
+                STATE.pendingAIActions = data.issues.flatMap(i => i.actions || []);
+            } else {
+                html = '<div class="ai-response">' + (JSON.stringify(data, null, 2)) + '</div>';
+            }
+
+            DOM.resultsContent.innerHTML = html;
+
+            // Attach listener for the new button
+            const btn = document.getElementById('applyFixesBtn');
+            if (btn) {
+                btn.addEventListener('click', async () => {
+                    btn.textContent = 'Applying...';
+                    btn.disabled = true;
+                    try {
+                        await chrome.runtime.sendMessage({
+                            action: 'AI_APPLY_ACTIONS',
+                            docId: STATE.currentDocId,
+                            actions: STATE.pendingAIActions
+                        });
+                        showToast('Fixes Applied Successfully! 🪄');
+                        DOM.resultsContent.innerHTML = '<div class="success-message">All fixed! Document is now compliant.</div>';
+                    } catch (e) {
+                        DOM.resultsContent.innerHTML += `<div class="error">Failed: ${e.message}</div>`;
+                    }
+                });
+            }
+        }
+    } catch (e) {
+        DOM.resultsContent.innerHTML = 'Error: ' + e.message;
+    }
+}
+
+/* ============ PRICING LOGIC ============ */
+const PRICING = {
+    pro: {
+        monthly: { amount: 299, planId: 'plan_S8HkUbeANDtrsP', period: '/mo' },
+        annual: { amount: 2499, planId: 'plan_S8Hm0hBBAVpqxw', period: '/yr (Save 30%)' }
+    },
+    business: {
+        monthly: { amount: 799, planId: 'plan_S8HkUbeANDtrsP', period: '/mo' },
+        annual: { amount: 6999, planId: 'plan_S8Hm0hBBAVpqxw', period: '/yr (Save 30%)' }
+    }
+};
+
+let billingCycle = 'monthly';
+
+function setupPricing() {
+    // Toggles
+    document.getElementById('monthlyBtn').addEventListener('click', () => setBillingCycle('monthly'));
+    document.getElementById('annualBtn').addEventListener('click', () => setBillingCycle('annual'));
+
+    // Plan Buttons
+    document.getElementById('proBtn').addEventListener('click', () => selectPlan('pro'));
+    document.getElementById('businessBtn').addEventListener('click', () => selectPlan('business'));
+
+    // Navigation
+    document.getElementById('backToHomeBtn').addEventListener('click', () => {
+        DOM.views.forEach(v => v.classList.remove('active'));
+        document.getElementById('view-home').classList.add('active');
+    });
+
+    // Upgrade triggers
+    DOM.upgradeBtn.addEventListener('click', () => showView('pricing'));
+}
+
+function showView(viewName) {
+    DOM.views.forEach(v => v.classList.remove('active'));
+    document.getElementById(`view-${viewName}`).classList.add('active');
+}
+
+function setBillingCycle(cycle) {
+    billingCycle = cycle;
+    document.getElementById('monthlyBtn').classList.toggle('active', cycle === 'monthly');
+    document.getElementById('annualBtn').classList.toggle('active', cycle === 'annual');
+    updatePrices();
+}
+
+function formatPrice(amount) {
+    return '₹' + amount.toLocaleString('en-IN');
+}
+
+function updatePrices() {
+    const pro = PRICING.pro[billingCycle];
+    const biz = PRICING.business[billingCycle];
+
+    document.getElementById('proPrice').textContent = formatPrice(pro.amount);
+    document.getElementById('proPeriod').textContent = pro.period;
+
+    document.getElementById('businessPrice').textContent = formatPrice(biz.amount);
+    document.getElementById('businessPeriod').textContent = biz.period;
+}
+
+async function selectPlan(tier) {
+    const plan = PRICING[tier][billingCycle];
+    const btn = document.getElementById(`${tier}Btn`);
+    const originalText = btn.textContent;
+
+    btn.textContent = 'Processing...';
+    btn.disabled = true;
+
+    try {
+        const res = await chrome.runtime.sendMessage({
+            action: 'CREATE_CHECKOUT',
+            planId: plan.planId,
+            tier: tier
+        });
+
+        if (res.success && res.data.url) {
+            // Open Checkout URL in new tab (required for secure payment page)
+            chrome.tabs.create({ url: res.data.url });
+        } else {
+            throw new Error(res.error || 'Checkout failed');
+        }
+    } catch (e) {
+        showToast('Error: ' + e.message);
+    } finally {
+        btn.textContent = originalText;
+        btn.disabled = false;
+    }
+}
+
+/* ============ EVENT LISTENERS ============ */
+function setupEventListeners() {
+    setupPricing(); // Initialize pricing listeners
+
+    // Auth
+    DOM.signInBtn.addEventListener('click', signIn);
+    DOM.signOutBtn.addEventListener('click', signOut);
+
+    // Format
+    DOM.formatBtn.addEventListener('click', formatDocument);
+    // DOM.upgradeBtn listener moved to setupPricing()
+
+    DOM.templateSelect.addEventListener('change', () => {
+        // Update template info tags based on selection
+    });
+
+    // Create & Import
+    DOM.createBtn.addEventListener('click', () => showModal(DOM.createSection));
+    DOM.cancelCreateBtn.addEventListener('click', () => hideModal(DOM.createSection));
+    DOM.saveTemplateBtn.addEventListener('click', saveCreatedTemplate);
+
+    DOM.importBtn.addEventListener('click', () => showModal(DOM.importSection));
+    DOM.cancelImportBtn.addEventListener('click', () => hideModal(DOM.importSection));
+    DOM.extractBtn.addEventListener('click', extractStyles);
+    DOM.saveImportedBtn.addEventListener('click', async () => {
+        if (STATE.extractedStyles) {
+            await chrome.runtime.sendMessage({
+                action: 'SAVE_TEMPLATE',
+                template: {
+                    name: DOM.importedName.value,
+                    icon: 'IMP',
+                    isPreset: false,
+                    styles: STATE.extractedStyles
+                }
+            });
+            hideModal(DOM.importSection);
+            loadTemplates();
+        }
+    });
+
+    // Preview
+    [DOM.bodyFont, DOM.bodySize, DOM.h1Font, DOM.h1Size].forEach(input => {
+        input.addEventListener('input', updatePreview);
+    });
+
+    // AI
+    DOM.configureKeyBtn.addEventListener('click', () => showModal(DOM.apiKeyModal));
+    DOM.cancelKeyBtn.addEventListener('click', () => hideModal(DOM.apiKeyModal));
+    DOM.saveKeyBtn.addEventListener('click', async () => {
+        const key = DOM.apiKeyInput.value;
+        if (key) {
+            await chrome.storage.local.set({ geminiApiKey: key });
+            hideModal(DOM.apiKeyModal);
+            checkApiKey();
+        }
+    });
+
+    DOM.analyzeBtn.addEventListener('click', () => runAIAction('analyze'));
+    DOM.fixBtn.addEventListener('click', () => runAIAction('fix'));
+    DOM.suggestBtn.addEventListener('click', () => runAIAction('suggest'));
+    DOM.closeResultsBtn.addEventListener('click', () => DOM.resultsPanel.classList.add('hidden'));
+}
+
+// Start
+init();

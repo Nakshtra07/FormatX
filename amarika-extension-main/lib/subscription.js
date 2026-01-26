@@ -1,4 +1,4 @@
-// Subscription Configuration - Amarika
+// Subscription Configuration - Amarika (Razorpay)
 // All prices in INR (Indian Rupees)
 
 // Subscription tiers
@@ -8,17 +8,17 @@ export const TIERS = {
     BUSINESS: 'business'
 };
 
-// Pricing configuration (in INR)
+// Pricing configuration (in INR) - Update Plan IDs after creating in Razorpay
 export const PRICING = {
     pro: {
         monthly: {
             amount: 299,
-            priceId: 'price_pro_monthly', // Replace with actual Stripe price ID
+            planId: 'plan_S8BeIBeGKwZWax', // Replace with actual Razorpay Plan ID
             label: '₹299/month'
         },
         annual: {
             amount: 2499,
-            priceId: 'price_pro_annual', // Replace with actual Stripe price ID
+            planId: 'plan_S8BerugbTT3JAL', // Replace with actual Razorpay Plan ID
             label: '₹2,499/year',
             savings: '₹1,089 savings'
         }
@@ -26,12 +26,12 @@ export const PRICING = {
     business: {
         monthly: {
             amount: 799,
-            priceId: 'price_business_monthly', // Replace with actual Stripe price ID
+            planId: 'plan_S8BfRb5x6CBtAN', // Replace with actual Razorpay Plan ID
             label: '₹799/month'
         },
         annual: {
             amount: 6999,
-            priceId: 'price_business_annual', // Replace with actual Stripe price ID
+            planId: 'plan_S8Bfv7YVfofk1d', // Replace with actual Razorpay Plan ID
             label: '₹6,999/year',
             savings: '₹2,589 savings'
         }

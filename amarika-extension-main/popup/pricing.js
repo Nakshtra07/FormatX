@@ -1,14 +1,12 @@
-// Amarika Pricing Page Script
-
-// Pricing configuration (INR)
+// Pricing configuration (INR) - TEST MODE
 const PRICING = {
     pro: {
-        monthly: { amount: 299, priceId: 'price_pro_monthly', period: '/month' },
-        annual: { amount: 2499, priceId: 'price_pro_annual', period: '/year', savings: 'Save ₹1,089' }
+        monthly: { amount: 299, planId: 'plan_S8HkUbeANDtrsP', period: '/month' },
+        annual: { amount: 2499, planId: 'plan_S8Hm0hBBAVpqxw', period: '/year', savings: 'Save ₹1,089' }
     },
     business: {
-        monthly: { amount: 799, priceId: 'price_business_monthly', period: '/month' },
-        annual: { amount: 6999, priceId: 'price_business_annual', period: '/year', savings: 'Save ₹2,589' }
+        monthly: { amount: 799, planId: 'plan_S8HkUbeANDtrsP', period: '/month' },  // Uses Pro planId for demo
+        annual: { amount: 6999, planId: 'plan_S8Hm0hBBAVpqxw', period: '/year', savings: 'Save ₹2,589' }  // Uses Pro planId for demo
     }
 };
 
@@ -68,7 +66,7 @@ function setBillingCycle(cycle) {
     updatePrices();
 }
 
-// Handle plan selection
+// Handle plan selection - Opens Razorpay hosted checkout page
 async function selectPlan(tier) {
     const pricing = PRICING[tier][billingCycle];
 
@@ -79,15 +77,15 @@ async function selectPlan(tier) {
     btn.disabled = true;
 
     try {
-        // Request checkout session from background
+        // Request Razorpay subscription from background service worker
         const response = await chrome.runtime.sendMessage({
             action: 'CREATE_CHECKOUT',
-            priceId: pricing.priceId,
+            planId: pricing.planId,
             tier: tier
         });
 
         if (response.success && response.data?.url) {
-            // Open Stripe Checkout in new tab
+            // Open Razorpay hosted checkout page in new tab
             chrome.tabs.create({ url: response.data.url });
             window.close();
         } else {
