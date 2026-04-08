@@ -103,7 +103,8 @@ class InstructionGenerator:
                     }
                 })
                 # The section break increases the document length by 1, so the new section starts at break_idx + 1
-                col_props = [{} for _ in range(columns)]
+                col_props = [{"paddingEnd": {"magnitude": 18, "unit": "PT"}} for _ in range(columns - 1)]
+                col_props.append({"paddingEnd": {"magnitude": 0, "unit": "PT"}}) # Last column padding
                 
                 requests.append({
                     "updateSectionStyle": {
