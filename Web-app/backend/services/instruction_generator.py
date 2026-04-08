@@ -127,7 +127,7 @@ class InstructionGenerator:
         # Get styles
         title_style = template_styles.get("TITLE", {"fontSize": 24, "bold": True, "alignment": "CENTER"})
         heading1_style = template_styles.get("HEADING_1", {"fontSize": 16, "bold": True, "alignment": "START"})
-        normal_style = template_styles.get("NORMAL_TEXT", {"fontSize": 12, "alignment": "JUSTIFIED", "lineSpacing": 1.5})
+        normal_style = template_styles.get("NORMAL_TEXT", {"fontSize": 12, "alignment": "START", "lineSpacing": 1.5})
         
         # ===== COVER PAGE =====
         cover_page = ai_result.get("cover_page", {})
@@ -408,6 +408,7 @@ class InstructionGenerator:
         
         title = ai_result.get("title", "Untitled Document")
         abstract = ai_result.get("abstract", "")
+        keywords = ai_result.get("keywords", "")
         sections = ai_result.get("sections", [])
         conclusion = ai_result.get("conclusion", "")
         
@@ -418,8 +419,8 @@ class InstructionGenerator:
         title_style = template_styles.get("TITLE", {"fontSize": 24, "bold": True, "alignment": "CENTER"})
         heading1_style = template_styles.get("HEADING_1", {"fontSize": 16, "bold": True, "alignment": "START"})
         heading2_style = template_styles.get("HEADING_2", {"fontSize": 14, "bold": True, "alignment": "START"})
-        normal_style = template_styles.get("NORMAL_TEXT", {"fontSize": 12, "alignment": "JUSTIFIED", "lineSpacing": 1.5})
-        subtitle_style = template_styles.get("SUBTITLE", {"fontSize": 12, "italic": True, "alignment": "CENTER"})
+        normal_style = template_styles.get("NORMAL_TEXT", {"fontSize": 12, "alignment": "START", "lineSpacing": 1.5})
+        subtitle_style = template_styles.get("SUBTITLE", {"fontSize": 12, "italic": True, "alignment": "START"})
         
         # ===== TITLE =====
         if title:
@@ -470,6 +471,31 @@ class InstructionGenerator:
             ))
             
             current_index += len(abstract_text)
+            
+        # ===== KEYWORDS =====
+        if keywords:
+            keywords_text = f"{keywords}\n\n"
+            text_parts.append(keywords_text)
+            
+            paragraph_styles.append(self._create_paragraph_style(
+                current_index,
+                current_index + len(keywords_text) - 1,
+                "NORMAL_TEXT",
+                line_spacing=normal_style.get("lineSpacing", 1.5),
+                space_after=24,
+                alignment="START"
+            ))
+            
+            text_styles.append(self._create_text_style(
+                current_index,
+                current_index + len(keywords),
+                font_size=normal_style.get("fontSize", 12),
+                italic=True,
+                bold=False,
+                font_family=font_family
+            ))
+            
+            current_index += len(keywords_text)
         
         # ===== SECTIONS =====
         for section in sections:

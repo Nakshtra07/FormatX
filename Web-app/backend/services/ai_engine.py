@@ -47,6 +47,7 @@ You MUST respond with valid JSON in this exact format:
 {
     "title": "Clear, Descriptive Document Title",
     "abstract": "Abstract—A 2-4 sentence summary extracted from the document content...",
+    "keywords": "Keywords—Term1, Term2, Term3",
     "sections": [
         {
             "heading": "I. INTRODUCTION",
@@ -138,6 +139,8 @@ CRITICAL: Respond with ONLY valid JSON. No markdown, no explanation, just the JS
                 result["title"] = "Untitled Document"
             if "abstract" not in result:
                 result["abstract"] = ""
+            if "keywords" not in result:
+                result["keywords"] = ""
             if "sections" not in result:
                 result["sections"] = []
             if "conclusion" not in result:
@@ -714,7 +717,8 @@ CRITICAL: Respond with ONLY valid JSON. No markdown, no explanation."""
         """Return a sample IEEE research paper for empty/short content."""
         return {
             "title": "Machine Learning Approaches for Real-Time Anomaly Detection in IoT Networks",
-            "abstract": "Authors: J. Smith, A. Kumar, M. Zhang\nDepartment of Computer Science, Tech University\n\nThis paper presents a novel machine learning framework for detecting anomalies in Internet of Things (IoT) networks in real-time. Our approach combines LSTM networks with attention mechanisms to achieve 94.7% detection accuracy while maintaining sub-millisecond latency. Experimental results on benchmark datasets demonstrate significant improvements over existing methods.\n\nKeywords: IoT Security, Anomaly Detection, LSTM, Machine Learning, Network Security",
+            "abstract": "Authors: J. Smith, A. Kumar, M. Zhang\nDepartment of Computer Science, Tech University\n\nThis paper presents a novel machine learning framework for detecting anomalies in Internet of Things (IoT) networks in real-time. Our approach combines LSTM networks with attention mechanisms to achieve 94.7% detection accuracy while maintaining sub-millisecond latency. Experimental results on benchmark datasets demonstrate significant improvements over existing methods.",
+            "keywords": "Keywords—IoT Security, Anomaly Detection, LSTM, Machine Learning, Network Security",
             "sections": [
                 {
                     "heading": "Introduction",
@@ -956,14 +960,21 @@ CRITICAL: Respond with ONLY valid JSON. No markdown, no explanation."""
             abstract_parts.append(affiliations[0])
         if abstract_content:
             abstract_parts.append('\n' + ' '.join(abstract_content))
-        if keywords:
-            abstract_parts.append('\nKeywords: ' + ', '.join(keywords[:8]))
         
         abstract_text = '\n'.join(abstract_parts) if abstract_parts else "Abstract not provided."
+        
+        keywords_text = ""
+        if keywords:
+            kw_string = ', '.join(keywords[:8])
+            if not kw_string.lower().startswith("keywords"):
+                keywords_text = f"Keywords—{kw_string}"
+            else:
+                keywords_text = kw_string
         
         return {
             "title": title,
             "abstract": abstract_text,
+            "keywords": keywords_text,
             "sections": sections if sections else [{"heading": "Content", "content": text[:1000]}],
             "conclusion": ' '.join(future_work) if future_work else "Further research is recommended to validate and extend these findings."
         }
