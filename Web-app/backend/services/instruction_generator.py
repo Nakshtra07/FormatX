@@ -448,28 +448,6 @@ class InstructionGenerator:
         
         # ===== ABSTRACT =====
         if abstract:
-            # Abstract heading
-            abstract_heading = "Abstract\n"
-            text_parts.append(abstract_heading)
-            
-            paragraph_styles.append(self._create_paragraph_style(
-                current_index,
-                current_index + len(abstract_heading),
-                "HEADING_1",
-                space_before=heading1_style.get("spaceBefore", 18),
-                space_after=heading1_style.get("spaceAfter", 12)
-            ))
-            
-            text_styles.append(self._create_text_style(
-                current_index,
-                current_index + len("Abstract"),
-                font_size=heading1_style.get("fontSize", 16),
-                bold=heading1_style.get("bold", True),
-                font_family=font_family
-            ))
-            
-            current_index += len(abstract_heading)
-            
             # Abstract content - italic
             abstract_text = f"{abstract}\n\n"
             text_parts.append(abstract_text)
@@ -485,7 +463,7 @@ class InstructionGenerator:
             
             text_styles.append(self._create_text_style(
                 current_index,
-                current_index + len(abstract) ,
+                current_index + len(abstract),
                 font_size=subtitle_style.get("fontSize", 12),
                 italic=subtitle_style.get("italic", True),
                 font_family=font_family
@@ -642,28 +620,6 @@ class InstructionGenerator:
         
         # ===== CONCLUSION =====
         if conclusion:
-            # Conclusion heading
-            conclusion_heading = "Conclusion\n"
-            text_parts.append(conclusion_heading)
-            
-            paragraph_styles.append(self._create_paragraph_style(
-                current_index,
-                current_index + len(conclusion_heading),
-                "HEADING_1",
-                space_before=heading1_style.get("spaceBefore", 18),
-                space_after=heading1_style.get("spaceAfter", 12)
-            ))
-            
-            text_styles.append(self._create_text_style(
-                current_index,
-                current_index + len("Conclusion"),
-                font_size=heading1_style.get("fontSize", 16),
-                bold=heading1_style.get("bold", True),
-                font_family=font_family
-            ))
-            
-            current_index += len(conclusion_heading)
-            
             # Conclusion content
             conclusion_text = f"{conclusion}\n"
             text_parts.append(conclusion_text)
@@ -674,16 +630,18 @@ class InstructionGenerator:
                 "NORMAL_TEXT",
                 line_spacing=normal_style.get("lineSpacing", 1.5),
                 space_after=normal_style.get("spaceAfter", 12),
-                first_line_indent=36,
                 alignment=normal_style.get("alignment", "JUSTIFIED")
             ))
             
+            # Add text style for the conclusion
             text_styles.append(self._create_text_style(
                 current_index,
                 current_index + len(conclusion),
                 font_size=normal_style.get("fontSize", 12),
                 font_family=font_family
             ))
+            
+            current_index += len(conclusion_text)
         
         return {
             "text": "".join(text_parts),

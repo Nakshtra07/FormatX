@@ -1,5 +1,5 @@
 /* ============================================
-   AMARIKA - MAIN JAVASCRIPT
+   FORMATX - MAIN JAVASCRIPT
    Shared utilities across all pages
    ============================================ */
 
@@ -8,7 +8,7 @@
    Set APP_URL based on environment
    ========================================== */
 const APP_URL = window.location.hostname === 'localhost'
-    ? 'http://localhost:5501'  // Local dev: React app on separate port
+    ? 'http://localhost:5173'  // Local dev: React app on separate port
     : '/app/';                  // Production: React app at /app/ path
 
 // Rewrite /app/ links for local development
@@ -129,5 +129,5 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    console.log('✓ Amarika main.js initialized');
+    console.log('✓ FormatX main.js initialized');
 });

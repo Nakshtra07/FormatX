@@ -21,18 +21,15 @@ class TemplateEngine:
             "description": "IEEE-compliant academic research paper format for journals and conferences",
             "sections": [
                 {"name": "Title", "style": "TITLE", "required": True},
-                {"name": "Authors", "style": "SUBTITLE", "required": True},
+                {"name": "Author Name(s), Affiliation, Email", "style": "SUBTITLE", "required": True},
                 {"name": "Abstract", "style": "NORMAL_TEXT", "required": True},
                 {"name": "Keywords", "style": "NORMAL_TEXT", "required": True},
-                {"name": "Introduction", "style": "HEADING_1", "required": True},
-                {"name": "Related Work", "style": "HEADING_1", "required": False},
-                {"name": "Methodology", "style": "HEADING_1", "required": True},
-                {"name": "Experimental Setup", "style": "HEADING_1", "required": False},
-                {"name": "Results and Discussion", "style": "HEADING_1", "required": True},
-                {"name": "Conclusion", "style": "HEADING_1", "required": True},
-                {"name": "Future Work", "style": "HEADING_1", "required": False},
-                {"name": "Acknowledgments", "style": "HEADING_1", "required": False},
-                {"name": "References", "style": "HEADING_1", "required": True},
+                {"name": "I. INTRODUCTION", "style": "HEADING_1", "required": True},
+                {"name": "II. PROBLEM STATEMENT", "style": "HEADING_1", "required": False},
+                {"name": "III. METHODOLOGY / APPROACH", "style": "HEADING_1", "required": True},
+                {"name": "IV. RESULTS / DISCUSSION", "style": "HEADING_1", "required": False},
+                {"name": "V. CONCLUSION", "style": "HEADING_1", "required": True},
+                {"name": "REFERENCES", "style": "HEADING_1", "required": True}
             ],
             "styles": {
                 "TITLE": {

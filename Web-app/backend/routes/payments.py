@@ -23,7 +23,7 @@ RAZORPAY_KEY_SECRET = os.getenv("RAZORPAY_KEY_SECRET", "XXXXXXXXXXXXXXXXXXXXXXXX
 # Initialize Razorpay client
 try:
     razorpay_client = razorpay.Client(auth=(RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET))
-    razorpay_client.set_app_details({"title": "Amarika", "version": "1.0.0"})
+    razorpay_client.set_app_details({"title": "FormatX", "version": "1.0.0"})
 except Exception as e:
     print(f"Warning: Razorpay client initialization failed: {e}")
     razorpay_client = None
@@ -154,7 +154,7 @@ async def create_order(
         order_data = {
             "amount": plan["price"],  # Amount in paise
             "currency": plan["currency"],
-            "receipt": f"amarika_{request.plan_id}_{os.urandom(4).hex()}",
+            "receipt": f"formatx_{request.plan_id}_{os.urandom(4).hex()}",
             "notes": {
                 "plan_id": request.plan_id,
                 "user_email": request.user_email or "",

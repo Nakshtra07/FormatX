@@ -22,52 +22,49 @@ CRITICAL RULES:
 3. Keep all technical terms, names, numbers, and specific details EXACTLY as written
 4. If content is already well-structured, enhance it rather than recreating
 5. Every paragraph from the original MUST appear in your output
+6. Use standard IEEE format only (not letter format).
+7. Remove any letter-style elements (e.g., "Dear...", "Yours sincerely")
+8. Keep language formal and academic; avoid repetition.
+9. Keep abstract concise (150–250 words). IMPORTANT: Set the abstract content directly as "Abstract—This paper...", using an emdash or hyphen. Do NOT include a space after the emdash/hyphen. Do NOT generate a separate "Abstract" heading. 
+10. Keywords should be 3–6 terms and start with "Keywords—" with no space after the emdash/hyphen.
+11. Use Roman numerals for all section headings (I, II, III…) EXCEPT for REFERENCES.
+12. For all references, format them in IEEE style by ensuring all titles are enclosed in quotation marks (e.g., [1] Author, "Title of Paper," Journal, Year).
+13. Put the Conclusion section directly inside the "sections" array with the heading "V. CONCLUSION" (or whatever number is appropriate). Do NOT put any title inside the content field for conclusion. Leave the top-level "conclusion" JSON key empty.
 
-FORMATTING TASKS:
-1. Create or improve the title based on document content
-2. Generate an abstract ONLY if missing (extract key points from intro, 2-4 sentences)
-3. Organize content into logical academic sections
-4. Detect and preserve lists:
-   - Bullet lists: use • symbol
-   - Numbered lists: use 1. 2. 3. format
-5. Create subsections where content is complex
-6. Fix grammar and punctuation WITHOUT changing meaning
-
-HANDLING SPECIAL CONTENT:
-- Tables: Preserve content and note as [TABLE: brief description]
-- Code blocks: Keep exactly as-is, note as [CODE]
-- References/Citations: Keep in a "References" section at the end
-- Existing headings: Respect them as section boundaries
+FORMATTING TASKS & REQUIRED SECTIONS:
+1. Title (centered)
+2. Author Name(s), Affiliation, Email
+3. Abstract (single paragraph)
+4. Keywords (after abstract)
+5. I. INTRODUCTION
+6. II. PROBLEM STATEMENT (if applicable)
+7. III. METHODOLOGY / APPROACH
+8. IV. RESULTS / DISCUSSION (if applicable)
+9. V. CONCLUSION
+10. REFERENCES
 
 You MUST respond with valid JSON in this exact format:
 {
     "title": "Clear, Descriptive Document Title",
-    "abstract": "A 2-4 sentence summary extracted from the document content...",
+    "abstract": "Abstract—A 2-4 sentence summary extracted from the document content...",
     "sections": [
         {
-            "heading": "Introduction",
+            "heading": "I. INTRODUCTION",
             "content": "Full introduction content with all original text..."
         },
         {
-            "heading": "Main Section Name",
-            "content": "All original content for this section...",
-            "subsections": [
-                {
-                    "heading": "Subsection Title",
-                    "content": "Subsection content..."
-                }
-            ]
+            "heading": "V. CONCLUSION",
+            "content": "The final conclusion paragraph..."
         },
         {
-            "heading": "Another Section",
-            "content": "For bullet lists use:\\n• First item\\n• Second item\\n\\nFor numbered lists use:\\n1. First step\\n2. Second step\\n3. Third step"
+            "heading": "REFERENCES",
+            "content": "[1] Author, \"Title of Reference Document,\" Journal of Research, 2024."
         }
     ],
-    "conclusion": "The conclusion content, or final summary if no explicit conclusion exists..."
+    "conclusion": ""
 }
 
 IMPORTANT: 
-- The "subsections" field is OPTIONAL - only use when content has clear sub-topics
 - Respond with ONLY the JSON object, no markdown code blocks or extra text
 - Ensure all JSON strings are properly escaped (especially quotes and newlines)"""
 

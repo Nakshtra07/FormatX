@@ -10,7 +10,7 @@ import { themes as prismThemes } from 'prism-react-renderer';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Amarika Docs',
+  title: 'FormatX Docs',
   tagline: 'AI Document Reformatter Documentation',
   favicon: 'img/favicon.ico',
 
@@ -20,14 +20,14 @@ const config = {
   },
 
   // Set the production url of your site here
-  url: 'https://docs-amarika.v1ggs.lol',
+  url: 'https://docs-formatx.v1ggs.lol',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'amarika', // Usually your GitHub org/user name.
+  organizationName: 'formatx', // Usually your GitHub org/user name.
   projectName: 'ai-doc-reformatter', // Usually your repo name.
 
   onBrokenLinks: 'warn',
@@ -79,9 +79,9 @@ const config = {
         respectPrefersColorScheme: true,
       },
       navbar: {
-        title: 'Amarika Docs',
+        title: 'FormatX Docs',
         logo: {
-          alt: 'Amarika Logo',
+          alt: 'FormatX Logo',
           src: 'img/logo.svg',
         },
         items: [
@@ -138,7 +138,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Amarika Project. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} FormatX Project. Built with Docusaurus.`,
       },
       prism: {
         theme: prismThemes.github,

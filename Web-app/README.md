@@ -80,8 +80,8 @@ copy .env.example .env
    - Add test users (your email)
 5. Create OAuth 2.0 Credentials:
    - Application type: Web application
-   - Authorized JavaScript origins: `http://localhost:5173`
-   - Authorized redirect URIs: `http://localhost:5173`
+   - Authorized JavaScript origins: `http://localhost:5501`
+   - Authorized redirect URIs: `http://localhost:5501`
 6. Copy Client ID and Client Secret to your `.env` files
 
 ### 5. Run the Application
@@ -99,7 +99,7 @@ cd frontend
 npm run dev
 ```
 
-Visit `http://localhost:5173` and sign in with Google!
+Visit `http://localhost:5501` and sign in with Google!
 
 ## Project Structure
 

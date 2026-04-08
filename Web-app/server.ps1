@@ -1,8 +1,8 @@
 # ============================================
-# Amarika v1.0 - Development Server Launcher
+# FormatX v1.0 - Development Server Launcher
 # ============================================
 # Architecture:
-#   - Marketing Site (Static) → Port 5500 (Main Landing)
+#   - Marketing Site (Static) → Port 5173 (Main Landing)
 #   - React App (Vite)       → Port 5501 (Web App at /app/)
 #   - Backend API (FastAPI)  → Port 8000
 #
@@ -10,7 +10,7 @@
 
 Write-Host ""
 Write-Host "========================================" -ForegroundColor Cyan
-Write-Host "   Amarika v1.0 - Starting Servers" -ForegroundColor Cyan  
+Write-Host "   FormatX v1.0 - Starting Servers" -ForegroundColor Cyan  
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
 
@@ -41,7 +41,7 @@ Write-Host "[1/3] Starting Backend API (FastAPI)..." -ForegroundColor Yellow
 $backendCommand = @"
 cd '$backendDir'
 Write-Host '========================================' -ForegroundColor Green
-Write-Host '   Amarika Backend API' -ForegroundColor Green
+Write-Host '   FormatX Backend API' -ForegroundColor Green
 Write-Host '   http://localhost:8000' -ForegroundColor Green
 Write-Host '   API Docs: http://localhost:8000/docs' -ForegroundColor Green
 Write-Host '========================================' -ForegroundColor Green
@@ -75,7 +75,7 @@ Write-Host "[2/3] Starting React App (Vite)..." -ForegroundColor Yellow
 $frontendCommand = @"
 cd '$frontendDir'
 Write-Host '========================================' -ForegroundColor Magenta
-Write-Host '   Amarika React App (Standalone)' -ForegroundColor Magenta
+Write-Host '   FormatX React App (Standalone)' -ForegroundColor Magenta
 Write-Host '   http://localhost:5501' -ForegroundColor Magenta
 Write-Host '========================================' -ForegroundColor Magenta
 Write-Host ''
@@ -98,15 +98,15 @@ Write-Host ""
 Start-Sleep -Seconds 2
 
 # ============================================
-# Start Marketing Site (Static Server on 5500)
+# Start Marketing Site (Static Server on 5173)
 # ============================================
 Write-Host "[3/3] Starting Marketing Site (Static)..." -ForegroundColor Yellow
 
 $marketingCommand = @"
 cd '$marketingDir'
 Write-Host '========================================' -ForegroundColor Blue
-Write-Host '   Amarika Marketing Site' -ForegroundColor Blue
-Write-Host '   http://localhost:5500' -ForegroundColor Blue
+Write-Host '   FormatX Marketing Site' -ForegroundColor Blue
+Write-Host '   http://localhost:5173' -ForegroundColor Blue
 Write-Host '========================================' -ForegroundColor Blue
 Write-Host ''
 
@@ -115,15 +115,15 @@ Write-Host ''
 `$pythonCheck = Get-Command python -ErrorAction SilentlyContinue
 if (`$pythonCheck) {
     Write-Host 'Starting static server with Python...' -ForegroundColor Cyan
-    python -m http.server 5500
+    python -m http.server 5173
 } else {
     Write-Host 'Python not found. Trying npx serve...' -ForegroundColor Yellow
-    npx -y serve -l 5500
+    npx -y serve -l 5173
 }
 "@
 
 Start-Process powershell -ArgumentList "-NoExit", "-Command", $marketingCommand
-Write-Host "   Marketing Site at: http://localhost:5500" -ForegroundColor Green
+Write-Host "   Marketing Site at: http://localhost:5173" -ForegroundColor Green
 Write-Host ""
 
 # ============================================
@@ -133,7 +133,7 @@ Write-Host "========================================" -ForegroundColor Cyan
 Write-Host "   All Servers Started!" -ForegroundColor Cyan
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
-Write-Host "   MAIN (Marketing):  http://localhost:5500" -ForegroundColor White
+Write-Host "   MAIN (Marketing):  http://localhost:5173" -ForegroundColor White
 Write-Host "   React App:         http://localhost:5501" -ForegroundColor White
 Write-Host "   Backend API:       http://localhost:8000" -ForegroundColor White
 Write-Host "   API Docs:          http://localhost:8000/docs" -ForegroundColor White

@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Templates - FormatX</title>
+
+    <!-- ============================================
+         GOOGLE FONTS
+         Inter font (matching homepage design system)
+         ============================================ -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- ============================================
+         MAIN STYLESHEET
+         This should be your main styles.css file
+         Additional template-specific CSS is at the bottom of this file
+         Copy the CSS from the <style> tag below and append it to your styles.css
+         ============================================ -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- ============================================
+         PAGE WRAPPER
+         Contains all page content
+         ============================================ -->
+    <div class="page-wrapper">
+      <!-- ============================================
+             NAVIGATION BAR
+             Reused from homepage for consistency
+             Active state shows current page
+             ============================================ -->
+      <nav class="navbar">
+        <div class="nav-container">
+          <!-- Logo - Links back to homepage -->
+          <div class="nav-logo">
+            <a
+              href="index.html"
+              class="logo-text"
+              style="text-decoration: none; color: inherit"
+              >FormatX</a
+            >
+          </div>
+
+          <!-- Navigation Links -->
+          <div class="nav-links">
+            <a href="index.html#features" class="nav-link">Features</a>
+            <a href="index.html#pricing" class="nav-link">Pricing</a>
+            <a href="templates.html" class="nav-link active">Templates</a>
+            <a href="#contact" class="nav-link">Contact</a>
+          </div>
+
+          <!-- CTA Button -->
+          <div class="nav-cta">
+            <a href="#get-extension" class="btn btn-primary">Get Extension</a>
+          </div>
+        </div>
+      </nav>
+
+      <!-- ============================================
+             PAGE HEADER
+             Simple, clean introduction to templates
+             No hero animation - just text
+             ============================================ -->
+      <section class="page-header">
+        <div class="header-container">
+          <h1 class="page-title">Templates</h1>
+          <p class="page-subtitle">
+            Apply professional formatting in one click
+          </p>
+        </div>
+      </section>
+
+      <!-- ============================================
+             CATEGORY FILTER BAR
+             Notion-inspired horizontal filter pills
+             JavaScript handles filtering on click
+             Sticky positioning keeps it visible while scrolling
+             
+             HOW TO ADD MORE CATEGORIES:
+             1. Add a new button with class "filter-pill"
+             2. Set data-category attribute to category name
+             3. Update template cards with matching data-category
+             ============================================ -->
+      <section class="filter-section">
+        <div class="filter-container">
+          <div class="filter-pills">
+            <!-- All Templates - Active by default -->
+            <button class="filter-pill active" data-category="all">
+              All Templates
+            </button>
+            <!-- Resume category -->
+            <button class="filter-pill" data-category="resume">Resumes</button>
+            <!-- Academic category -->
+            <button class="filter-pill" data-category="academic">
+              Academic
+            </button>
+            <!-- Corporate category -->
+            <button class="filter-pill" data-category="corporate">
+              Corporate
+            </button>
+            <!-- Technical category -->
+            <button class="filter-pill" data-category="technical">
+              Technical
+            </button>
+            <!-- Student category -->
+            <button class="filter-pill" data-category="student">Student</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================
+             TEMPLATES GRID
+             Main content - Grid of template cards
+             
+             Each card has:
+             - data-category: Space-separated categories it belongs to
+             - Category tag: Visual label
+             - Badge: Status indicator (optional)
+             - Template name
+             - Description: "Best for" use case
+             - Apply button
+             
+             HOW TO ADD A NEW TEMPLATE:
+             1. Copy an existing template-card div
+             2. Update data-category with relevant categories
+             3. Change category-tag and badge as needed
+             4. Update template-name and template-description
+             5. The filtering will work automatically
+             ============================================ -->
+      <section class="templates-section">
+        <div class="templates-container">
+          <div class="templates-grid" id="templates-grid">
+            <!-- ========================================
+                         RESUME TEMPLATES
+                         ======================================== -->
+
+            <!-- Template: ATS Resume - Classic -->
+            <div class="template-card" data-category="resume">
+              <div class="card-header">
+                <span class="category-tag tag-resume">Resume</span>
+                <span class="badge badge-popular">ATS Friendly</span>
+              </div>
+              <h3 class="template-name">ATS Resume – Classic</h3>
+              <p class="template-description">
+                Best for: Traditional job applications, corporate roles, and
+                industries that value formal presentation
+              </p>
+              <button class="btn btn-apply">Apply Template</button>
+            </div>
+
+            <!-- Template: ATS Resume - Modern -->
+            <div class="template-card" data-category="resume">
+              <div class="card-header">
+                <span class="category-tag tag-resume">Resume</span>
+                <span class="badge badge-popular">Most Used</span>
+              </div>
+              <h3 class="template-name">ATS Resume – Modern</h3>
+              <p class="template-description">
+                Best for: Tech roles, startups, and modern companies that
+                appreciate clean, contemporary design
+              </p>
+              <button class="btn btn-apply">Apply Template</button>
+            </div>
+
+            <!-- Template: Fresher Resume -->
+            <div class="template-card" data-category="resume student">
+              <div class="card-header">
+                <span class="category-tag tag-resume">Resume</span>
+                <span class="badge badge-student">Student</span>
+              </div>
+              <h3 class="template-name">Fresher Resume</h3>
+              <p class="template-description">
+                Best for: Recent graduates, entry-level positions, and
+                first-time job seekers with limited experience
+              </p>
+              <button class="btn btn-apply">Apply Template</button>
+            </div>
+
+            <!-- Template: Academic / Research CV -->
+            <div class="template-card" data-category="resume academic">
+              <div class="card-header">
+                <span class="category-tag tag-academic">Academic</span>
+                <span class="badge badge-academic">Research</span>
+              </div>
+              <h3 class="template-name">Academic / Research CV</h3>
+              <p class="template-description">
+                Best for: PhD applications, research positions, academic faculty
+                roles, and scholarly presentations
+              </p>
+              <button class="btn btn-apply">Apply Template</button>
+            </div>
+
+            <!-- ========================================
+                         ACADEMIC TEMPLATES
+                         ======================================== -->
+
+            <!-- Template: IEEE Research Paper -->
+            <div class="template-card" data-category="academic technical">
+              <div class="card-header">
+                <span class="category-tag tag-academic">Academic</span>
+                <span class="badge badge-popular">Most Used</span>
+              </div>
+              <h3 class="template-name">IEEE Research Paper</h3>
+              <p class="template-description">
+                Best for: Technical papers, conference submissions, and
+                publications following IEEE formatting standards
+              </p>
+              <button class="btn btn-apply">Apply Template</button>
+            </div>
+
+            <!-- Template: APA Assignment -->
+            <div class="template-card" data-category="academic student">
+              <div class="card-header">
+                <span class="category-tag tag-academic">Academic</span>
+                <span class="badge badge-student">Student</span>
+              </div>
+              <h3 class="template-name">APA Assignment</h3>
+              <p class="template-description">
+                Best for: College essays, psychology papers, social science
+                assignments, and APA-style formatting
+              </p>
+              <button class="btn btn-apply">Apply Template</button>
+            </div>
+
+            <!-- Template: College Project Report -->
+            <div
+              class="template-card"
+              data-category="academic student technical"
+            >
+              <div class="card-header">
+                <span class="category-tag tag-academic">Academic</span>
+                <span class="badge badge-student">Student</span>
+              </div>
+              <h3 class="template-name">College Project Report</h3>
+              <p class="template-description">
+                Best for: University projects, lab reports, capstone
+                documentation, and technical coursework
+              </p>
+              <button class="btn btn-apply">Apply Template</button>
+            </div>
+
+            <!-- ========================================
+                         CORPORATE TEMPLATES
+                         ======================================== -->
+
+            <!-- Template: Corporate Report -->
+            <div class="template-card" data-category="corporate">
+              <div class="card-header">
+                <span class="category-tag tag-corporate">Corporate</span>
+              </div>
+              <h3 class="template-name">Corporate Report</h3>
+              <p class="template-description">
+                Best for: Business reports, quarterly reviews, executive
+                summaries, and formal company documentation
+              </p>
+              <button class="btn btn-apply">Apply Template</button>
+            </div>
+
+            <!-- Template: Business Proposal -->
+            <div class="template-card" data-category="corporate">
+              <div class="card-header">
+                <span class="category-tag tag-corporate">Corporate</span>
+                <span class="badge badge-pro">Pro</span>
+              </div>
+              <h3 class="template-name">Business Proposal</h3>
+              <p class="template-description">
+                Best for: Client proposals, project pitches, RFP responses, and
+                formal business documents
+              </p>
+              <button class="btn btn-apply">Apply Template</button>
+            </div>
+
+            <!-- ========================================
+                         UTILITY TEMPLATES
+                         ======================================== -->
+
+            <!-- Template: Cover Letter -->
+            <div class="template-card" data-category="resume">
+              <div class="card-header">
+                <span class="category-tag tag-resume">Resume</span>
+                <span class="badge badge-popular">ATS Friendly</span>
+              </div>
+              <h3 class="template-name">Cover Letter</h3>
+              <p class="template-description">
+                Best for: Job applications, formal introductions, and
+                professional correspondence with hiring managers
+              </p>
+              <button class="btn btn-apply">Apply Template</button>
+            </div>
+
+            <!-- Template: Statement of Purpose (SOP) -->
+            <div class="template-card" data-category="academic student">
+              <div class="card-header">
+                <span class="category-tag tag-academic">Academic</span>
+                <span class="badge badge-student">Student</span>
+              </div>
+              <h3 class="template-name">Statement of Purpose (SOP)</h3>
+              <p class="template-description">
+                Best for: Graduate school applications, scholarship essays, and
+                university admission documents
+              </p>
+              <button class="btn btn-apply">Apply Template</button>
+            </div>
+
+            <!-- Template: Technical Documentation -->
+            <div class="template-card" data-category="technical">
+              <div class="card-header">
+                <span class="category-tag tag-technical">Technical</span>
+                <span class="badge badge-pro">Pro</span>
+              </div>
+              <h3 class="template-name">Technical Documentation</h3>
+              <p class="template-description">
+                Best for: API docs, software guides, system architecture, and
+                developer documentation
+              </p>
+              <button class="btn btn-apply">Apply Template</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================
+             FOOTER
+             Reused from homepage for consistency
+             Dark background, light text
+             ============================================ -->
+      <footer class="footer">
+        <div class="content-container">
+          <div class="footer-grid">
+            <!-- Company Info -->
+            <div class="footer-column">
+              <h4 class="footer-logo">FormatX</h4>
+              <p class="footer-description">
+                AI-powered document formatting for Google Docs and Word. Turn
+                messy content into publication-ready documents in one click.
+              </p>
+            </div>
+
+            <!-- Product Links -->
+            <div class="footer-column">
+              <h5 class="footer-heading">Product</h5>
+              <ul class="footer-links">
+                <li><a href="index.html#features">Features</a></li>
+                <li><a href="templates.html">Templates</a></li>
+                <li><a href="index.html#pricing">Pricing</a></li>
+                <li><a href="#docs">Documentation</a></li>
+              </ul>
+            </div>
+
+            <!-- Company Links -->
+            <div class="footer-column">
+              <h5 class="footer-heading">Company</h5>
+              <ul class="footer-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#blog">Blog</a></li>
+                <li><a href="#contact">Contact</a></li>
+              </ul>
+            </div>
+
+            <!-- Contact -->
+            <div class="footer-column">
+              <h5 class="footer-heading">Contact</h5>
+              <p class="footer-contact">
+                <a href="mailto:hello@formatx.com">hello@formatx.com</a>
+              </p>
+            </div>
+          </div>
+
+          <!-- Footer Bottom -->
+          <div class="footer-bottom">
+            <p class="footer-copyright">
+              &copy; 2026 FormatX. All rights reserved.
+            </p>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <!-- End Page Wrapper -->
+
+    <!-- ============================================
+         JAVASCRIPT FOR FILTERING FUNCTIONALITY
+         External file: templates.js
+         ============================================ -->
+    <script src="js/templates.js"></script>
+  </body>
+</html>

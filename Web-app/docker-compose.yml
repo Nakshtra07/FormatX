@@ -4,7 +4,7 @@ services:
   # Gateway Service (Nginx) - Serves Marketing + Proxies Apps
   gateway:
     image: nginx:alpine
-    container_name: amarika-gateway
+    container_name: formatx-gateway
     ports:
       - "4765:80"
     volumes:
@@ -22,20 +22,20 @@ services:
         # Pass these from .env or default here
         VITE_API_URL: /api
         VITE_GOOGLE_CLIENT_ID: "783162166038-ggk6liiq1ror3a87ndb1ml625fp3ujl6.apps.googleusercontent.com"
-    container_name: amarika-frontend
+    container_name: formatx-frontend
     expose:
       - "80"
 
   # Backend Service (FastAPI)
   backend:
     build: ./backend
-    container_name: amarika-backend
+    container_name: formatx-backend
     expose:
       - "8000"
     environment:
       - HOST=0.0.0.0
       - PORT=8000
-      - FRONTEND_URL=http://amarika.v1ggs.lol:4765/app
+      - FRONTEND_URL=http://formatx.v1ggs.lol:4765/app
       # Ensure other secrets are passed, potentially via .env file or environment here
       # For now using defaults or placeholders if not in .env
       - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
@@ -48,6 +48,6 @@ services:
   # Documentation Service (Docusaurus)
   documentation:
     build: ./documentation
-    container_name: amarika-docs
+    container_name: formatx-docs
     ports:
       - "9827:80"

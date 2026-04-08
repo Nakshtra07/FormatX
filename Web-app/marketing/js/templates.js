@@ -1,5 +1,5 @@
 /* ============================================
-   AMARIKA TEMPLATES PAGE - JAVASCRIPT
+   FORMATX TEMPLATES PAGE - JAVASCRIPT
    Simple category filtering system
    No external libraries required
    Pure vanilla JavaScript
@@ -516,11 +516,11 @@ function getTemplateData(card) {
    ------------------------------------------ */
 /*
 function saveFilter(category) {
-    localStorage.setItem('amarika_last_filter', category);
+    localStorage.setItem('formatx_last_filter', category);
 }
 
 function loadSavedFilter() {
-    const saved = localStorage.getItem('amarika_last_filter');
+    const saved = localStorage.getItem('formatx_last_filter');
     if (saved) {
         const pill = document.querySelector(`[data-category="${saved}"]`);
         if (pill) pill.click();

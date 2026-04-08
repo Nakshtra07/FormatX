@@ -1,15 +1,15 @@
-# Amarika
+# FormatX
 
-Amarika is a web-based document formatting tool that helps users instantly clean up and standardise their documents. By simply pasting a Google Docs link or uploading a `.docx` file, Amarika reformats the document and returns a polished, structured version — without manual editing.
+FormatX is a web-based document formatting tool that helps users instantly clean up and standardise their documents. By simply pasting a Google Docs link or uploading a `.docx` file, FormatX reformats the document and returns a polished, structured version — without manual editing.
 
-Originally conceptualized as a browser extension, Amarika currently exists as a deployed website built for a hackathon, with plans to expand into a full-fledged web extension in the future.
+Originally conceptualized as a browser extension, FormatX currently exists as a deployed website built for a hackathon, with plans to expand into a full-fledged web extension in the future.
 
 **Live Website:**  
-https://amarika.v1ggs.lol/
+https://formatx.v1ggs.lol/
 
 ---
 
-## What Amarika Does
+## What FormatX Does
 
 - Accepts a Google Docs link or a DOCX file  
 - Extracts document content and structure  
@@ -46,7 +46,7 @@ https://amarika.v1ggs.lol/
 
 1. User signs in using Google Authentication  
 2. User pastes a Google Docs link or uploads a DOCX file  
-3. Amarika extracts the document content and structure  
+3. FormatX extracts the document content and structure  
 4. Formatting rules (default or custom template) are applied  
 5. The original document link now points to the formatted version  
 
@@ -79,7 +79,7 @@ https://amarika.v1ggs.lol/
 - Professionals  
 - Content creators  
 
-Amarika is built for anyone who works with documents and wants clean, consistent formatting without manual effort.
+FormatX is built for anyone who works with documents and wants clean, consistent formatting without manual effort.
 
 ---
 
@@ -92,7 +92,7 @@ Some sections, such as local setup and configuration, are intentionally left inc
 
 ## Future Integrations & Roadmap
 
-Planned ideas for future versions of Amarika include:
+Planned ideas for future versions of FormatX include:
 
 - Full browser extension (Chrome, Edge, Firefox)  
 - Support for additional output formats (PDF, DOCX download)  

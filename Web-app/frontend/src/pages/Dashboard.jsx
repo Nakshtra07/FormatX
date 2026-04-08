@@ -122,7 +122,7 @@ function Dashboard({ user, accessToken, onLogout }) {
             if (response.ok && result.success) {
                 setStatus({
                     type: 'success',
-                    message: <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><CheckCircle size={16} /> Document formatted! Detected sections: {result.sections_detected.join(', ')}</span>
+                    message: <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><CheckCircle size={16} /> Document formatted successfully!</span>
                 })
             } else {
                 setStatus({
@@ -246,8 +246,8 @@ function Dashboard({ user, accessToken, onLogout }) {
             <nav className="navbar">
                 <div className="container navbar-content">
                     <div className="navbar-brand">
-                        <img src="/logo.png" alt="Amarika" style={{ height: '40px', width: 'auto', marginRight: '0.75rem' }} />
-                        Amarika
+                        <img src="/logo.png" alt="FormatX" style={{ height: '40px', width: 'auto', marginRight: '0.75rem' }} />
+                        FormatX
                     </div>
                     <div className="navbar-user">
                         <Link to="/pricing" className="btn btn-secondary" style={{ fontSize: '0.875rem', padding: '0.5rem 1rem' }}>

@@ -1,0 +1,1641 @@
+/* 
+============================================
+FORMATX HOMEPAGE STYLES
+============================================
+CSS Variables-based design system
+Desktop-first, responsive-friendly
+Pure CSS, no frameworks
+*/
+
+/* ==========================================
+   CSS VARIABLES (DESIGN TOKENS)
+   ========================================== */
+:root {
+  /* Color Palette - Exact specification */
+  --color-bg-main: #faf5ff;
+  --color-bg-section: #ffffff;
+  --color-primary-dark: #140f1a;
+  --color-primary-soft: #dfc2ff;
+  --color-accent-light: #e6e8ff;
+  --color-cta: #c99aff;
+  --color-text-muted: #6f7285;
+
+  /* Typography Scale (rem-based) */
+  --font-family-primary:
+    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui,
+    sans-serif;
+
+  --font-size-xs: 0.875rem; /* 14px */
+  --font-size-sm: 1rem; /* 16px */
+  --font-size-base: 1.125rem; /* 18px */
+  --font-size-lg: 1.25rem; /* 20px */
+  --font-size-xl: 1.5rem; /* 24px */
+  --font-size-2xl: 2rem; /* 32px */
+  --font-size-3xl: 2.5rem; /* 40px */
+  --font-size-4xl: 3.5rem; /* 56px */
+
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+
+  /* Spacing Scale - Very spacious design */
+  --spacing-xs: 0.5rem; /* 8px */
+  --spacing-sm: 1rem; /* 16px */
+  --spacing-md: 1.5rem; /* 24px */
+  --spacing-lg: 2rem; /* 32px */
+  --spacing-xl: 3rem; /* 48px */
+  --spacing-2xl: 4rem; /* 64px */
+  --spacing-3xl: 6rem; /* 96px */
+  --spacing-4xl: 8rem; /* 128px */
+  --spacing-5xl: 10rem; /* 160px */
+
+  /* Layout Constraints */
+  --max-width-content: 1200px;
+  --max-width-narrow: 800px;
+
+  /* Border Radius */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+
+  /* Shadows - Subtle, modern */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.1);
+
+  /* Transitions - Smooth, modern timing */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms ease;
+}
+
+/* ==========================================
+   GLOBAL RESET & BASE STYLES
+   ========================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  /* 1rem = 16px baseline */
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
+  color: var(--color-primary-dark);
+  background-color: var(--color-bg-main);
+  /* Improve font rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==========================================
+   PAGE WRAPPER
+   Controls overall page background
+   ========================================== */
+.page-wrapper {
+  min-height: 100vh;
+  background-color: var(--color-bg-main);
+}
+
+/* ==========================================
+   CONTENT CONTAINER
+   Reusable max-width wrapper for sections
+   ========================================== */
+.content-container {
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+  /* Generous horizontal padding */
+  padding-left: var(--spacing-lg);
+  padding-right: var(--spacing-lg);
+}
+
+/* ==========================================
+   NAVIGATION BAR
+   Simple, clean navigation
+   FUTURE: Add sticky behavior, blur background
+   ========================================== */
+.navbar {
+  padding: var(--spacing-lg) 0;
+  /* Subtle bottom border for definition */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
+  /* FUTURE: Uncomment for sticky nav
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+    */
+}
+
+.nav-container {
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-logo .logo-text {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary-dark);
+  letter-spacing: -0.02em;
+}
+
+.nav-links {
+  display: flex;
+  gap: var(--spacing-xl);
+}
+
+.nav-link {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-primary-dark);
+  text-decoration: none;
+  transition: color var(--transition-base);
+}
+
+.nav-link:hover {
+  color: var(--color-primary-dark);
+}
+
+/* ==========================================
+   BUTTON SYSTEM
+   Reusable button styles across site
+   ========================================== */
+.btn {
+  display: inline-block;
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+  text-align: center;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  /* Standard button padding */
+  padding: 0.75rem 1.5rem;
+}
+
+.btn-primary {
+  background-color: white;
+  color: var(--color-primary-dark);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--color-primary-dark);
+  border: 2px solid var(--color-primary-dark);
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-primary-dark);
+  color: #ffffff;
+}
+
+.btn-large {
+  font-size: var(--font-size-base);
+  padding: 1rem 2rem;
+}
+
+.btn-full {
+  width: 100%;
+}
+
+/* Special CTA emphasis button - stands out more */
+.btn-cta-emphasis {
+  padding: 1.25rem 2.5rem;
+  font-size: var(--font-size-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-cta-emphasis:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* HERO + NAV SECTION BG COLOR CHANGE */
+.hero-nav-bg {
+  background: linear-gradient(
+    0deg,
+    var(--color-bg-main) 0%,
+    var(--color-cta) 100%
+  );
+}
+
+/* ==========================================
+   HERO SECTION
+   Primary landing area with headline + CTA
+   VERY spacious, designed for long scroll
+   ========================================== */
+.hero-section {
+  /* Massive top/bottom spacing for scroll-heavy design */
+  padding: var(--spacing-xl) 0;
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+}
+
+.hero-content {
+  max-width: var(--max-width-narrow);
+  /* Extra bottom spacing before visual */
+  margin-bottom: var(--spacing-4xl);
+}
+
+.hero-headline {
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  color: var(--color-primary-dark);
+  letter-spacing: -0.03em;
+  /* Generous spacing below headline */
+  margin-bottom: var(--spacing-xl);
+}
+
+.hero-subheading {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-muted);
+  /* Spacing before CTAs */
+  margin-bottom: var(--spacing-2xl);
+}
+
+.hero-cta-group {
+  display: flex;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+/* Hero Visual Placeholder - Reserved for animation */
+/* .hero-visual {
+  margin-top: var(--spacing-3xl);
+} */
+
+.visual-placeholder {
+  /* Spacious aspect ratio */
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(
+    135deg,
+    var(--color-accent-light) 0%,
+    #f0f1ff 100%
+  );
+  border-radius: var(--radius-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Subtle border for definition */
+  border: 1px solid rgba(107, 111, 174, 0.1);
+}
+
+.placeholder-content {
+  text-align: center;
+}
+
+.placeholder-text {
+  font-size: var(--font-size-sm);
+  color: var(--color-primary-soft);
+  font-weight: var(--font-weight-medium);
+  opacity: 0.6;
+}
+
+/* ==========================================
+   ABOUT SECTION
+   Problem/solution explanation
+   Two-column layout: text + visual
+   ========================================== */
+.about-section {
+  background-color: var(--color-bg-main);
+  /* Very generous vertical spacing */
+  padding: var(--spacing-4xl) 0;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* Large gap between columns */
+  gap: var(--spacing-3xl);
+  align-items: center;
+}
+
+.section-heading {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  color: var(--color-primary-dark);
+  letter-spacing: -0.02em;
+  margin-bottom: var(--spacing-md);
+}
+
+.about-description p {
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-muted);
+  /* Spacing between paragraphs */
+  margin-bottom: var(--spacing-lg);
+}
+
+.about-description p:last-child {
+  margin-bottom: 0;
+}
+
+.about-visual .visual-placeholder {
+  /* Taller aspect for this section */
+  aspect-ratio: 3 / 2;
+}
+
+/* ==========================================
+   FEATURES SECTION
+   Grid of feature cards
+   FUTURE: Add hover effects, icons, animations
+   ========================================== */
+.features-section {
+  background-color: var(--color-bg-section);
+  padding: var(--spacing-4xl) 0;
+}
+
+.feature-icon {
+  font-size: 3rem;
+  color: var(--color-cta);
+}
+
+.section-header {
+  text-align: center;
+  max-width: var(--max-width-narrow);
+  margin: 0 auto var(--spacing-3xl);
+}
+
+.section-subheading {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-muted);
+  line-height: var(--line-height-relaxed);
+  margin-top: var(--spacing-md);
+}
+
+.carousel {
+  margin: 100px auto;
+  width: 100%;
+  border: 5px solid transparent;
+  display: flex;
+  overflow-x: auto;
+}
+
+.carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.features-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  animation: spin 50s linear infinite;
+  padding-right: 1em;
+}
+
+@keyframes spin {
+  from {
+    translate: 0;
+  }
+  to {
+    translate: -100%;
+  }
+}
+
+.feature-card {
+  flex: 0 0 5em;
+  background-color: var(--color-bg-main);
+  /* Generous internal padding */
+  padding: 2em;
+  height: 20rem;
+  min-width: 20rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: all var(--transition-base);
+  align-content: center;
+}
+
+.feature-icon-placeholder {
+  /* Reserved space for future icons */
+  width: 3rem;
+  height: 3rem;
+  background-color: var(--color-accent-light);
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--spacing-lg);
+}
+
+.feature-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary-dark);
+  margin-bottom: var(--spacing-sm);
+}
+
+.feature-description {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-muted);
+}
+
+/* ==========================================
+   PRICING SECTION
+   Subscription tier comparison
+   FUTURE: Add annual/monthly toggle, badges
+   ========================================== */
+.pricing-section {
+  background-color: var(--color-bg-main);
+  padding: var(--spacing-3xl) 0;
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-xl);
+  margin-top: var(--spacing-3xl);
+}
+
+.pricing-card {
+  background-color: var(--color-bg-section);
+  padding: var(--spacing-2xl);
+  border-radius: var(--radius-lg);
+  border: 2px solid rgba(0, 0, 0, 0.05);
+  /* Relative positioning for badge */
+  position: relative;
+  transition: all var(--transition-base);
+}
+
+/* Featured pricing card (Pro tier) */
+.pricing-card-featured {
+  border-color: var(--color-primary-soft);
+  box-shadow: var(--shadow-lg);
+  /* Slight scale to emphasize */
+  transform: scale(1.02);
+}
+
+.pricing-badge {
+  position: absolute;
+  top: -0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--color-primary-soft);
+  color: #ffffff;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  padding: 0.375rem 1rem;
+  border-radius: var(--radius-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.pricing-header {
+  margin-bottom: var(--spacing-xl);
+  padding-bottom: var(--spacing-lg);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.pricing-tier {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary-dark);
+  margin-bottom: var(--spacing-sm);
+}
+
+.pricing-price {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+}
+
+.price-amount {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary-dark);
+}
+
+.price-period {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.pricing-features {
+  list-style: none;
+  margin-bottom: var(--spacing-xl);
+}
+
+.pricing-features li {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  line-height: var(--line-height-relaxed);
+  /* Spacing between features */
+  padding: var(--spacing-sm) 0;
+  /* Custom bullet point */
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.pricing-features li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--color-primary-soft);
+  font-weight: var(--font-weight-bold);
+}
+
+/* ==========================================
+   CTA SECTION (Get Extension)
+   High-impact conversion section
+   Dark background for visual emphasis
+   FUTURE: Add gradient animation, particles
+   ========================================== */
+.cta-section {
+  background: linear-gradient(
+    180deg,
+    var(--color-bg-main) 0%,
+    var(--color-cta) 100%
+  );
+  /* Massive vertical spacing for impact */
+  padding: var(--spacing-5xl) 0;
+  text-align: center;
+}
+
+.cta-content {
+  max-width: var(--max-width-narrow);
+  margin: 0 auto;
+}
+
+.cta-headline {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  color: var(--color-primary-dark);
+  letter-spacing: -0.02em;
+  margin-bottom: var(--spacing-lg);
+}
+
+.cta-subtext {
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-muted);
+  margin-bottom: var(--spacing-2xl);
+}
+
+/* Override button colors for dark background */
+.cta-section .btn-primary {
+  background-color: #ffffff;
+  color: var(--color-primary-dark);
+}
+
+.cta-section .btn-primary:hover {
+  background-color: var(--color-accent-light);
+  color: var(--color-primary-dark);
+}
+
+/* ==========================================
+   FOOTER
+   Dark footer with navigation and contact
+   ========================================== */
+.footer {
+  background-color: var(--color-primary-dark);
+  color: #140f1a;
+  padding: var(--spacing-xl) 0 var(--spacing-xl);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: var(--spacing-xl);
+  margin-bottom: var(--spacing-xl);
+}
+
+.footer-logo {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: #ffffff;
+  margin-bottom: var(--spacing-md);
+}
+
+.footer-description {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.footer-heading {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: #ffffff;
+  margin-bottom: var(--spacing-md);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.footer-links {
+  list-style: none;
+}
+
+.footer-links li {
+  margin-bottom: var(--spacing-sm);
+}
+
+.footer-links a {
+  font-size: var(--font-size-sm);
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  transition: color var(--transition-base);
+}
+
+.footer-links a:hover {
+  color: #ffffff;
+}
+
+.footer-contact a {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  transition: color var(--transition-base);
+}
+
+.footer-contact a:hover {
+  color: #ffffff;
+}
+
+.footer-bottom {
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.footer-copyright {
+  font-size: var(--font-size-xs);
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN
+   Mobile and tablet adjustments
+   ========================================== */
+
+/* Tablet (768px and below) */
+@media (max-width: 768px) {
+  :root {
+    /* Reduce spacing scale for smaller screens */
+    --spacing-3xl: 4rem;
+    --spacing-4xl: 5rem;
+    --spacing-5xl: 6rem;
+
+    /* Adjust typography scale */
+    --font-size-4xl: 2.5rem;
+    --font-size-3xl: 2rem;
+  }
+
+  .nav-links {
+    gap: var(--spacing-md);
+  }
+
+  .hero-headline {
+    font-size: var(--font-size-3xl);
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-2xl);
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+
+  .pricing-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+
+  .pricing-card-featured {
+    transform: scale(1);
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xl);
+  }
+
+  .hero-cta-group {
+    flex-direction: column;
+  }
+
+  .hero-cta-group .btn {
+    width: 100%;
+  }
+}
+
+/* Mobile (480px and below) */
+@media (max-width: 480px) {
+  .content-container {
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);
+  }
+
+  .nav-container {
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .hero-section {
+    padding: var(--spacing-3xl) 0;
+  }
+}
+
+/* ==========================================
+   ACTIVE NAV LINK INDICATOR
+   Shows which page user is currently on
+   ========================================== */
+.nav-link.active {
+  color: var(--color-primary-dark);
+  font-weight: var(--font-weight-semibold);
+  position: relative;
+}
+
+/* Underline for active navigation link */
+.nav-link.active::after {
+  content: "";
+  position: absolute;
+  bottom: -0.5rem;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--color-cta);
+}
+
+/* ==========================================
+   PAGE HEADER
+   Simple introduction section for templates page
+   ========================================== */
+.page-header {
+  background-color: var(--color-bg-section);
+  padding: var(--spacing-3xl) 0 var(--spacing-xl);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.header-container {
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+  text-align: center;
+}
+
+.page-title {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary-dark);
+  letter-spacing: -0.02em;
+  margin-bottom: var(--spacing-sm);
+}
+
+.page-subtitle {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-muted);
+  line-height: var(--line-height-relaxed);
+}
+
+/* ==========================================
+   CATEGORY FILTER BAR
+   Sticky horizontal pills for filtering templates
+   Notion-inspired design
+   ========================================== */
+.filter-section {
+  background-color: var(--color-bg-section);
+  padding: var(--spacing-lg) 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  top: 73px; /* Adjust based on your navbar height */
+  z-index: 100;
+  /* Slight blur for modern glass effect */
+  backdrop-filter: blur(10px);
+}
+
+.filter-container {
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+}
+
+/* Horizontal scrollable container for filter pills */
+.filter-pills {
+  display: flex;
+  gap: var(--spacing-sm);
+  overflow-x: auto;
+  /* Hide scrollbar but keep scroll functionality */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  /* Smooth scroll on mobile */
+  scroll-behavior: smooth;
+}
+
+.filter-pills::-webkit-scrollbar {
+  display: none;
+}
+
+/* Individual filter pill button */
+.filter-pill {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-muted);
+  background-color: transparent;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius-md);
+  padding: 0.625rem 1.25rem;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  /* Prevent text from wrapping */
+  white-space: nowrap;
+  /* Remove default button styling */
+  outline: none;
+}
+
+.filter-pill:hover {
+  border-color: var(--color-primary-soft);
+  color: var(--color-primary-dark);
+  background-color: rgba(223, 194, 255, 0.1);
+}
+
+/* Active filter pill state */
+.filter-pill.active {
+  background-color: var(--color-cta);
+  border-color: var(--color-cta);
+  color: #ffffff;
+}
+
+/* ==========================================
+   TEMPLATES GRID SECTION
+   Main content area with template cards
+   ========================================== */
+.templates-section {
+  background-color: var(--color-bg-main);
+  padding: var(--spacing-2xl) 0 var(--spacing-3xl);
+  min-height: 60vh;
+}
+
+.templates-container {
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+}
+
+/* Grid layout - 3 columns on desktop, responsive on smaller screens */
+.templates-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-lg);
+  /* Smooth transition for filtering animations */
+  transition: all var(--transition-base);
+}
+
+/* ==========================================
+   TEMPLATE CARD
+   Individual template item in grid
+   Notion-inspired clean card design
+   ========================================== */
+.template-card {
+  background-color: var(--color-bg-section);
+  border: 2px solid rgba(0, 0, 0, 0.05);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  transition: all var(--transition-base);
+  /* Flexbox for vertical layout */
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  /* Smooth appearance when filtering */
+  opacity: 1;
+}
+
+/* Card hover effect - subtle lift and shadow */
+.template-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--color-primary-soft);
+}
+
+/* Card header - Contains category tag and badges */
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  flex-wrap: wrap;
+}
+
+/* ==========================================
+   CATEGORY TAGS
+   Colored labels for template categories
+   ========================================== */
+.category-tag {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Category tag color variants */
+.tag-resume {
+  background-color: rgba(201, 154, 255, 0.15);
+  color: var(--color-cta);
+}
+
+.tag-academic {
+  background-color: rgba(230, 232, 255, 0.5);
+  color: #6b6fae;
+}
+
+.tag-corporate {
+  background-color: rgba(223, 194, 255, 0.2);
+  color: var(--color-primary-dark);
+}
+
+.tag-technical {
+  background-color: rgba(201, 154, 255, 0.15);
+  color: #8b7dff;
+}
+
+/* ==========================================
+   TEMPLATE BADGES
+   Status indicators (ATS, Most Used, Pro, etc.)
+   ========================================== */
+.badge {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  padding: 0.25rem 0.625rem;
+  border-radius: var(--radius-sm);
+}
+
+/* Badge color variants */
+.badge-popular {
+  background-color: #fff4e6;
+  color: #ff9500;
+}
+
+.badge-student {
+  background-color: #e6f7ff;
+  color: #0084ff;
+}
+
+.badge-academic {
+  background-color: rgba(230, 232, 255, 0.8);
+  color: #6b6fae;
+}
+
+.badge-pro {
+  background: linear-gradient(
+    135deg,
+    var(--color-cta) 0%,
+    var(--color-primary-soft) 100%
+  );
+  color: #ffffff;
+}
+
+/* ==========================================
+   TEMPLATE CARD CONTENT
+   Name and description text
+   ========================================== */
+.template-name {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary-dark);
+  line-height: var(--line-height-tight);
+  margin: 0;
+}
+
+.template-description {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  line-height: var(--line-height-relaxed);
+  /* Flex-grow pushes button to bottom of card */
+  flex-grow: 1;
+}
+
+/* ==========================================
+   APPLY BUTTON
+   Template-specific button styling
+   ========================================== */
+.btn-apply {
+  width: 100%;
+  background-color: transparent;
+  color: var(--color-primary-dark);
+  border: 2px solid var(--color-primary-dark);
+  font-size: var(--font-size-sm);
+  padding: 0.75rem 1rem;
+  margin-top: auto;
+  /* Ensures button stays at bottom */
+}
+
+.btn-apply:hover {
+  background-color: var(--color-cta);
+  border-color: var(--color-cta);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+/* Applied state (temporary visual feedback) */
+.btn-apply.applied {
+  background-color: var(--color-cta);
+  border-color: var(--color-cta);
+  color: #ffffff;
+}
+
+/* ==========================================
+   FILTERING ANIMATIONS
+   Smooth show/hide effects for template cards
+   ========================================== */
+
+/* Hidden state for filtered out cards */
+.template-card.hidden {
+  display: none;
+}
+
+/* Fade out animation when filtering */
+.template-card.fade-out {
+  opacity: 0;
+  transform: scale(0.95);
+  transition:
+    opacity var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+/* Fade in animation when showing */
+.template-card.fade-in {
+  opacity: 1;
+  transform: scale(1);
+  transition:
+    opacity var(--transition-base),
+    transform var(--transition-base);
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN - TEMPLATES PAGE
+   Tablet and mobile adjustments
+   ========================================== */
+
+/* Tablet: 768px and below */
+@media (max-width: 768px) {
+  /* 2-column grid on tablets */
+  .templates-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+  }
+
+  /* Adjust filter section sticky positioning */
+  .filter-section {
+    position: relative;
+    top: 0;
+  }
+
+  /* Smaller page title on tablets */
+  .page-title {
+    font-size: var(--font-size-2xl);
+  }
+}
+
+/* Mobile: 480px and below */
+@media (max-width: 480px) {
+  /* Single column grid on mobile */
+  .templates-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Reduce padding on mobile */
+  .page-header {
+    padding: var(--spacing-xl) 0 var(--spacing-md);
+  }
+
+  .templates-section {
+    padding: var(--spacing-lg) 0 var(--spacing-2xl);
+  }
+
+  /* Even smaller title on mobile */
+  .page-title {
+    font-size: var(--font-size-xl);
+  }
+
+  /* Adjust filter pills for mobile scrolling */
+  .filter-pills {
+    padding-bottom: var(--spacing-xs);
+  }
+}
+
+/* ==========================================
+   EMPTY STATE (OPTIONAL)
+   Shown when no templates match filter
+   Uncomment if you want to show this
+   ========================================== */
+
+.empty-state {
+  text-align: center;
+  padding: var(--spacing-4xl) var(--spacing-lg);
+  color: var(--color-text-muted);
+}
+
+.empty-state-icon {
+  font-size: var(--font-size-4xl);
+  margin-bottom: var(--spacing-md);
+  opacity: 0.3;
+}
+
+.empty-state-text {
+  font-size: var(--font-size-lg);
+  margin-bottom: var(--spacing-sm);
+}
+
+.empty-state-subtext {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+/* ==========================================
+   END OF TEMPLATES PAGE STYLES
+   
+   CUSTOMIZATION TIPS:
+   - Change card hover effects in .template-card:hover
+   - Adjust grid columns in .templates-grid
+   - Modify badge colors in .badge-* classes
+   - Update category tag colors in .tag-* classes
+   - Change filter pill appearance in .filter-pill
+   
+   ========================================== */
+/* ============================================
+   GET EXTENSION PAGE - ADDITIONAL STYLES
+   Append this to your main styles.css file
+   Grammarly-inspired install page
+   ============================================ */
+
+/* ==========================================
+   PAGE HEADER / MINI HERO
+   Top section with logo and value prop
+   ========================================== */
+.get-extension-header {
+  background-color: var(--color-bg-section);
+  padding: var(--spacing-2xl) 0 var(--spacing-3xl);
+  text-align: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.header-logo {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary-dark);
+  letter-spacing: -0.02em;
+  margin-bottom: var(--spacing-xs);
+}
+
+.header-tagline {
+  font-size: var(--font-size-lg);
+  color: var(--color-cta);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--spacing-lg);
+}
+
+.header-value-prop {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary-dark);
+  line-height: var(--line-height-tight);
+  margin-bottom: var(--spacing-2xl);
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ==========================================
+   PRIMARY CTA SECTION
+   Main conversion button - most important element
+   ========================================== */
+.primary-cta-section {
+  background-color: var(--color-bg-section);
+  padding: 0 0 var(--spacing-3xl);
+  text-align: center;
+}
+
+.cta-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+}
+
+/* Main CTA button - visually dominant */
+.btn-install-chrome {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: #ffffff;
+  background-color: var(--color-cta);
+  padding: var(--spacing-lg) var(--spacing-3xl);
+  border: none;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all var(--transition-base);
+  box-shadow: 0 8px 24px rgba(201, 154, 255, 0.4);
+}
+
+.btn-install-chrome:hover {
+  background-color: var(--color-primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(201, 154, 255, 0.5);
+}
+
+.btn-install-chrome:active {
+  transform: translateY(0);
+}
+
+/* Chrome icon in button */
+.chrome-icon {
+  width: 1.75rem;
+  height: 1.75rem;
+  /* Simple Chrome-like icon using CSS */
+  background: radial-gradient(circle, #ffffff 40%, transparent 40%);
+  border-radius: 50%;
+}
+
+/* Subtext below CTA */
+.cta-subtext {
+  margin-top: var(--spacing-md);
+  font-size: var(--font-size-base);
+  color: var(--color-text-muted);
+}
+
+.cta-subtext-highlight {
+  color: var(--color-primary-dark);
+  font-weight: var(--font-weight-medium);
+}
+
+/* ==========================================
+   VISUAL DEMO SECTION
+   Placeholder for demo GIF/video
+   ========================================== */
+.demo-section {
+  background-color: var(--color-bg-main);
+  padding: var(--spacing-3xl) 0;
+}
+
+.demo-container {
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+  text-align: center;
+}
+
+.demo-label {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary-dark);
+  margin-bottom: var(--spacing-xl);
+}
+
+.demo-placeholder {
+  background-color: var(--color-bg-section);
+  border: 2px solid rgba(0, 0, 0, 0.05);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-3xl) var(--spacing-2xl);
+  /* Aspect ratio for demo area */
+  aspect-ratio: 16 / 9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    135deg,
+    var(--color-accent-light) 0%,
+    #f0f1ff 100%
+  );
+}
+
+.demo-placeholder-text {
+  font-size: var(--font-size-lg);
+  color: var(--color-primary-soft);
+  font-weight: var(--font-weight-medium);
+  opacity: 0.7;
+}
+
+/* ==========================================
+   HOW IT WORKS SECTION
+   3-step process explanation
+   ========================================== */
+.how-it-works-section {
+  background-color: var(--color-bg-section);
+  padding: var(--spacing-3xl) 0;
+}
+
+.how-it-works-container {
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+}
+
+.how-it-works-title {
+  text-align: center;
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary-dark);
+  margin-bottom: var(--spacing-2xl);
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-xl);
+}
+
+.step-card {
+  text-align: center;
+  padding: var(--spacing-xl);
+}
+
+.step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  background: linear-gradient(
+    135deg,
+    var(--color-cta) 0%,
+    var(--color-primary-soft) 100%
+  );
+  color: #ffffff;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  border-radius: 50%;
+  margin-bottom: var(--spacing-md);
+}
+
+.step-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary-dark);
+  margin-bottom: var(--spacing-sm);
+}
+
+.step-description {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  line-height: var(--line-height-relaxed);
+}
+
+/* ==========================================
+   FEATURES SECTION
+   What FormatX gives you
+   ========================================== */
+.features-section {
+  background-color: var(--color-bg-main);
+  padding: var(--spacing-3xl) 0;
+}
+
+.features-container {
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+}
+
+.features-title {
+  text-align: center;
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary-dark);
+  margin-bottom: var(--spacing-2xl);
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-lg);
+}
+
+.feature-item {
+  background-color: var(--color-bg-section);
+  padding: var(--spacing-xl);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+}
+
+.feature-icon {
+  font-size: var(--font-size-2xl);
+  flex-shrink: 0;
+}
+
+.feature-content {
+  flex: 1;
+}
+
+.feature-name {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary-dark);
+  margin-bottom: var(--spacing-xs);
+}
+
+.feature-description {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  line-height: var(--line-height-relaxed);
+}
+
+/* ==========================================
+   TRUST & SAFETY SECTION (VERY IMPORTANT)
+   Build confidence before install
+   ========================================== */
+.trust-section {
+  background-color: var(--color-bg-section);
+  padding: var(--spacing-3xl) 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.trust-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+  text-align: center;
+}
+
+.trust-title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary-dark);
+  margin-bottom: var(--spacing-xl);
+}
+
+.trust-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-lg);
+}
+
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md);
+  background-color: rgba(201, 154, 255, 0.05);
+  border-radius: var(--radius-md);
+}
+
+.trust-icon {
+  font-size: var(--font-size-xl);
+  flex-shrink: 0;
+}
+
+.trust-text {
+  text-align: left;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-primary-dark);
+}
+
+/* ==========================================
+   SECONDARY CTA SECTION
+   Repeat CTA near bottom
+   ========================================== */
+.secondary-cta-section {
+  background-color: var(--color-bg-main);
+  padding: var(--spacing-3xl) 0;
+  text-align: center;
+}
+
+.secondary-cta-title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary-dark);
+  margin-bottom: var(--spacing-xl);
+}
+
+/* ==========================================
+   MINIMAL FOOTER
+   Simple footer with essentials
+   ========================================== */
+.get-extension-footer {
+  background-color: var(--color-bg-section);
+  padding: var(--spacing-2xl) 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.footer-container {
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+  text-align: center;
+}
+
+.footer-logo {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary-dark);
+  margin-bottom: var(--spacing-sm);
+}
+
+.footer-link {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: color var(--transition-base);
+}
+
+.footer-link:hover {
+  color: var(--color-primary-dark);
+}
+
+.footer-copyright {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN
+   Mobile and tablet adjustments
+   ========================================== */
+
+/* Tablet: 768px and below */
+@media (max-width: 768px) {
+  .header-value-prop {
+    font-size: var(--font-size-xl);
+  }
+
+  .btn-install-chrome {
+    font-size: var(--font-size-lg);
+    padding: var(--spacing-md) var(--spacing-2xl);
+  }
+
+  .steps-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .trust-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Mobile: 480px and below */
+@media (max-width: 480px) {
+  .get-extension-header {
+    padding: var(--spacing-xl) 0 var(--spacing-2xl);
+  }
+
+  .header-logo {
+    font-size: var(--font-size-2xl);
+  }
+
+  .header-value-prop {
+    font-size: var(--font-size-lg);
+  }
+
+  .btn-install-chrome {
+    width: 100%;
+    font-size: var(--font-size-base);
+  }
+
+  .demo-section,
+  .how-it-works-section,
+  .features-section,
+  .trust-section,
+  .secondary-cta-section {
+    padding: var(--spacing-2xl) 0;
+  }
+}

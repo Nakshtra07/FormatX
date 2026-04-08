@@ -6,7 +6,7 @@ sidebar_position: 1
 
 ## Executive Summary
 
-The **AI Document Reformatter** (internal name: `amarika`) is a web-based application designed to restructure and format unorganized text into professional academic documents using AI.
+The **AI Document Reformatter** (internal name: `formatx`) is a web-based application designed to restructure and format unorganized text into professional academic documents using AI.
 
 **Key Findings:**
 -   **AI Engine:** The project actively uses **Google Gemini (Flash 2.5)** via the `google-generativeai` library.

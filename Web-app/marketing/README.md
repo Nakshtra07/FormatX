@@ -1,8 +1,8 @@
-# Amarika Landing Page
+# FormatX Landing Page
 
 > AI-Powered Document Formatting Web App
 
-A modern, responsive landing page for the Amarika web application that turns messy AI-generated content into publication-ready documents.
+A modern, responsive landing page for the FormatX web application that turns messy AI-generated content into publication-ready documents.
 
 ---
 
@@ -35,7 +35,7 @@ A modern, responsive landing page for the Amarika web application that turns mes
 
 ```
 know_code_prealpha/
-├── marketing/               # (Renamed from AMARIKA_FRONTEND_FINAL)
+├── marketing/               # (Renamed from FORMATX_FRONTEND_FINAL)
 │   ├── index.html           # Main Entry Point
 │   ├── template.html        # Template Gallery
 │   └── ...

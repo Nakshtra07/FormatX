@@ -1,14 +1,14 @@
 /* ========================================
-   Amarika Design System for Know Code
+   FormatX Design System for Know Code
    Modern, Premium UI with Purple-Lavender Theme
    ======================================== */
 
 /* ==========================================
    CSS VARIABLES (DESIGN TOKENS)
-   From Amarika Design System
+   From FormatX Design System
    ========================================== */
 :root {
-  /* Amarika Color Palette */
+  /* FormatX Color Palette */
   --color-bg-main: #faf5ff;
   --color-bg-section: #ffffff;
   --color-primary-dark: #140f1a;
@@ -57,7 +57,7 @@
   /* Typography - Inter font */
   --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
 
-  /* Font Sizes (Amarika scale) */
+  /* Font Sizes (FormatX scale) */
   --font-size-xs: 0.875rem;
   --font-size-sm: 1rem;
   --font-size-base: 1.125rem;
@@ -108,7 +108,7 @@
   --radius-2xl: 2rem;
   --radius-full: 9999px;
 
-  /* Shadows - Amarika style (soft, modern) */
+  /* Shadows - FormatX style (soft, modern) */
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
   --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.1);
@@ -150,7 +150,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Amarika gradient background effect */
+/* FormatX gradient background effect */
 body::before {
   content: '';
   position: fixed;
@@ -210,7 +210,7 @@ p {
 }
 
 /* ==========================================
-   BUTTON SYSTEM - Amarika Style
+   BUTTON SYSTEM - FormatX Style
    ========================================== */
 .btn {
   display: inline-flex;
@@ -285,7 +285,7 @@ p {
 }
 
 /* ==========================================
-   CARDS - Amarika Style
+   CARDS - FormatX Style
    ========================================== */
 .card {
   background: var(--bg-card);
@@ -308,7 +308,7 @@ p {
 }
 
 /* ==========================================
-   INPUTS - Amarika Style
+   INPUTS - FormatX Style
    ========================================== */
 .input {
   width: 100%;
@@ -395,7 +395,7 @@ p {
 }
 
 /* ==========================================
-   NAVBAR - Amarika Style
+   NAVBAR - FormatX Style
    ========================================== */
 .navbar {
   position: fixed;
@@ -444,7 +444,7 @@ p {
 }
 
 /* ==========================================
-   LANDING PAGE - Amarika Style
+   LANDING PAGE - FormatX Style
    ========================================== */
 .landing {
   min-height: 100vh;
@@ -515,7 +515,7 @@ p {
   color: var(--color-text-muted);
 }
 
-/* Trust Badges - Amarika Style */
+/* Trust Badges - FormatX Style */
 .trust-badges {
   display: flex;
   gap: var(--spacing-md);
@@ -536,7 +536,7 @@ p {
   border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
-/* Features Section - Amarika Style */
+/* Features Section - FormatX Style */
 .features {
   padding: var(--spacing-4xl) var(--spacing-lg);
   background: var(--color-bg-section);
@@ -582,7 +582,7 @@ p {
 }
 
 /* ==========================================
-   DASHBOARD - Amarika Style
+   DASHBOARD - FormatX Style
    ========================================== */
 .dashboard {
   min-height: 100vh;
@@ -611,7 +611,7 @@ p {
   font-size: var(--font-size-lg);
 }
 
-/* Format Form - Amarika Style */
+/* Format Form - FormatX Style */
 .format-form {
   display: flex;
   flex-direction: column;
@@ -663,7 +663,7 @@ p {
   color: var(--color-text-muted);
 }
 
-/* Status Messages - Amarika Style */
+/* Status Messages - FormatX Style */
 .status {
   padding: var(--spacing-md);
   border-radius: var(--radius-lg);
@@ -795,7 +795,7 @@ p {
 }
 
 /* ==========================================
-   CUSTOM TEMPLATE UPLOAD - Amarika Style
+   CUSTOM TEMPLATE UPLOAD - FormatX Style
    ========================================== */
 .upload-card {
   background: var(--color-bg-main);
@@ -847,7 +847,7 @@ p {
 }
 
 /* ==========================================
-   AUTH PAGE - Connects to Amarika Landing
+   AUTH PAGE - Connects to FormatX Landing
    ========================================== */
 .auth-page {
   min-height: 100vh;

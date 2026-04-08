@@ -58,7 +58,7 @@ function Landing({ onLogin }) {
             <div className="auth-wrapper animate-fadeIn">
                 {/* Logo */}
                 <div className="auth-logo">
-                    <img src="/logo.png" alt="Amarika Logo" style={{ height: '80px', width: 'auto', marginBottom: '1rem' }} />
+                    <img src="/logo.png" alt="FormatX Logo" style={{ height: '80px', width: 'auto', marginBottom: '1rem' }} />
                 </div>
 
                 <h1>Welcome Back</h1>
@@ -98,7 +98,7 @@ function Landing({ onLogin }) {
 
                 {/* Back to landing link */}
                 <a href="/" className="auth-back-link">
-                    ← Back to Amarika.com
+                    ← Back to FormatX.com
                 </a>
             </div>
         </div>

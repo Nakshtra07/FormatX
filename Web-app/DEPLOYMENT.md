@@ -1,4 +1,4 @@
-# Deploying Amarika to Vercel
+# Deploying FormatX to Vercel
 
 Since this project has multiple components (Marketing Site, Web App, Backend), the best way to deploy on Vercel is to create **three separate projects** from the same GitHub repository.
 
@@ -13,23 +13,23 @@ Since this project has multiple components (Marketing Site, Web App, Backend), t
 
 1.  Click **"Add New Project"** in Vercel.
 2.  Import your repository.
-3.  **Project Name:** `amarika-api` (example).
+3.  **Project Name:** `formatx-api` (example).
 4.  **Framework Preset:** Select `Other`.
 5.  **Root Directory:** Click "Edit" and select `backend`.
 6.  **Environment Variables:** Add your secrets from `.env` here (e.g., `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, etc.).
 7.  Click **Deploy**.
-8.  **Copy the Domain:** Once deployed, copy the URL (e.g., `https://amarika-api.vercel.app`). Note: You might need to add `/docs` to see Swagger UI, but the base URL is what we need.
+8.  **Copy the Domain:** Once deployed, copy the URL (e.g., `https://formatx-api.vercel.app`). Note: You might need to add `/docs` to see Swagger UI, but the base URL is what we need.
 
 ---
 
 ## 2. Deploy the Web App (Frontend)
 1.  Click **"Add New Project"**.
 2.  Import the same repository.
-3.  **Project Name:** `amarika-app`.
+3.  **Project Name:** `formatx-app`.
 4.  **Framework Preset:** `Vite`.
 5.  **Root Directory:** Click "Edit" and select `frontend`.
 6.  **Environment Variables:**
-    *   `VITE_API_URL`: Paste your Backend URL (e.g., `https://amarika-api.vercel.app`).
+    *   `VITE_API_URL`: Paste your Backend URL (e.g., `https://formatx-api.vercel.app`).
     *   `VITE_GOOGLE_CLIENT_ID`: Your Google OAuth Client ID.
 7.  Click **Deploy**.
 
@@ -38,7 +38,7 @@ Since this project has multiple components (Marketing Site, Web App, Backend), t
 ## 3. Deploy the Marketing Site
 1.  Click **"Add New Project"**.
 2.  Import the same repository.
-3.  **Project Name:** `amarika-marketing`.
+3.  **Project Name:** `formatx-marketing`.
 4.  **Framework Preset:** `Other` (or just leave default, Vercel detects HTML).
 5.  **Root Directory:** Click "Edit" and select `marketing`.
 6.  Click **Deploy**.

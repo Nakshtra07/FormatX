@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Introduction
 
-**Amarika (AI Document Reformatter)** is an intelligent tool designed to transform unstructured text into professionally formatted academic documents.
+**FormatX (AI Document Reformatter)** is an intelligent tool designed to transform unstructured text into professionally formatted academic documents.
 
 ## Key Features
 

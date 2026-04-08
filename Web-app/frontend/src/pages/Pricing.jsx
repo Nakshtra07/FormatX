@@ -76,8 +76,8 @@ function PaymentModal({ plan, onClose, onSuccess, user }) {
                 {/* Header */}
                 <div className="payment-modal-header">
                     <div className="payment-modal-brand">
-                        <img src="/logo.png" alt="Amarika" style={{ height: '28px' }} />
-                        <span>Amarika</span>
+                        <img src="/logo.png" alt="FormatX" style={{ height: '28px' }} />
+                        <span>FormatX</span>
                     </div>
                     <button className="payment-close-btn" onClick={onClose}>
                         <X size={20} />
@@ -315,8 +315,8 @@ function Pricing({ user, accessToken, onSubscriptionChange }) {
             <nav className="navbar">
                 <div className="container navbar-content">
                     <div className="navbar-brand">
-                        <img src="/logo.png" alt="Amarika" style={{ height: '40px', width: 'auto', marginRight: '0.75rem' }} />
-                        Amarika
+                        <img src="/logo.png" alt="FormatX" style={{ height: '40px', width: 'auto', marginRight: '0.75rem' }} />
+                        FormatX
                     </div>
                     <div className="navbar-user">
                         <Link to="/dashboard" className="btn btn-secondary" style={{ fontSize: '0.875rem', padding: '0.5rem 1rem' }}>
