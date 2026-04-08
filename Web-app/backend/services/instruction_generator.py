@@ -90,7 +90,36 @@ class InstructionGenerator:
             for bullet_request in formatted_content["bullets"]:
                 requests.append(bullet_request)
         
-        # Step 7: Set document margins and page setup
+        # Step 7: Apply double column layout if requested
+        columns = template.get("columns", 1)
+        if columns > 1 and "columns_break_index" in formatted_content:
+            break_idx = formatted_content["columns_break_index"]
+            # Only apply if the break index is valid
+            if break_idx > 1 and break_idx < len(formatted_content["text"]):
+                requests.append({
+                    "insertSectionBreak": {
+                        "sectionType": "CONTINUOUS",
+                        "location": {"index": break_idx}
+                    }
+                })
+                # The section break increases the document length by 1, so the new section starts at break_idx + 1
+                col_props = [{"width": {"magnitude": 234, "unit": "PT"}, "paddingEnd": {"magnitude": 18, "unit": "PT"}} for _ in range(columns)]
+                col_props[-1].pop("paddingEnd") # Last column has no padding
+                
+                requests.append({
+                    "updateSectionStyle": {
+                        "range": {
+                            "startIndex": break_idx + 1,
+                            "endIndex": break_idx + 1
+                        },
+                        "sectionStyle": {
+                            "columnProperties": col_props
+                        },
+                        "fields": "columnProperties"
+                    }
+                })
+
+        # Step 8: Set document margins and page setup
         requests.extend(self._create_page_setup_requests(template))
         
         return requests
@@ -407,6 +436,7 @@ class InstructionGenerator:
         current_index = 1  # Google Docs is 1-indexed
         
         title = ai_result.get("title", "Untitled Document")
+        authors = ai_result.get("authors", "")
         abstract = ai_result.get("abstract", "")
         keywords = ai_result.get("keywords", "")
         sections = ai_result.get("sections", [])
@@ -446,6 +476,30 @@ class InstructionGenerator:
             ))
             
             current_index += len(title_text)
+            
+        # ===== AUTHORS =====
+        if authors:
+            authors_text = f"{authors}\n\n"
+            text_parts.append(authors_text)
+            
+            paragraph_styles.append(self._create_paragraph_style(
+                current_index,
+                current_index + len(authors_text) - 1,
+                "SUBTITLE",
+                alignment=subtitle_style.get("alignment", "CENTER"),
+                space_after=subtitle_style.get("spaceAfter", 24)
+            ))
+            
+            text_styles.append(self._create_text_style(
+                current_index,
+                current_index + len(authors),
+                font_size=subtitle_style.get("fontSize", 12),
+                italic=subtitle_style.get("italic", False),
+                bold=False,
+                font_family=font_family
+            ))
+            
+            current_index += len(authors_text)
         
         # ===== ABSTRACT =====
         if abstract:
@@ -496,6 +550,8 @@ class InstructionGenerator:
             ))
             
             current_index += len(keywords_text)
+            
+        columns_break_index = current_index
         
         # ===== SECTIONS =====
         for section in sections:
@@ -673,7 +729,8 @@ class InstructionGenerator:
             "text": "".join(text_parts),
             "paragraph_styles": paragraph_styles,
             "text_styles": text_styles,
-            "bullets": bullets
+            "bullets": bullets,
+            "columns_break_index": columns_break_index
         }
     
     def _detect_list_type(self, content: str) -> str:

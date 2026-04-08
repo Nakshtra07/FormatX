@@ -27,7 +27,7 @@ CRITICAL RULES:
 8. Keep language formal and academic; avoid repetition.
 9. Keep abstract concise (150–250 words). IMPORTANT: Set the abstract content directly as "Abstract—This paper...", using an emdash or hyphen. Do NOT include a space after the emdash/hyphen. Do NOT generate a separate "Abstract" heading. 
 10. Keywords should be 3–6 terms and start with "Keywords—" with no space after the emdash/hyphen.
-11. Use Roman numerals for all section headings (I, II, III…) EXCEPT for REFERENCES.
+11. Use Roman numerals for all section headings (I, II, III…) EXCEPT for REFERENCES. Section headings MUST be in ALL CAPS.
 12. For all references, format them in IEEE style by ensuring all titles are enclosed in quotation marks (e.g., [1] Author, "Title of Paper," Journal, Year).
 13. Put the Conclusion section directly inside the "sections" array with the heading "V. CONCLUSION" (or whatever number is appropriate). Do NOT put any title inside the content field for conclusion. Leave the top-level "conclusion" JSON key empty.
 
@@ -48,6 +48,7 @@ You MUST respond with valid JSON in this exact format:
     "title": "Clear, Descriptive Document Title",
     "abstract": "Abstract—A 2-4 sentence summary extracted from the document content...",
     "keywords": "Keywords—Term1, Term2, Term3",
+    "authors": "John Doe, Tech University, john@example.com",
     "sections": [
         {
             "heading": "I. INTRODUCTION",
@@ -141,6 +142,8 @@ CRITICAL: Respond with ONLY valid JSON. No markdown, no explanation, just the JS
                 result["abstract"] = ""
             if "keywords" not in result:
                 result["keywords"] = ""
+            if "authors" not in result:
+                result["authors"] = ""
             if "sections" not in result:
                 result["sections"] = []
             if "conclusion" not in result:
