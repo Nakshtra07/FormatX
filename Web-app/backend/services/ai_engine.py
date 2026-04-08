@@ -7,6 +7,8 @@ Includes Demo Mode for testing when rate limited.
 import json
 import re
 import google.generativeai as genai
+from openai import AsyncOpenAI
+import os
 
 from config import settings
 
@@ -71,12 +73,17 @@ IMPORTANT:
 - Ensure all JSON strings are properly escaped (especially quotes and newlines)"""
 
     def __init__(self):
-        """Initialize the AI engine with Gemini client."""
+        """Initialize the AI engine with Gemini and OpenAI clients."""
         if not settings.DEMO_MODE:
             genai.configure(api_key=settings.GEMINI_API_KEY)
             self.model = genai.GenerativeModel(settings.GEMINI_MODEL)
+            if settings.OPENAI_API_KEY:
+                self.openai_client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
+            else:
+                self.openai_client = None
         else:
             self.model = None
+            self.openai_client = None
     
     async def process_document(self, text: str, template: dict) -> dict:
         """
@@ -119,15 +126,31 @@ Document content (preserve ALL of this content in your output):
 CRITICAL: Respond with ONLY valid JSON. No markdown, no explanation, just the JSON object."""
 
         try:
-            response = self.model.generate_content(
-                user_prompt,
-                generation_config=genai.types.GenerationConfig(
-                    temperature=0.1,  # Lower for consistent output
-                    max_output_tokens=8000,  # Higher for longer documents
+            try:
+                response = self.model.generate_content(
+                    user_prompt,
+                    generation_config=genai.types.GenerationConfig(
+                        temperature=0.1,  # Lower for consistent output
+                        max_output_tokens=8000,  # Higher for longer documents
+                    )
                 )
-            )
-            
-            content = response.text.strip()
+                content = response.text.strip()
+            except Exception as gemini_err:
+                if self.openai_client:
+                    # Fallback to OpenAI
+                    completion = await self.openai_client.chat.completions.create(
+                        model="gpt-4o-mini",
+                        messages=[
+                            {"role": "system", "content": "You are a specialized JSON AI Engine. Output purely strictly valid JSON."},
+                            {"role": "user", "content": user_prompt}
+                        ],
+                        temperature=0.1,
+                        max_tokens=8000,
+                        response_format={"type": "json_object"}
+                    )
+                    content = completion.choices[0].message.content.strip()
+                else:
+                    raise gemini_err
             
             # Robust JSON extraction
             content = self._extract_json(content)
