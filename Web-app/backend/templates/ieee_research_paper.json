@@ -7,14 +7,14 @@
         {"name": "Authors", "style": "SUBTITLE", "required": true},
         {"name": "Abstract", "style": "NORMAL_TEXT", "required": true},
         {"name": "Keywords", "style": "NORMAL_TEXT", "required": true},
-        {"name": "Introduction", "style": "HEADING_1", "required": true},
-        {"name": "Related Work", "style": "HEADING_1", "required": false},
-        {"name": "Methodology", "style": "HEADING_1", "required": true},
-        {"name": "Experimental Setup", "style": "HEADING_1", "required": false},
-        {"name": "Results and Discussion", "style": "HEADING_1", "required": true},
-        {"name": "Conclusion", "style": "HEADING_1", "required": true},
-        {"name": "Future Work", "style": "HEADING_1", "required": false},
-        {"name": "Acknowledgments", "style": "HEADING_1", "required": false},
+        {"name": "I. Introduction", "style": "HEADING_1", "required": true},
+        {"name": "II. Related Work", "style": "HEADING_1", "required": false},
+        {"name": "III. Methodology", "style": "HEADING_1", "required": true},
+        {"name": "IV. Experimental Setup", "style": "HEADING_1", "required": false},
+        {"name": "V. Results and Discussion", "style": "HEADING_1", "required": true},
+        {"name": "VI. Conclusion", "style": "HEADING_1", "required": true},
+        {"name": "VII. Future Work", "style": "HEADING_1", "required": false},
+        {"name": "VIII. Acknowledgments", "style": "HEADING_1", "required": false},
         {"name": "References", "style": "HEADING_1", "required": true}
     ],
     "styles": {
@@ -25,21 +25,23 @@
             "spaceAfter": 12
         },
         "SUBTITLE": {
-            "fontSize": 11,
+            "fontSize": 10,
             "bold": false,
-            "italic": true,
+            "italic": false,
             "alignment": "CENTER",
             "spaceAfter": 18
         },
         "HEADING_1": {
-            "fontSize": 12,
+            "fontSize": 10,
             "bold": true,
+            "smallCaps": false,
+            "allCaps": true,
             "alignment": "START",
             "spaceAfter": 6,
             "spaceBefore": 12
         },
         "HEADING_2": {
-            "fontSize": 11,
+            "fontSize": 10,
             "bold": true,
             "italic": true,
             "alignment": "START",
@@ -51,16 +53,21 @@
             "bold": false,
             "alignment": "JUSTIFIED",
             "lineSpacing": 1.0,
-            "spaceAfter": 6,
-            "firstLineIndent": 18
+            "spaceAfter": 0,
+            "firstLineIndent": 7.2
         }
     },
     "font": "Times New Roman",
     "columns": 2,
+    "columnSpacing": 14.4,
+    "pageSize": {
+        "width": 595.276,
+        "height": 841.89
+    },
     "margins": {
         "top": 54,
-        "bottom": 54,
-        "left": 54,
-        "right": 54
+        "bottom": 72,
+        "left": 45,
+        "right": 45
     }
 }

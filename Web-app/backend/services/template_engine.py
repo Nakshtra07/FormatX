@@ -46,12 +46,12 @@ class TemplateEngine:
                     "spaceAfter": 18
                 },
                 "HEADING_1": {
-                    "fontSize": 12,
-                    "bold": True,
-                    "alignment": "START",
+                    "fontSize": 10,
+                    "bold": False,
+                    "alignment": "CENTER",
                     "spaceAfter": 6,
                     "spaceBefore": 12,
-                    "allCaps": True
+                    "smallCaps": True
                 },
                 "HEADING_2": {
                     "fontSize": 11,

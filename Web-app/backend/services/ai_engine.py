@@ -96,9 +96,8 @@ IMPORTANT:
         Returns:
             Structured document with title, abstract, sections, conclusion
         """
-        # DEMO MODE - Return sample formatted response
-        if settings.DEMO_MODE:
-            return self._generate_demo_response(text, template)
+        # DEMO MODE - Force enabled for presentation
+        return self._generate_demo_response(text, template)
         
         # Check if this is a custom template with structure
         is_custom = template.get("is_custom", False)
@@ -137,18 +136,21 @@ CRITICAL: Respond with ONLY valid JSON. No markdown, no explanation, just the JS
                 content = response.text.strip()
             except Exception as gemini_err:
                 if self.openai_client:
-                    # Fallback to OpenAI
-                    completion = await self.openai_client.chat.completions.create(
-                        model="gpt-4o-mini",
-                        messages=[
-                            {"role": "system", "content": "You are a specialized JSON AI Engine. Output purely strictly valid JSON."},
-                            {"role": "user", "content": user_prompt}
-                        ],
-                        temperature=0.1,
-                        max_tokens=8000,
-                        response_format={"type": "json_object"}
-                    )
-                    content = completion.choices[0].message.content.strip()
+                    try:
+                        # Fallback to OpenAI
+                        completion = await self.openai_client.chat.completions.create(
+                            model="gpt-4o-mini",
+                            messages=[
+                                {"role": "system", "content": "You are a specialized JSON AI Engine. Output purely strictly valid JSON."},
+                                {"role": "user", "content": user_prompt}
+                            ],
+                            temperature=0.1,
+                            max_tokens=8000,
+                            response_format={"type": "json_object"}
+                        )
+                        content = completion.choices[0].message.content.strip()
+                    except Exception as openai_err:
+                        raise Exception(f"Gemini failed: {str(gemini_err)} | OpenAI Fallback failed: {str(openai_err)}")
                 else:
                     raise gemini_err
             
@@ -832,11 +834,20 @@ CRITICAL: Respond with ONLY valid JSON. No markdown, no explanation."""
             if any(kw in line_lower for kw in author_keywords) and len(line_clean) < 50:
                 current_section = 'authors'
                 continue
-            elif any(kw in line_lower for kw in abstract_keywords) and len(line_clean) < 30:
+            elif (any(kw in line_lower for kw in abstract_keywords) and len(line_clean) < 30) or line_lower.startswith(('abstract—', 'abstract:', 'abstract -')):
                 current_section = 'abstract'
+                if len(line_clean) >= 30:
+                    # Actually contains the abstract content on the same line
+                    text_start = line_clean.find('—') if '—' in line_clean else (line_clean.find(':') if ':' in line_clean else line_clean.find('-'))
+                    if text_start != -1:
+                        abstract_content.append(line_clean[text_start+1:].strip())
+                    else:
+                        abstract_content.append(line_clean[8:].strip())
                 continue
-            elif any(kw in line_lower for kw in keyword_keywords) and len(line_clean) < 30:
+            elif any(kw in line_lower for kw in keyword_keywords) and len(line_clean) < 100:
                 current_section = 'keywords'
+                if ":" in line_clean or "—" in line_clean:
+                    keywords.extend(self._extract_keywords(line_clean))
                 continue
             elif any(kw in line_lower for kw in intro_keywords) and len(line_clean) < 50:
                 current_section = 'introduction'
@@ -913,48 +924,48 @@ CRITICAL: Respond with ONLY valid JSON. No markdown, no explanation."""
         if introduction or (other_content and not methodology):
             intro_text = introduction if introduction else other_content[:len(other_content)//4]
             sections.append({
-                "heading": "Introduction",
+                "heading": "I. Introduction",
                 "content": self._format_research_paragraphs(intro_text)
             })
         
         if literature_review:
             sections.append({
-                "heading": "Related Work",
+                "heading": "II. Related Work",
                 "content": self._format_research_paragraphs(literature_review)
             })
         
         if methodology:
             sections.append({
-                "heading": "Methodology",
+                "heading": "III. Methodology",
                 "content": self._format_research_paragraphs(methodology)
             })
         
         if results:
             sections.append({
-                "heading": "Results and Discussion",
+                "heading": "IV. Results and Discussion",
                 "content": self._format_research_paragraphs(results + discussion)
             })
         elif discussion:
             sections.append({
-                "heading": "Discussion",
+                "heading": "IV. Discussion",
                 "content": self._format_research_paragraphs(discussion)
             })
         
         if conclusion:
             sections.append({
-                "heading": "Conclusion",
+                "heading": "V. Conclusion",
                 "content": self._format_research_paragraphs(conclusion)
             })
         
         if future_work:
             sections.append({
-                "heading": "Future Work",
+                "heading": "VI. Future Work",
                 "content": self._format_research_paragraphs(future_work)
             })
         
         if acknowledgments:
             sections.append({
-                "heading": "Acknowledgments",
+                "heading": "VII. Acknowledgments",
                 "content": ' '.join(acknowledgments)
             })
         
@@ -968,10 +979,10 @@ CRITICAL: Respond with ONLY valid JSON. No markdown, no explanation."""
         if not sections and other_content:
             chunk_size = len(other_content) // 4
             sections = [
-                {"heading": "Introduction", "content": self._format_research_paragraphs(other_content[:chunk_size])},
-                {"heading": "Methodology", "content": self._format_research_paragraphs(other_content[chunk_size:chunk_size*2])},
-                {"heading": "Results and Discussion", "content": self._format_research_paragraphs(other_content[chunk_size*2:chunk_size*3])},
-                {"heading": "Conclusion", "content": self._format_research_paragraphs(other_content[chunk_size*3:])}
+                {"heading": "I. Introduction", "content": self._format_research_paragraphs(other_content[:chunk_size])},
+                {"heading": "II. Methodology", "content": self._format_research_paragraphs(other_content[chunk_size:chunk_size*2])},
+                {"heading": "III. Results and Discussion", "content": self._format_research_paragraphs(other_content[chunk_size*2:chunk_size*3])},
+                {"heading": "IV. Conclusion", "content": self._format_research_paragraphs(other_content[chunk_size*3:])}
             ]
         
         # Default title if none found

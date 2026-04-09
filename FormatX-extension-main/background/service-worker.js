@@ -558,241 +558,35 @@ async function getDocumentLength(docId, token) {
 }
 
 async function formatDocument(docId, templateId) {
-    log('Formatting document', { docId, templateId });
+    log('Formatting document via Backend API', { docId, templateId });
     const token = await getGoogleToken(true);
 
-    // 1. Load Template
-    let template = await getTemplate(templateId);
-    if (!template) {
-        // Fallback checks
-        if (!template) template = (await getUserTemplates()).find(t => t.id === templateId);
-        if (!template) template = PRESET_TEMPLATES.find(t => t.id === templateId);
-    }
-    if (!template) throw new Error('Template not found');
-
-    // 2. Load Document Structure
-    const { doc } = await getDocumentContent(docId, token);
-    if (!doc.body || !doc.body.content) throw new Error('Document is empty');
-
-    const content = doc.body.content;
-    const bodyStyles = template.styles.body || template.styles;
-    const requests = [];
-
-    // 3. Global Styles (Basics)
-    let docEndIndex = 1;
-    for (const el of content) { if (el.endIndex > docEndIndex) docEndIndex = el.endIndex; }
-
-    requests.push({
-        updateTextStyle: {
-            range: { startIndex: 1, endIndex: docEndIndex - 1 },
-            textStyle: {
-                fontSize: { magnitude: bodyStyles.fontSize || 12, unit: 'PT' },
-                weightedFontFamily: { fontFamily: bodyStyles.fontFamily || 'Times New Roman' }
+    try {
+        const response = await fetch('http://localhost:8000/documents/format', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
-            fields: 'fontSize,weightedFontFamily'
-        }
-    });
-
-    // Apply paragraph styles: lineSpacing, alignment, firstLineIndent
-    const paragraphStyleFields = [];
-    const paragraphStyle = {};
-
-    if (bodyStyles.lineSpacing) {
-        paragraphStyle.lineSpacing = bodyStyles.lineSpacing;
-        paragraphStyleFields.push('lineSpacing');
-    }
-    if (bodyStyles.alignment) {
-        paragraphStyle.alignment = bodyStyles.alignment;
-        paragraphStyleFields.push('alignment');
-    }
-    if (bodyStyles.firstLineIndent) {
-        paragraphStyle.indentFirstLine = { magnitude: bodyStyles.firstLineIndent, unit: 'PT' };
-        paragraphStyleFields.push('indentFirstLine');
-    }
-
-    if (paragraphStyleFields.length > 0) {
-        requests.push({
-            updateParagraphStyle: {
-                range: { startIndex: 1, endIndex: docEndIndex - 1 },
-                paragraphStyle,
-                fields: paragraphStyleFields.join(',')
-            }
+            body: JSON.stringify({
+                doc_url: `https://docs.google.com/document/d/${docId}/edit`,
+                template_id: templateId === 'ieee' ? 'ieee_research_paper' : templateId
+            })
         });
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.detail || 'Formatting failed at Backend API');
+        }
+
+        const data = await response.json();
+        log('Backend Format Response:', data);
+
+        return { success: true };
+    } catch (e) {
+        logError('Backend Formatting Error', e.message);
+        throw e;
     }
-
-    // 4. Regex-based Structural Formatting (The "Power" part)
-    let titleFormatted = false;  // Track if we've formatted the title
-    for (const elem of content) {
-        if (!elem.paragraph) continue;
-
-        const paragraph = elem.paragraph;
-        const startIndex = elem.startIndex;
-        const endIndex = elem.endIndex;
-
-        let text = '';
-        for (const el of paragraph.elements) {
-            if (el.textRun && el.textRun.content) text += el.textRun.content;
-        }
-        text = text.trim();
-        if (!text) continue;
-
-        // A. TITLE - First substantial paragraph that's not a numbered heading
-        // Detect title: long enough, not numbered, appears early in document
-        if (!titleFormatted && startIndex < 500 && text.length > 20 && text.length < 150) {
-            // Not a numbered heading, not Abstract/Keywords
-            if (!/^\d+\./.test(text) && !/^[IVXLCDM]+\./i.test(text) && !/^Abstract/i.test(text) && !/^Keywords/i.test(text)) {
-                const titleStyle = template.styles.title || {};
-                requests.push({
-                    updateParagraphStyle: {
-                        range: { startIndex, endIndex: endIndex - 1 },
-                        paragraphStyle: {
-                            alignment: 'CENTER',
-                            spaceBelow: { magnitude: titleStyle.spaceBelow || 12, unit: 'PT' },
-                            indentFirstLine: { magnitude: 0, unit: 'PT' }  // No indent for title
-                        },
-                        fields: 'alignment,spaceBelow,indentFirstLine'
-                    }
-                });
-                requests.push({
-                    updateTextStyle: {
-                        range: { startIndex, endIndex: endIndex - 1 },
-                        textStyle: {
-                            bold: true,
-                            fontSize: { magnitude: titleStyle.fontSize || 24, unit: 'PT' },
-                            weightedFontFamily: { fontFamily: titleStyle.fontFamily || 'Times New Roman' }
-                        },
-                        fields: 'bold,fontSize,weightedFontFamily'
-                    }
-                });
-                titleFormatted = true;
-                continue;  // Skip to next paragraph
-            }
-        }
-
-        // B. HEADINGS
-        // Level 1: "1. Introduction" -> Left, SmallCaps
-        if (/^\d+\.\s+[A-Za-z]+/.test(text) || /^[IVXLCDM]+\.\s+[A-Za-z]+/i.test(text)) {
-            if (text.length < 100) {
-                const h1 = template.styles.heading1 || {};
-                requests.push({
-                    updateParagraphStyle: {
-                        range: { startIndex, endIndex: endIndex - 1 },
-                        paragraphStyle: {
-                            alignment: h1.alignment?.toUpperCase() === 'CENTER' ? 'CENTER' : 'START',
-                            spaceAbove: { magnitude: h1.spaceAbove || 12, unit: 'PT' },
-                            spaceBelow: { magnitude: h1.spaceBelow || 6, unit: 'PT' },
-                            indentFirstLine: { magnitude: 0, unit: 'PT' }  // No indent for headings
-                        },
-                        fields: 'alignment,spaceAbove,spaceBelow,indentFirstLine'
-                    }
-                });
-                requests.push({
-                    updateTextStyle: {
-                        range: { startIndex, endIndex: endIndex - 1 },
-                        textStyle: {
-                            bold: h1.bold !== false ? h1.bold : false,
-                            smallCaps: h1.smallCaps !== undefined ? h1.smallCaps : true,
-                            fontSize: { magnitude: h1.fontSize || 10, unit: 'PT' }
-                        },
-                        fields: 'bold,smallCaps,fontSize'
-                    }
-                });
-            }
-        }
-
-        // Level 2: "2.1 Methodology" -> Left, Italic
-        else if (/^\d+\.\d+\s+/.test(text) || /^[A-Z]\.\s+/.test(text)) {
-            if (text.length < 100) {
-                const h2 = template.styles.heading2 || {};
-                requests.push({
-                    updateParagraphStyle: {
-                        range: { startIndex, endIndex: endIndex - 1 },
-                        paragraphStyle: {
-                            alignment: 'START',
-                            spaceAbove: { magnitude: h2.spaceAbove || 10, unit: 'PT' },
-                            indentFirstLine: { magnitude: 0, unit: 'PT' }  // No indent for headings
-                        },
-                        fields: 'alignment,spaceAbove,indentFirstLine'
-                    }
-                });
-                requests.push({
-                    updateTextStyle: {
-                        range: { startIndex, endIndex: endIndex - 1 },
-                        textStyle: {
-                            italic: true,
-                            fontSize: { magnitude: h2.fontSize || 10, unit: 'PT' }
-                        },
-                        fields: 'italic,fontSize'
-                    }
-                });
-            }
-        }
-
-        // C. ABSTRACT & KEYWORDS
-        else if (/^Abstract/i.test(text) || /^Keywords/i.test(text)) {
-            requests.push({
-                updateTextStyle: {
-                    range: { startIndex, endIndex: endIndex - 1 },
-                    textStyle: { bold: true, fontSize: { magnitude: 9, unit: 'PT' } },
-                    fields: 'bold,fontSize'
-                }
-            });
-        }
-    }
-
-    // 5. Apply Margins
-    if (template.layout && template.layout.margins) {
-        const margins = template.layout.margins;
-        const toPt = (val) => {
-            if (typeof val === 'number') return val;
-            if (String(val).includes('in')) return parseFloat(val) * 72;
-            return parseFloat(val);
-        };
-        requests.push({
-            updateDocumentStyle: {
-                documentStyle: {
-                    marginTop: { magnitude: toPt(margins.top), unit: 'PT' },
-                    marginBottom: { magnitude: toPt(margins.bottom), unit: 'PT' },
-                    marginLeft: { magnitude: toPt(margins.left), unit: 'PT' },
-                    marginRight: { magnitude: toPt(margins.right), unit: 'PT' }
-                },
-                fields: 'marginTop,marginBottom,marginLeft,marginRight'
-            }
-        });
-    }
-
-    // 6. Execute Batch Update
-    if (requests.length > 0) {
-        const res = await fetch(
-            `https://docs.googleapis.com/v1/documents/${docId}:batchUpdate`,
-            {
-                method: 'POST',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ requests })
-            }
-        );
-
-        if (!res.ok) {
-            const error = await res.json().catch(() => ({}));
-            const errorMsg = error.error?.message || 'Formatting failed';
-
-            // Provide user-friendly error messages for common issues
-            if (errorMsg.includes('not supported for this document')) {
-                throw new Error('Cannot format this document. It may be a Word/PDF file - please convert it to Google Docs format first (File → Save as Google Docs), or you may only have view access.');
-            }
-            if (errorMsg.includes('permission') || errorMsg.includes('403')) {
-                throw new Error('You don\'t have edit permission for this document. Please request access from the owner.');
-            }
-
-            throw new Error(errorMsg);
-        }
-    }
-
-    log('Power Formatting complete');
-    return { success: true };
 }
 
 // Razorpay Configuration - TEST MODE

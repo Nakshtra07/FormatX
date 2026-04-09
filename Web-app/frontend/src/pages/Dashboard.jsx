@@ -5,7 +5,7 @@ import {
     CheckCircle, AlertCircle, Loader2, Plus, X, Crown
 } from 'lucide-react'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080'
 
 function Dashboard({ user, accessToken, onLogout }) {
     const [docUrl, setDocUrl] = useState('')

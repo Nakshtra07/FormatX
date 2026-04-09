@@ -2,9 +2,9 @@
 # FormatX v1.0 - Development Server Launcher
 # ============================================
 # Architecture:
-#   - Marketing Site (Static) → Port 5173 (Main Landing)
-#   - React App (Vite)       → Port 5501 (Web App at /app/)
-#   - Backend API (FastAPI)  → Port 8000
+#   - Marketing Site (Static) → Port 8000 (Main Landing)
+#   - React App (Vite)       → Port 5173 (Web App at /app/)
+#   - Backend API (FastAPI)  → Port 8080
 #
 # The Marketing site links to the React app via /app/ routes.
 
@@ -42,8 +42,8 @@ $backendCommand = @"
 cd '$backendDir'
 Write-Host '========================================' -ForegroundColor Green
 Write-Host '   FormatX Backend API' -ForegroundColor Green
-Write-Host '   http://localhost:8000' -ForegroundColor Green
-Write-Host '   API Docs: http://localhost:8000/docs' -ForegroundColor Green
+Write-Host '   http://localhost:8080' -ForegroundColor Green
+Write-Host '   API Docs: http://localhost:8080/docs' -ForegroundColor Green
 Write-Host '========================================' -ForegroundColor Green
 Write-Host ''
 
@@ -56,19 +56,19 @@ if (Test-Path '.\venv\Scripts\Activate.ps1') {
 }
 
 # Start the server
-python -m uvicorn main:app --reload --port 8000
+python -m uvicorn main:app --reload --port 8080
 "@
 
 Start-Process powershell -ArgumentList "-NoExit", "-Command", $backendCommand
-Write-Host "   Backend API at: http://localhost:8000" -ForegroundColor Green
-Write-Host "   API Docs at: http://localhost:8000/docs" -ForegroundColor Green
+Write-Host "   Backend API at: http://localhost:8080" -ForegroundColor Green
+Write-Host "   API Docs at: http://localhost:8080/docs" -ForegroundColor Green
 Write-Host ""
 
 # Wait for backend to initialize
 Start-Sleep -Seconds 2
 
 # ============================================
-# Start React App (Vite) - Standalone on 5501
+# Start React App (Vite) - Standalone on 5173
 # ============================================
 Write-Host "[2/3] Starting React App (Vite)..." -ForegroundColor Yellow
 
@@ -76,7 +76,7 @@ $frontendCommand = @"
 cd '$frontendDir'
 Write-Host '========================================' -ForegroundColor Magenta
 Write-Host '   FormatX React App (Standalone)' -ForegroundColor Magenta
-Write-Host '   http://localhost:5501' -ForegroundColor Magenta
+Write-Host '   http://localhost:5173' -ForegroundColor Magenta
 Write-Host '========================================' -ForegroundColor Magenta
 Write-Host ''
 
@@ -86,19 +86,19 @@ if (-not (Test-Path '.\node_modules')) {
     npm install
 }
 
-# Start the dev server on port 5501
-npm run dev -- --port 5501
+# Start the dev server on port 5173
+npm run dev -- --port 5173
 "@
 
 Start-Process powershell -ArgumentList "-NoExit", "-Command", $frontendCommand
-Write-Host "   React App at: http://localhost:5501" -ForegroundColor Green
+Write-Host "   React App at: http://localhost:5173" -ForegroundColor Green
 Write-Host ""
 
 # Wait a moment
 Start-Sleep -Seconds 2
 
 # ============================================
-# Start Marketing Site (Static Server on 5173)
+# Start Marketing Site (Static Server on 8000)
 # ============================================
 Write-Host "[3/3] Starting Marketing Site (Static)..." -ForegroundColor Yellow
 
@@ -106,7 +106,7 @@ $marketingCommand = @"
 cd '$marketingDir'
 Write-Host '========================================' -ForegroundColor Blue
 Write-Host '   FormatX Marketing Site' -ForegroundColor Blue
-Write-Host '   http://localhost:5173' -ForegroundColor Blue
+Write-Host '   http://localhost:8000' -ForegroundColor Blue
 Write-Host '========================================' -ForegroundColor Blue
 Write-Host ''
 
@@ -115,15 +115,15 @@ Write-Host ''
 `$pythonCheck = Get-Command python -ErrorAction SilentlyContinue
 if (`$pythonCheck) {
     Write-Host 'Starting static server with Python...' -ForegroundColor Cyan
-    python -m http.server 5173
+    python -m http.server 8000
 } else {
     Write-Host 'Python not found. Trying npx serve...' -ForegroundColor Yellow
-    npx -y serve -l 5173
+    npx -y serve -l 8000
 }
 "@
 
 Start-Process powershell -ArgumentList "-NoExit", "-Command", $marketingCommand
-Write-Host "   Marketing Site at: http://localhost:5173" -ForegroundColor Green
+Write-Host "   Marketing Site at: http://localhost:8000" -ForegroundColor Green
 Write-Host ""
 
 # ============================================
@@ -133,13 +133,13 @@ Write-Host "========================================" -ForegroundColor Cyan
 Write-Host "   All Servers Started!" -ForegroundColor Cyan
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
-Write-Host "   MAIN (Marketing):  http://localhost:5173" -ForegroundColor White
-Write-Host "   React App:         http://localhost:5501" -ForegroundColor White
-Write-Host "   Backend API:       http://localhost:8000" -ForegroundColor White
-Write-Host "   API Docs:          http://localhost:8000/docs" -ForegroundColor White
+Write-Host "   MAIN (Marketing):  http://localhost:8000" -ForegroundColor White
+Write-Host "   React App:         http://localhost:5173" -ForegroundColor White
+Write-Host "   Backend API:       http://localhost:8080" -ForegroundColor White
+Write-Host "   API Docs:          http://localhost:8080/docs" -ForegroundColor White
 Write-Host ""
 Write-Host "   NOTE: Marketing site links to /app/ will need" -ForegroundColor Gray
-Write-Host "         to be updated to http://localhost:5501" -ForegroundColor Gray
+Write-Host "         to be updated to http://localhost:5173" -ForegroundColor Gray
 Write-Host "         for local development." -ForegroundColor Gray
 Write-Host ""
 Write-Host "   Press Ctrl+C in each terminal to stop." -ForegroundColor Gray

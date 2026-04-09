@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Check, Zap, Crown, Sparkles, AlertCircle, CheckCircle, ArrowLeft, CreditCard, X, Lock, Smartphone } from 'lucide-react'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080'
 
 // Razorpay Test Key - Replace with your test key from Razorpay Dashboard
 const RAZORPAY_KEY_ID = import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_XXXXXXXXXXXXXXX'
