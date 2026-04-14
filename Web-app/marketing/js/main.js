@@ -4,20 +4,34 @@
    ============================================ */
 
 /* ==========================================
-   DEVELOPMENT CONFIGURATION
-   Set APP_URL based on environment
+   ENVIRONMENT-AWARE APP URL
    ========================================== */
-const APP_URL = window.location.hostname === 'localhost'
-    ? 'http://localhost:5173'  // Local dev: React app on separate port
-    : '/app/';                  // Production: React app at /app/ path
-
-// Rewrite /app/ links for local development
-document.addEventListener('DOMContentLoaded', function () {
-    if (window.location.hostname === 'localhost') {
-        document.querySelectorAll('a[href="/app/"], a[href="/app"]').forEach(link => {
-            link.href = APP_URL;
-        });
+const APP_URL = (() => {
+    const hostname = window.location.hostname;
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+        return 'http://localhost:5173';  // Local dev: React app on separate port
     }
+    // Production: derive the frontend URL from the marketing URL
+    // e.g., formatx-marketing.onrender.com → formatx-app.onrender.com
+    // Or if you have a custom domain, update this accordingly
+    return 'https://formatx-app.onrender.com';
+})();
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    /* ==========================================
+       REWRITE APP LINKS
+       Updates all .app-link elements to point to
+       the correct app URL for the environment.
+       ========================================== */
+    document.querySelectorAll('.app-link').forEach(link => {
+        link.href = APP_URL;
+    });
+
+    // Also catch any leftover /app/ or /app links
+    document.querySelectorAll('a[href="/app/"], a[href="/app"]').forEach(link => {
+        link.href = APP_URL;
+    });
 
 
     /* ==========================================
@@ -130,4 +144,5 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     console.log('✓ FormatX main.js initialized');
+    console.log(`  App URL: ${APP_URL}`);
 });

@@ -1,0 +1,84 @@
+# ============================================
+# FormatX - Render Blueprint (render.yaml)
+# ============================================
+# Defines all 3 services for Render deployment.
+# Place this file at the root of your GitHub repo.
+#
+# Services:
+#   1. formatx-api       → Backend (FastAPI/Python)
+#   2. formatx-app       → Frontend (Vite/React static site)
+#   3. formatx-marketing → Marketing landing page (Node/Express)
+
+services:
+  # ─────────────────────────────────────────
+  # 1. Backend API (FastAPI + Uvicorn)
+  # ─────────────────────────────────────────
+  - type: web
+    name: formatx-api
+    runtime: python
+    rootDir: Web-app/backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: HOST
+        value: 0.0.0.0
+      - key: DEBUG
+        value: "false"
+      - key: DEMO_MODE
+        value: "true"
+      - key: GEMINI_MODEL
+        value: gemini-1.5-flash
+      - key: FRONTEND_URL
+        fromService:
+          name: formatx-app
+          type: web
+          property: host
+      - key: GOOGLE_CLIENT_ID
+        sync: false  # Set manually in Render dashboard
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: GOOGLE_REDIRECT_URI
+        sync: false
+
+  # ─────────────────────────────────────────
+  # 2. Frontend App (Vite/React → Static Site)
+  # ─────────────────────────────────────────
+  - type: web
+    name: formatx-app
+    runtime: static
+    rootDir: Web-app/frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: SAMEORIGIN
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          name: formatx-api
+          type: web
+          property: hostport
+      - key: VITE_GOOGLE_CLIENT_ID
+        sync: false  # Set manually in Render dashboard
+
+  # ─────────────────────────────────────────
+  # 3. Marketing Landing Page (Express static)
+  # ─────────────────────────────────────────
+  - type: web
+    name: formatx-marketing
+    runtime: node
+    rootDir: Web-app/marketing
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production

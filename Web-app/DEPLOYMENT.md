@@ -1,52 +1,114 @@
-# Deploying FormatX to Vercel
+# Deploying FormatX to Render
 
-Since this project has multiple components (Marketing Site, Web App, Backend), the best way to deploy on Vercel is to create **three separate projects** from the same GitHub repository.
+This project has 3 components (Marketing Site, Web App, Backend). All 3 are deployed as separate services on **Render** from the same GitHub repository using a `render.yaml` blueprint.
 
 ## Prerequisites
-1.  Push this code to a GitHub repository.
-2.  Log in to [Vercel](https://vercel.com).
+1. Push this code to a GitHub repository.
+2. Log in to [Render](https://render.com).
 
 ---
 
-## 1. Deploy the Backend (API)
-*First, we need the API URL for the frontend to connect to.*
+## Quick Deploy (Blueprint)
 
-1.  Click **"Add New Project"** in Vercel.
-2.  Import your repository.
-3.  **Project Name:** `formatx-api` (example).
-4.  **Framework Preset:** Select `Other`.
-5.  **Root Directory:** Click "Edit" and select `backend`.
-6.  **Environment Variables:** Add your secrets from `.env` here (e.g., `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, etc.).
-7.  Click **Deploy**.
-8.  **Copy the Domain:** Once deployed, copy the URL (e.g., `https://formatx-api.vercel.app`). Note: You might need to add `/docs` to see Swagger UI, but the base URL is what we need.
+1. Go to the [Render Dashboard](https://dashboard.render.com).
+2. Click **"New"** → **"Blueprint"**.
+3. Connect your GitHub repository.
+4. Render will detect the `render.yaml` file and create all 3 services automatically.
+5. **Set secret environment variables** in the Render dashboard for each service (see below).
 
 ---
 
-## 2. Deploy the Web App (Frontend)
-1.  Click **"Add New Project"**.
-2.  Import the same repository.
-3.  **Project Name:** `formatx-app`.
-4.  **Framework Preset:** `Vite`.
-5.  **Root Directory:** Click "Edit" and select `frontend`.
-6.  **Environment Variables:**
-    *   `VITE_API_URL`: Paste your Backend URL (e.g., `https://formatx-api.vercel.app`).
-    *   `VITE_GOOGLE_CLIENT_ID`: Your Google OAuth Client ID.
-7.  Click **Deploy**.
+## Services Overview
+
+| Service | Type | Root Dir | URL Pattern |
+|---------|------|----------|-------------|
+| `formatx-api` | Web Service (Python) | `Web-app/backend` | `https://formatx-api.onrender.com` |
+| `formatx-app` | Static Site (Vite) | `Web-app/frontend` | `https://formatx-app.onrender.com` |
+| `formatx-marketing` | Web Service (Node) | `Web-app/marketing` | `https://formatx-marketing.onrender.com` |
 
 ---
 
-## 3. Deploy the Marketing Site
-1.  Click **"Add New Project"**.
-2.  Import the same repository.
-3.  **Project Name:** `formatx-marketing`.
-4.  **Framework Preset:** `Other` (or just leave default, Vercel detects HTML).
-5.  **Root Directory:** Click "Edit" and select `marketing`.
-6.  Click **Deploy**.
+## 1. Backend API (`formatx-api`)
+
+**Runtime:** Python  
+**Build Command:** `pip install -r requirements.txt`  
+**Start Command:** `uvicorn main:app --host 0.0.0.0 --port $PORT`  
+
+**Environment Variables (set in Render Dashboard):**
+| Variable | Value |
+|----------|-------|
+| `GOOGLE_CLIENT_ID` | Your Google OAuth client ID |
+| `GOOGLE_CLIENT_SECRET` | Your Google OAuth client secret |
+| `GEMINI_API_KEY` | Your Google Gemini API key |
+| `OPENAI_API_KEY` | Your OpenAI API key (optional fallback) |
+| `GOOGLE_REDIRECT_URI` | `https://formatx-app.onrender.com` |
+| `FRONTEND_URL` | `https://formatx-app.onrender.com` |
+| `DEMO_MODE` | `true` (or `false` when API quotas are available) |
+| `GEMINI_MODEL` | `gemini-1.5-flash` |
 
 ---
 
-## Final Steps
-1.  Go to your **Web App** project settings and add your **Marketing Site Domain** to the CORS allowlist in your Backend if needed (though usually not strict for public GETs).
-2.  Update your Google Cloud Console "Authorized JavaScript Origins" and "Redirect URIs" to match your new Vercel domains.
+## 2. Frontend App (`formatx-app`)
 
-**Done!** You now have a production-ready setup with separate deployments for each component.
+**Runtime:** Static Site  
+**Build Command:** `npm install && npm run build`  
+**Publish Directory:** `dist`  
+
+**Environment Variables (set in Render Dashboard):**
+| Variable | Value |
+|----------|-------|
+| `VITE_API_URL` | `https://formatx-api.onrender.com` |
+| `VITE_GOOGLE_CLIENT_ID` | Your Google OAuth client ID |
+
+---
+
+## 3. Marketing Site (`formatx-marketing`)
+
+**Runtime:** Node  
+**Build Command:** `npm install`  
+**Start Command:** `node server.js`  
+
+No secrets needed. The marketing site uses client-side JS to detect environment and set the correct app URL.
+
+---
+
+## Post-Deployment Steps
+
+1. **Google Cloud Console:** Update your OAuth credentials:
+   - **Authorized JavaScript Origins:** Add all 3 Render URLs
+   - **Authorized Redirect URIs:** Add `https://formatx-app.onrender.com`
+
+2. **Test the deployment:**
+   - Marketing: `https://formatx-marketing.onrender.com`
+   - App: `https://formatx-app.onrender.com`
+   - API Health: `https://formatx-api.onrender.com/health`
+   - API Docs: `https://formatx-api.onrender.com/docs`
+
+---
+
+## Manual Deploy (Without Blueprint)
+
+If you prefer to create services manually:
+
+### Backend
+1. Click **"New"** → **"Web Service"**
+2. Connect repo, set **Root Directory** to `Web-app/backend`
+3. **Runtime:** Python
+4. **Build:** `pip install -r requirements.txt`
+5. **Start:** `uvicorn main:app --host 0.0.0.0 --port $PORT`
+6. Add environment variables from the table above
+
+### Frontend
+1. Click **"New"** → **"Static Site"**
+2. Connect repo, set **Root Directory** to `Web-app/frontend`
+3. **Build:** `npm install && npm run build`
+4. **Publish Directory:** `dist`
+5. Add rewrite rule: `/*` → `/index.html`
+6. Add environment variables from the table above
+
+### Marketing
+1. Click **"New"** → **"Web Service"**
+2. Connect repo, set **Root Directory** to `Web-app/marketing`
+3. **Runtime:** Node
+4. **Build:** `npm install`
+5. **Start:** `node server.js`
