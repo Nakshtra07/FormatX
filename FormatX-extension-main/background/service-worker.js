@@ -562,7 +562,7 @@ async function formatDocument(docId, templateId) {
     const token = await getGoogleToken(true);
 
     try {
-        const response = await fetch('http://localhost:8000/documents/format', {
+        const response = await fetch('https://formatx-site.onrender.com/documents/format', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
