@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import {
     FileText, Upload, Sparkles, Lightbulb, Trash2, Star,
-    CheckCircle, AlertCircle, Loader2, Plus, X, Crown
+    CheckCircle, AlertCircle, Loader2, Plus, X, Crown, FolderOpen
 } from 'lucide-react'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080'
@@ -20,6 +20,76 @@ function Dashboard({ user, accessToken, onLogout }) {
     const [isUploading, setIsUploading] = useState(false)
     const fileInputRef = useRef(null)
     const [templateName, setTemplateName] = useState('')
+    
+    // Google Picker states
+    const [permissionError, setPermissionError] = useState(false)
+    const [pickerApiLoaded, setPickerApiLoaded] = useState(false)
+
+    // Load Google API for Picker on mount
+    useEffect(() => {
+        const loadGapi = () => {
+            const script = document.createElement('script')
+            script.src = 'https://apis.google.com/js/api.js'
+            script.async = true
+            script.defer = true
+            script.onload = () => {
+                window.gapi.load('picker', () => {
+                    setPickerApiLoaded(true)
+                })
+            }
+            document.body.appendChild(script)
+        }
+        
+        if (!window.gapi) {
+            loadGapi()
+        } else {
+            setPickerApiLoaded(true)
+        }
+    }, [])
+
+    const extractDocId = (url) => {
+        const match = url.match(/docs\.google\.com\/document\/d\/([a-zA-Z0-9-_]+)/)
+        return match ? match[1] : null
+    }
+
+    const handleOpenPicker = (preselectedFileId = null) => {
+        const developerKey = import.meta.env.VITE_GOOGLE_API_KEY
+        const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID
+
+        if (!window.google || !window.google.picker) {
+            alert('Google Drive Picker is still loading. Please try again in a moment.')
+            return
+        }
+
+        if (!developerKey) {
+            console.error('VITE_GOOGLE_API_KEY is not defined in the frontend .env file.')
+            alert('Google Picker API Key is not configured. Please add VITE_GOOGLE_API_KEY to your .env file.')
+            return
+        }
+
+        const docsView = new window.google.picker.DocsView(window.google.picker.ViewId.DOCUMENTS)
+            .setMimeTypes('application/vnd.google-apps.document')
+
+        if (preselectedFileId) {
+            if (typeof docsView.setFileIds === 'function') {
+                docsView.setFileIds([preselectedFileId])
+            }
+        }
+
+        const picker = new window.google.picker.PickerBuilder()
+            .addView(docsView)
+            .setOAuthToken(accessToken)
+            .setDeveloperKey(developerKey)
+            .setCallback((data) => {
+                if (data[window.google.picker.Response.ACTION] === window.google.picker.Action.PICKED) {
+                    const doc = data[window.google.picker.Response.DOCUMENTS][0]
+                    const url = doc[window.google.picker.Document.URL]
+                    handleUrlChange(url)
+                }
+            })
+
+        picker.build().setVisible(true)
+    }
 
     // Fetch available templates on mount
     useEffect(() => {
@@ -71,6 +141,7 @@ function Dashboard({ user, accessToken, onLogout }) {
         setDocUrl(url)
         setDocInfo(null)
         setStatus({ type: '', message: '' })
+        setPermissionError(false)
 
         // Try to fetch document info when URL looks valid
         if (url.includes('docs.google.com/document')) {
@@ -87,6 +158,12 @@ function Dashboard({ user, accessToken, onLogout }) {
                 if (response.ok) {
                     const info = await response.json()
                     setDocInfo(info)
+                    setPermissionError(false)
+                } else {
+                    const errData = await response.json()
+                    if (errData.detail && errData.detail.toLowerCase().includes('permission')) {
+                        setPermissionError(true)
+                    }
                 }
             } catch (error) {
                 // Silently fail - user can still try to format
@@ -102,6 +179,7 @@ function Dashboard({ user, accessToken, onLogout }) {
 
         setIsLoading(true)
         setStatus({ type: 'loading', message: 'Formatting your document... This may take a moment.' })
+        setPermissionError(false)
 
         try {
             const response = await fetch(`${API_URL}/documents/format`, {
@@ -125,9 +203,13 @@ function Dashboard({ user, accessToken, onLogout }) {
                     message: <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><CheckCircle size={16} /> Document formatted successfully!</span>
                 })
             } else {
+                const errorMessage = result.detail || 'Failed to format document. Please try again.'
+                if (errorMessage.toLowerCase().includes('permission')) {
+                    setPermissionError(true)
+                }
                 setStatus({
                     type: 'error',
-                    message: result.detail || 'Failed to format document. Please try again.'
+                    message: errorMessage
                 })
             }
         } catch (error) {
@@ -282,15 +364,56 @@ function Dashboard({ user, accessToken, onLogout }) {
                         <label className="input-label" htmlFor="doc-url">
                             Google Docs URL
                         </label>
-                        <input
-                            id="doc-url"
-                            type="url"
-                            className="input"
-                            placeholder="https://docs.google.com/document/d/..."
-                            value={docUrl}
-                            onChange={(e) => handleUrlChange(e.target.value)}
-                            disabled={isLoading}
-                        />
+                        <div style={{ display: 'flex', gap: '8px' }}>
+                            <input
+                                id="doc-url"
+                                type="url"
+                                className="input"
+                                style={{ flex: 1 }}
+                                placeholder="https://docs.google.com/document/d/..."
+                                value={docUrl}
+                                onChange={(e) => handleUrlChange(e.target.value)}
+                                disabled={isLoading}
+                            />
+                            <button
+                                type="button"
+                                className="btn btn-secondary"
+                                onClick={() => handleOpenPicker()}
+                                disabled={isLoading || !pickerApiLoaded}
+                                style={{ display: 'flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}
+                            >
+                                <FolderOpen size={16} />
+                                Choose from Drive
+                            </button>
+                        </div>
+                        {permissionError && (
+                            <div className="card" style={{
+                                marginTop: 'var(--space-2)',
+                                background: 'rgba(239, 68, 68, 0.1)',
+                                border: '1px solid var(--color-error, #ef4444)',
+                                padding: 'var(--space-3, 12px)',
+                                borderRadius: '8px'
+                            }}>
+                                <p style={{ fontSize: '0.875rem', color: '#ef4444', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', margin: 0 }}>
+                                    <AlertCircle size={16} /> FormatX needs permission to access this Google Doc.
+                                </p>
+                                <button
+                                    type="button"
+                                    className="btn btn-secondary"
+                                    onClick={() => {
+                                        const docId = extractDocId(docUrl);
+                                        if (docId) {
+                                            handleOpenPicker(docId);
+                                        } else {
+                                            handleOpenPicker();
+                                        }
+                                    }}
+                                    style={{ fontSize: '0.8125rem', padding: '0.375rem 0.75rem', marginTop: '8px' }}
+                                >
+                                    Authorize Document
+                                </button>
+                            </div>
+                        )}
                         {docInfo && (
                             <p style={{ fontSize: '0.875rem', color: 'var(--primary-400)', marginTop: 'var(--space-2)', display: 'flex', alignItems: 'center', gap: '6px' }}>
                                 <FileText size={14} /> Found: "{docInfo.title}" ({docInfo.word_count} words)

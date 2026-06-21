@@ -46,7 +46,7 @@ function Landing({ onLogin }) {
             alert('Google login failed. Please try again.')
         },
         flow: 'auth-code',
-        scope: 'openid email profile https://www.googleapis.com/auth/documents https://www.googleapis.com/auth/drive.file',
+        scope: 'openid email profile https://www.googleapis.com/auth/drive.file',
     })
 
     return (
